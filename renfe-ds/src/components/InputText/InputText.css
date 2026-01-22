@@ -1,0 +1,122 @@
+.input-textfield {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+
+  /* Component tokens (light defaults) */
+  --itf-bg: var(--color-base-white);
+  --itf-border: var(--color-neutral-200);
+  --itf-text: var(--color-neutral-900);
+  --itf-placeholder: var(--color-neutral-600);
+  --itf-helper: var(--color-neutral-700);
+
+  --itf-error: var(--color-danger-600);
+  --itf-success: var(--color-success-600);
+}
+
+.dark .input-textfield {
+  --itf-bg: var(--color-neutral-50);
+  --itf-border: var(--color-neutral-200);
+  --itf-text: var(--color-neutral-900);
+  --itf-placeholder: var(--color-neutral-600);
+  --itf-helper: var(--color-neutral-700);
+
+  --itf-error: var(--color-danger-600);
+  --itf-success: var(--color-success-600);
+}
+
+.input-textfield__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-02);
+}
+
+.input-textfield__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  color: var(--itf-text);
+}
+
+.input-textfield__optional {
+  color: var(--itf-placeholder);
+}
+
+.input-textfield__counter {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--itf-placeholder);
+}
+
+.input-textfield__control {
+  background: var(--itf-bg);
+  border: 1px solid var(--itf-border);
+  border-radius: var(--radius-03);
+  padding-block: var(--spacing-02);
+  padding-inline: calc(var(--spacing-03) + var(--spacing-02)); /* 8px + 4px = 12px */
+  display: flex;
+  align-items: center;
+}
+
+.input-textfield__input {
+  width: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  color: var(--itf-text);
+}
+
+.input-textfield__input::placeholder {
+  color: var(--itf-placeholder);
+}
+
+.input-textfield__helper {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--itf-helper);
+}
+
+.input-textfield__helper.is-error { color: var(--itf-error); }
+.input-textfield__helper.is-success { color: var(--itf-success); }
+
+/* States */
+.input-textfield--hovered .input-textfield__control {
+  background: var(--color-neutral-50);
+  border-color: var(--color-neutral-200);
+}
+
+.dark .input-textfield--hovered .input-textfield__control {
+  background: var(--color-neutral-100);
+}
+
+.input-textfield--focused .input-textfield__control,
+.input-textfield:focus-within .input-textfield__control {
+  box-shadow: var(--effect-focus-outer-primary), var(--effect-focus-inner);
+}
+
+.input-textfield--disabled .input-textfield__control,
+.input-textfield--disabled .input-textfield__input {
+  cursor: not-allowed;
+  color: var(--color-neutral-400);
+}
+
+.input-textfield--readOnly .input-textfield__control {
+  background: var(--color-neutral-100);
+}
+
+.input-textfield--error .input-textfield__control {
+  border-color: var(--itf-error);
+}
+
+.input-textfield--success .input-textfield__control {
+  border-color: var(--itf-success);
+}
