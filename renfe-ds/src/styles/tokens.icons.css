@@ -1,0 +1,19 @@
+:root {
+  /* Material Symbols weight */
+  --icon-weight: 300;
+
+  /* Icon L ↔ text.l (box = line-height) */
+  --icon-l-box: 1.75rem;   /* 28px */
+  --icon-l-glyph: 1.25rem; /* 20px */
+  --icon-l-gap: 0.5rem;    /* 8px */
+
+  /* Icon M ↔ text.m */
+  --icon-m-box: 1.625rem;  /* 26px */
+  --icon-m-glyph: 1.125rem;/* 18px */
+  --icon-m-gap: 0.5rem;    /* 8px */
+
+  /* Icon S ↔ text.s */
+  --icon-s-box: 1.375rem;  /* 22px */
+  --icon-s-glyph: 1rem;    /* 16px */
+  --icon-s-gap: 0.375rem;  /* 6px */
+}

@@ -1,0 +1,35 @@
+:root {
+  --font-family-primary: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* Headings */
+  --type-heading-h1-size: 2rem;      /* 32px */
+  --type-heading-h1-line: 2.5rem;    /* 40px */
+  --type-heading-h2-size: 1.5rem;    /* 24px */
+  --type-heading-h2-line: 2rem;      /* 32px */
+  --type-heading-h3-size: 1.25rem;   /* 20px */
+  --type-heading-h3-line: 1.75rem;   /* 28px */
+  --type-heading-h4-size: 1.125rem;  /* 18px */
+  --type-heading-h4-line: 1.625rem;  /* 26px */
+
+  /* Text */
+  --type-text-l-size: 1.125rem;      /* 18px */
+  --type-text-l-line: 1.75rem;       /* 28px */
+  --type-text-m-size: 1rem;          /* 16px */
+  --type-text-m-line: 1.625rem;      /* 26px */
+  --type-text-s-size: 0.875rem;      /* 14px */
+  --type-text-s-line: 1.375rem;      /* 22px */
+  --type-text-xs-size: 0.8125rem;    /* 13px */
+  --type-text-xs-line: 1.125rem;     /* 18px */
+
+  /* Weights (active) */
+  --type-weight-regular: 400;
+  --type-weight-medium: 500;
+  --type-weight-bold: 700;
+
+  /* Reserved (do not expose yet) */
+  --type-weight-semibold: 600;
+
+  /* Underline */
+  --type-underline-offset: 0.12em;
+  --type-underline-thickness: 0.08em;
+}

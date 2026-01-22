@@ -1,0 +1,11 @@
+:root {
+  --radius-00: 0rem;      /* 0px */
+  --radius-01: 0.125rem;  /* 2px */
+  --radius-02: 0.25rem;   /* 4px */
+  --radius-03: 0.5rem;    /* 8px */
+  --radius-04: 1rem;      /* 16px */
+  --radius-05: 1.5rem;    /* 24px */
+
+  /* Pill */
+  --radius-pill: 999px;
+}

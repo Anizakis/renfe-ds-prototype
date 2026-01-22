@@ -1,0 +1,40 @@
+:root {
+  /* Container */
+  --container-max: 1439px;
+
+  /* Grid defaults (S: 360–767) */
+  --grid-columns: 4;
+  --grid-gutter: var(--spacing-04); /* 16px */
+  --grid-margin: var(--spacing-04); /* 16px */
+}
+
+/* M: 768–1023 */
+@media (min-width: 768px) and (max-width: 1023px) {
+  :root {
+    --grid-columns: 8;
+    --grid-gutter: var(--spacing-05); /* 24px */
+    --grid-margin: var(--spacing-07); /* 40px */
+  }
+}
+
+/* L: >=1024 */
+@media (min-width: 1024px) {
+  :root {
+    --grid-columns: 12;
+    --grid-gutter: var(--spacing-05); /* 24px */
+    --grid-margin: var(--spacing-11); /* 80px */
+  }
+}
+
+.ds-container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--grid-margin);
+}
+
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
+  gap: var(--grid-gutter);
+}
