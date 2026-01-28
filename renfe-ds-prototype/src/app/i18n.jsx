@@ -41,6 +41,7 @@ const STRINGS = {
       errors: {
         originRequired: "Indica un origen",
         destinationRequired: "Indica un destino",
+        stationInvalid: "Selecciona una estación válida de la lista.",
       },
     },
     login: {
@@ -161,6 +162,7 @@ const STRINGS = {
       errors: {
         originRequired: "Enter an origin",
         destinationRequired: "Enter a destination",
+        stationInvalid: "Select a valid station from the list.",
       },
     },
     login: {

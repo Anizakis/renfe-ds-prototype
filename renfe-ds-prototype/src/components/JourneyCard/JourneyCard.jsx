@@ -9,6 +9,9 @@ export default function JourneyCard({ journey, selected, onSelect, actionLabel }
           <span>{journey.origin}</span>
           <span className="journey-card__arrow" aria-hidden="true">arrow_forward</span>
           <span>{journey.destination}</span>
+          {journey.service && (
+            <span className="journey-card__service">{journey.service}</span>
+          )}
         </div>
         <div className="journey-card__times">
           <span>{journey.departTime}</span>

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Container from "../components/Container/Container.jsx";
 import Grid from "../components/Grid/Grid.jsx";
 import Stack from "../components/Stack/Stack.jsx";
@@ -17,6 +17,18 @@ export default function Results() {
   const [activeDay, setActiveDay] = useState(dayTabs[0]);
   const [loading, setLoading] = useState(true);
   const loadingTimeout = useRef(null);
+  const origin = state.search?.origin;
+  const destination = state.search?.destination;
+
+  const resolvedJourneys = useMemo(
+    () =>
+      journeys.map((journey) => ({
+        ...journey,
+        origin: origin || journey.origin,
+        destination: destination || journey.destination,
+      })),
+    [origin, destination]
+  );
 
   const steps = [
     { id: "results", label: t("stepper.results") },
@@ -35,7 +47,7 @@ export default function Results() {
   }, []);
 
   const tabs = dayTabs.map((day) => {
-    const journeysForDay = journeys.filter((journey) => journey.date === day);
+    const journeysForDay = resolvedJourneys.filter((journey) => journey.date === day);
     return {
     id: day,
     label: day,
@@ -77,6 +89,13 @@ export default function Results() {
   return (
     <Container as="section" className="page">
       <h1 className="page-title">{t("results.title")}</h1>
+      {origin && destination && (
+        <p className="results-route">
+          {origin}
+          <span className="results-route__arrow" aria-hidden="true">arrow_forward</span>
+          {destination}
+        </p>
+      )}
       <CheckoutStepper steps={steps} currentStep="results" />
       <Grid>
         <div className="col-span-4">

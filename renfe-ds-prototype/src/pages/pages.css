@@ -34,6 +34,7 @@
   border-radius: var(--radius-04);
   box-shadow: var(--shadow-xs);
   padding: var(--spacing-10);
+  overflow: visible;
 }
 
 .search-card {
@@ -46,25 +47,47 @@
   gap: var(--spacing-05);
 }
 
-.home-search-form {
-  align-items: end;
-  gap: var(--spacing-03);
-}
-
-.home-search-grid {
-  align-items: start;
-  gap: var(--spacing-03);
-  display: grid;
-  gap: var(--spacing-03);
-  align-items: center;
-}
-
 .home-search-grid {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
   column-gap: var(--grid-gutter);
   row-gap: var(--spacing-03);
-  align-items: end;
+  align-items: start;
+}
+
+.home-search-field {
+  position: relative;
+}
+
+.home-search-suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: var(--spacing-02);
+  background: var(--color-base-white);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-03);
+  box-shadow: var(--shadow-sm);
+  padding: var(--spacing-02) 0;
+  list-style: none;
+  z-index: 10;
+  max-height: var(--spacing-12);
+  overflow-y: auto;
+}
+
+.home-search-option {
+  padding: var(--spacing-02) var(--spacing-03);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  color: var(--color-neutral-900);
+  cursor: pointer;
+}
+
+.home-search-option:hover,
+.home-search-option.is-active {
+  background: var(--color-neutral-50);
 }
 
 .home-search-header {
@@ -83,7 +106,8 @@
   align-items: center;
   justify-content: center;
   justify-self: center;
-  align-self: end;
+  align-self: start;
+  padding-top: calc(var(--type-text-m-line) + var(--spacing-03));
 }
 
 .home-search-actions .btn {
@@ -93,6 +117,8 @@
 .home-search-actions {
   display: flex;
   justify-content: flex-start;
+  align-self: start;
+  padding-top: calc(var(--type-text-m-line) + var(--spacing-03));
 }
 
 .home-search-button {
@@ -139,7 +165,6 @@
 
   .home-search-actions {
     grid-column: span 3;
-    align-self: end;
   }
 }
 
@@ -150,6 +175,23 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-03);
+}
+
+.results-route {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  margin: 0 0 var(--spacing-04) 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  color: var(--color-neutral-700);
+}
+
+.results-route__arrow {
+  font-family: "Material Symbols Outlined";
+  font-variation-settings: "wght" var(--icon-weight);
+  font-size: var(--icon-s-glyph);
 }
 
 .home-grid {

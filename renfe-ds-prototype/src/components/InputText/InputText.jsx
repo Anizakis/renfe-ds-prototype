@@ -17,14 +17,16 @@ export default function InputText({
   onChange,
   placeholder = "Text",
   size = "m",
+  inputProps = {},
+  inputRef,
 }) {
   const isDisabled = disabled || state === "disabled";
   const isReadOnly = readOnly || state === "readOnly";
   const isError = state === "error";
   const isSuccess = state === "success";
   const fallbackId = inputId ?? "input-textfield";
-  const showHelper = Boolean(helperText);
-  const describedBy = showHelper ? (helperId ?? `${fallbackId}-helper`) : undefined;
+  const showHelper = Boolean(helperText) || hideHelper;
+  const describedBy = helperText ? (helperId ?? `${fallbackId}-helper`) : undefined;
 
   return (
     <div
@@ -55,6 +57,8 @@ export default function InputText({
           placeholder={placeholder}
           disabled={isDisabled}
           readOnly={isReadOnly}
+          ref={inputRef}
+          {...inputProps}
           aria-invalid={isError ? "true" : undefined}
           aria-describedby={describedBy}
         />

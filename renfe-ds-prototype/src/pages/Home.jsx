@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "../components/Container/Container.jsx";
 import Grid from "../components/Grid/Grid.jsx";
@@ -6,7 +6,14 @@ import InputText from "../components/InputText/InputText.jsx";
 import Button from "../components/Button/Button.jsx";
 import { useTravel } from "../app/store.jsx";
 import { useI18n } from "../app/i18n.jsx";
+import stations from "../data/stations.es.json";
+import {
+  getStationSuggestions,
+  isValidStation,
+} from "../app/stations.js";
 import "./pages.css";
+
+const SUGGESTIONS_LIMIT = 8;
 
 export default function Home() {
   const { state, dispatch } = useTravel();
@@ -14,38 +21,147 @@ export default function Home() {
   const navigate = useNavigate();
   const [form, setForm] = useState(state.search);
   const [errors, setErrors] = useState({});
+  const [openDropdown, setOpenDropdown] = useState({ origin: false, destination: false });
+  const [activeIndex, setActiveIndex] = useState({ origin: -1, destination: -1 });
+  const originRef = useRef(null);
+  const destinationRef = useRef(null);
+  const blurTimeoutRef = useRef(null);
+
+  const stationNames = useMemo(
+    () => stations.map((station) => station.name).filter(Boolean),
+    []
+  );
+
+  const originSuggestions = useMemo(
+    () => getStationSuggestions(form.origin, stationNames, SUGGESTIONS_LIMIT),
+    [form.origin, stationNames]
+  );
+
+  const destinationSuggestions = useMemo(
+    () => getStationSuggestions(form.destination, stationNames, SUGGESTIONS_LIMIT),
+    [form.destination, stationNames]
+  );
+
+  const validateField = (field, value, { showRequired } = { showRequired: false }) => {
+    if (!value?.trim()) {
+      if (!showRequired) return undefined;
+      return field === "origin"
+        ? t("home.errors.originRequired")
+        : t("home.errors.destinationRequired");
+    }
+
+    return isValidStation(value, stationNames)
+      ? undefined
+      : t("home.errors.stationInvalid");
+  };
+
+  const handleSelect = (field, value) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+    setErrors((prev) => ({ ...prev, [field]: undefined }));
+    setOpenDropdown((prev) => ({ ...prev, [field]: false }));
+    setActiveIndex((prev) => ({ ...prev, [field]: -1 }));
+  };
+
+  const handleKeyDown = (field, suggestions) => (event) => {
+    if (!openDropdown[field] && (event.key === "ArrowDown" || event.key === "ArrowUp")) {
+      setOpenDropdown((prev) => ({ ...prev, [field]: true }));
+    }
+
+    if (event.key === "ArrowDown") {
+      event.preventDefault();
+      if (suggestions.length === 0) return;
+      setActiveIndex((prev) => ({
+        ...prev,
+        [field]: Math.min(prev[field] + 1, suggestions.length - 1),
+      }));
+    }
+
+    if (event.key === "ArrowUp") {
+      event.preventDefault();
+      if (suggestions.length === 0) return;
+      setActiveIndex((prev) => ({
+        ...prev,
+        [field]: prev[field] <= 0 ? suggestions.length - 1 : prev[field] - 1,
+      }));
+    }
+
+    if (event.key === "Enter" && openDropdown[field] && activeIndex[field] >= 0) {
+      event.preventDefault();
+      const selected = suggestions[activeIndex[field]];
+      if (selected) {
+        handleSelect(field, selected);
+      }
+    }
+
+    if (event.key === "Escape") {
+      setOpenDropdown((prev) => ({ ...prev, [field]: false }));
+      setActiveIndex((prev) => ({ ...prev, [field]: -1 }));
+    }
+  };
+
+  const handleFocus = (field, suggestions) => () => {
+    if (blurTimeoutRef.current) {
+      clearTimeout(blurTimeoutRef.current);
+    }
+    if (suggestions.length > 0) {
+      setOpenDropdown((prev) => ({ ...prev, [field]: true }));
+    }
+  };
+
+  const handleBlur = (field) => () => {
+    blurTimeoutRef.current = setTimeout(() => {
+      setOpenDropdown((prev) => ({ ...prev, [field]: false }));
+      setActiveIndex((prev) => ({ ...prev, [field]: -1 }));
+    }, 120);
+  };
 
   const handleChange = (key) => (event) => {
-    setForm((prev) => ({ ...prev, [key]: event.target.value }));
-    setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
+    const value = event.target.value;
+    setForm((prev) => ({ ...prev, [key]: value }));
+    const error = validateField(key, value, { showRequired: false });
+    setErrors((prev) => ({ ...prev, [key]: error }));
+    setOpenDropdown((prev) => ({ ...prev, [key]: Boolean(value.trim()) }));
+    setActiveIndex((prev) => ({ ...prev, [key]: -1 }));
   };
 
   const handleSwap = () => {
-    setForm((prev) => ({
+    const next = {
+      origin: form.destination,
+      destination: form.origin,
+    };
+    setForm((prev) => ({ ...prev, ...next }));
+    setErrors((prev) => ({
       ...prev,
-      origin: prev.destination,
-      destination: prev.origin,
+      origin: validateField("origin", next.origin, { showRequired: false }),
+      destination: validateField("destination", next.destination, { showRequired: false }),
     }));
+    setOpenDropdown({ origin: false, destination: false });
+    setActiveIndex({ origin: -1, destination: -1 });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const nextErrors = {};
-    if (!form.origin?.trim()) {
-      nextErrors.origin = t("home.errors.originRequired");
-    }
-    if (!form.destination?.trim()) {
-      nextErrors.destination = t("home.errors.destinationRequired");
-    }
-    setErrors(nextErrors);
-    if (Object.keys(nextErrors).length > 0) {
+    const originError = validateField("origin", form.origin, { showRequired: true });
+    const destinationError = validateField("destination", form.destination, { showRequired: true });
+    setErrors({ origin: originError, destination: destinationError });
+
+    if (originError) {
+      originRef.current?.focus();
       return;
     }
+
+    if (destinationError) {
+      destinationRef.current?.focus();
+      return;
+    }
+
     dispatch({ type: "SET_SEARCH", payload: form });
     navigate("/results", { state: form });
   };
 
-  const isReady = Boolean(form.origin?.trim() && form.destination?.trim());
+  const isOriginValid = isValidStation(form.origin, stationNames);
+  const isDestinationValid = isValidStation(form.destination, stationNames);
+  const isReady = Boolean(isOriginValid && isDestinationValid);
 
   return (
     <Container as="section" className="page page--home">
@@ -58,7 +174,7 @@ export default function Home() {
           >
             <h1 className="home-search-title">{t("home.title")}</h1>
             <div className="home-search-grid">
-              <div className="home-search-origin">
+              <div className="home-search-origin home-search-field">
                 <InputText
                   label={t("home.origin")}
                   inputId="origin"
@@ -67,12 +183,43 @@ export default function Home() {
                   state={errors.origin ? "error" : "default"}
                   showCounter={false}
                   hideLabel={!form.origin?.trim()}
-                  hideHelper
+                  hideHelper={!errors.origin}
                   value={form.origin}
                   onChange={handleChange("origin")}
                   placeholder={t("home.origin")}
                   size="l"
+                  inputRef={originRef}
+                  inputProps={{
+                    role: "combobox",
+                    "aria-autocomplete": "list",
+                    "aria-expanded": openDropdown.origin,
+                    "aria-controls": "origin-listbox",
+                    "aria-activedescendant":
+                      activeIndex.origin >= 0 ? `origin-option-${activeIndex.origin}` : undefined,
+                    autoComplete: "off",
+                    spellCheck: "false",
+                    onKeyDown: handleKeyDown("origin", originSuggestions),
+                    onFocus: handleFocus("origin", originSuggestions),
+                    onBlur: handleBlur("origin"),
+                  }}
                 />
+                {openDropdown.origin && originSuggestions.length > 0 && (
+                  <ul className="home-search-suggestions" role="listbox" id="origin-listbox">
+                    {originSuggestions.map((station, index) => (
+                      <li
+                        key={`${station}-${index}`}
+                        id={`origin-option-${index}`}
+                        role="option"
+                        aria-selected={activeIndex.origin === index}
+                        className={`home-search-option ${activeIndex.origin === index ? "is-active" : ""}`}
+                        onMouseDown={(event) => event.preventDefault()}
+                        onClick={() => handleSelect("origin", station)}
+                      >
+                        {station}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div className="home-search-swap">
                 <Button
@@ -80,11 +227,11 @@ export default function Home() {
                   size="l"
                   hasLeadingIcon
                   leadingIcon="swap_horiz"
-                  aria-label={t("search.swap")}
+                  aria-label={t("home.swap")}
                   onClick={handleSwap}
                 />
               </div>
-              <div className="home-search-destination">
+              <div className="home-search-destination home-search-field">
                 <InputText
                   label={t("home.destination")}
                   inputId="destination"
@@ -93,12 +240,51 @@ export default function Home() {
                   state={errors.destination ? "error" : "default"}
                   showCounter={false}
                   hideLabel={!form.destination?.trim()}
-                  hideHelper
+                  hideHelper={!errors.destination}
                   value={form.destination}
                   onChange={handleChange("destination")}
                   placeholder={t("home.destination")}
                   size="l"
+                  inputRef={destinationRef}
+                  inputProps={{
+                    role: "combobox",
+                    "aria-autocomplete": "list",
+                    "aria-expanded": openDropdown.destination,
+                    "aria-controls": "destination-listbox",
+                    "aria-activedescendant":
+                      activeIndex.destination >= 0
+                        ? `destination-option-${activeIndex.destination}`
+                        : undefined,
+                    autoComplete: "off",
+                    spellCheck: "false",
+                    onKeyDown: handleKeyDown("destination", destinationSuggestions),
+                    onFocus: handleFocus("destination", destinationSuggestions),
+                    onBlur: handleBlur("destination"),
+                  }}
                 />
+                {openDropdown.destination && destinationSuggestions.length > 0 && (
+                  <ul
+                    className="home-search-suggestions"
+                    role="listbox"
+                    id="destination-listbox"
+                  >
+                    {destinationSuggestions.map((station, index) => (
+                      <li
+                        key={`${station}-${index}`}
+                        id={`destination-option-${index}`}
+                        role="option"
+                        aria-selected={activeIndex.destination === index}
+                        className={`home-search-option ${
+                          activeIndex.destination === index ? "is-active" : ""
+                        }`}
+                        onMouseDown={(event) => event.preventDefault()}
+                        onClick={() => handleSelect("destination", station)}
+                      >
+                        {station}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
               <div className="home-search-actions">
                 <Button
