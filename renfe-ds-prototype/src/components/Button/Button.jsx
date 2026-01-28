@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { Children, forwardRef } from "react";
 import "./Button.css";
 
 const Button = forwardRef(function Button({
@@ -12,21 +12,33 @@ const Button = forwardRef(function Button({
   hasTrailingIcon = false,
   leadingIcon,
   trailingIcon,
+  className = "",
   ...props
 }, ref) {
   const isDisabled = disabled || loading;
   const normalizedVariant = variant === "tertiary" ? "terciary" : variant;
+  const hasLabel = Children.count(children) > 0;
+  const isIconOnly = !hasLabel && (hasLeadingIcon || hasTrailingIcon || leadingIcon || trailingIcon);
 
   return (
     <button
       type={type}
-      className={`btn btn--${normalizedVariant} btn--${size} ${
-        loading ? "is-loading" : ""
-      }`}
       aria-busy={loading ? "true" : undefined}
       disabled={isDisabled}
       ref={ref}
       {...props}
+      aria-disabled={disabled ? "true" : undefined}
+      className={[
+        "btn",
+        `btn--${size}`,
+        `btn--${normalizedVariant}`,
+        hasLeadingIcon && "btn--icon-leading",
+        hasTrailingIcon && "btn--icon-trailing",
+        isIconOnly && "btn--icon-only",
+        isDisabled && "btn--disabled",
+        loading && "btn--loading",
+        className,
+      ].filter(Boolean).join(" ")}
     >
       {loading ? (
         <span className="btn__spinner" aria-hidden="true">
@@ -39,7 +51,7 @@ const Button = forwardRef(function Button({
               {leadingIcon}
             </span>
           )}
-          <span className="btn__label">{children}</span>
+          {hasLabel && <span className="btn__label">{children}</span>}
           {hasTrailingIcon && trailingIcon && (
             <span className="btn__icon" aria-hidden="true">
               {trailingIcon}

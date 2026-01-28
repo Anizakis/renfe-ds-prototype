@@ -31,6 +31,11 @@
   color: var(--itf-text);
 }
 
+.input-textfield__label.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .input-textfield__optional {
   color: var(--itf-placeholder);
 }
@@ -77,6 +82,18 @@
 .input-textfield__helper.is-error { color: var(--itf-error); }
 .input-textfield__helper.is-success { color: var(--itf-success); }
 
+.input-textfield__helper.is-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* States */
 .input-textfield--hovered .input-textfield__control {
   background: var(--color-neutral-50);
@@ -109,4 +126,14 @@
 
 .input-textfield--success .input-textfield__control {
   border-color: var(--itf-success);
+}
+
+.input-textfield--l .input-textfield__control {
+  padding-block: var(--spacing-05);
+  min-height: calc(var(--type-text-l-line) + (var(--spacing-05) * 2));
+}
+
+.input-textfield--l .input-textfield__input {
+  font-size: var(--type-text-l-size);
+  line-height: var(--type-text-l-line);
 }

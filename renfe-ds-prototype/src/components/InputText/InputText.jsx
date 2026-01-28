@@ -5,6 +5,9 @@ export default function InputText({
   showOptional = false,
   optionalText = "(optional)",
   helperText = "Helper text",
+  showCounter = true,
+  hideLabel = false,
+  hideHelper = false,
   state = "default", // default | hovered | focused | disabled | readOnly | error | success
   disabled = false,
   readOnly = false,
@@ -13,22 +16,33 @@ export default function InputText({
   value,
   onChange,
   placeholder = "Text",
+  size = "m",
 }) {
   const isDisabled = disabled || state === "disabled";
   const isReadOnly = readOnly || state === "readOnly";
   const isError = state === "error";
   const isSuccess = state === "success";
   const fallbackId = inputId ?? "input-textfield";
-  const describedBy = helperText ? (helperId ?? `${fallbackId}-helper`) : undefined;
+  const showHelper = Boolean(helperText);
+  const describedBy = showHelper ? (helperId ?? `${fallbackId}-helper`) : undefined;
 
   return (
-    <div className={`input-textfield input-textfield--${state}`}>
+    <div
+      className={[
+        "input-textfield",
+        `input-textfield--${size}`,
+        `input-textfield--${state}`,
+      ].filter(Boolean).join(" ")}
+    >
       <div className="input-textfield__header">
-        <label className="input-textfield__label" htmlFor={fallbackId}>
+        <label
+          className={`input-textfield__label ${hideLabel ? "is-hidden" : ""}`}
+          htmlFor={fallbackId}
+        >
           <span>{label}</span>
           {showOptional && <span className="input-textfield__optional">{optionalText}</span>}
         </label>
-        <div className="input-textfield__counter">0/0</div>
+        {showCounter && <div className="input-textfield__counter">0/0</div>}
       </div>
 
       <div className="input-textfield__control">
@@ -46,14 +60,18 @@ export default function InputText({
         />
       </div>
 
-      <div
-        id={describedBy}
-        className={`input-textfield__helper ${
-          isError ? "is-error" : isSuccess ? "is-success" : ""
-        }`}
-      >
-        {helperText}
-      </div>
+      {showHelper && (
+        <div
+          id={describedBy}
+          className={`input-textfield__helper ${
+            isError ? "is-error" : isSuccess ? "is-success" : ""
+          } ${
+            hideHelper ? "is-hidden" : ""
+          }`}
+        >
+          {helperText}
+        </div>
+      )}
     </div>
   );
 }

@@ -101,6 +101,7 @@
 .btn--primary[aria-disabled="true"] {
   background: var(--color-neutral-300);
   color: var(--color-neutral-600);
+  border-color: var(--color-neutral-600);
 }
 
 .btn--secondary:disabled,
@@ -142,4 +143,24 @@
 .btn.is-loading .btn__label,
 .btn.is-loading .btn__icon {
   display: none;
+}
+
+.btn--icon-only {
+  padding-inline: 0;
+}
+
+.btn--icon-only.btn--s {
+  min-width: calc(var(--type-text-s-line) + (var(--spacing-03) * 2));
+  min-height: calc(var(--type-text-s-line) + (var(--spacing-03) * 2));
+}
+
+.btn--icon-only.btn--m {
+  min-width: calc(var(--type-text-m-line) + (var(--spacing-04) * 2));
+  min-height: calc(var(--type-text-m-line) + (var(--spacing-04) * 2));
+}
+
+.btn--icon-only.btn--l {
+  min-width: calc(var(--type-text-l-line) + (var(--spacing-05) * 2));
+  min-height: calc(var(--type-text-l-line) + (var(--spacing-05) * 2));
+  --btn-icon-glyph: var(--icon-l-box);
 }

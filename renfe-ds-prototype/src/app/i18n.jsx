@@ -36,7 +36,12 @@ const STRINGS = {
       departDate: "Ida",
       returnDate: "Vuelta",
       passengers: "Pasajeros",
-      search: "Buscar trenes",
+      search: "Buscar",
+      swap: "Intercambiar",
+      errors: {
+        originRequired: "Indica un origen",
+        destinationRequired: "Indica un destino",
+      },
     },
     login: {
       title: "Entrar o crear cuenta",
@@ -151,7 +156,12 @@ const STRINGS = {
       departDate: "Departure",
       returnDate: "Return",
       passengers: "Passengers",
-      search: "Search trains",
+      search: "Search",
+      swap: "Swap",
+      errors: {
+        originRequired: "Enter an origin",
+        destinationRequired: "Enter a destination",
+      },
     },
     login: {
       title: "Sign in or create account",
