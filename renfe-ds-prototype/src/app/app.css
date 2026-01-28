@@ -1,0 +1,31 @@
+.app-root {
+  min-height: 100vh;
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-900);
+}
+
+.app-main {
+  outline: none;
+  padding-block: var(--spacing-06);
+  padding-top: calc(var(--spacing-11) + var(--spacing-06));
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--spacing-04);
+  top: var(--spacing-04);
+  background: var(--color-neutral-25);
+  color: var(--color-neutral-900);
+  padding: var(--spacing-02) var(--spacing-03);
+  border-radius: var(--radius-02);
+  border: 1px solid var(--color-neutral-200);
+  transform: translateY(-200%);
+  transition: transform 0.15s ease;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+  box-shadow: var(--effect-focus-primary);
+}
+

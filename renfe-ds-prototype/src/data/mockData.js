@@ -1,0 +1,124 @@
+export const journeys = [
+  {
+    id: "j1",
+    date: "2026-01-22",
+    origin: "Madrid",
+    destination: "Valencia",
+    departTime: "08:30",
+    arriveTime: "10:05",
+    duration: "1h 35m",
+    price: 32.5,
+  },
+  {
+    id: "j2",
+    date: "2026-01-22",
+    origin: "Madrid",
+    destination: "Valencia",
+    departTime: "12:10",
+    arriveTime: "13:50",
+    duration: "1h 40m",
+    price: 29.0,
+  },
+  {
+    id: "j3",
+    date: "2026-01-23",
+    origin: "Madrid",
+    destination: "Valencia",
+    departTime: "09:20",
+    arriveTime: "11:05",
+    duration: "1h 45m",
+    price: 31.0,
+  },
+  {
+    id: "j4",
+    date: "2026-01-24",
+    origin: "Madrid",
+    destination: "Valencia",
+    departTime: "07:45",
+    arriveTime: "09:20",
+    duration: "1h 35m",
+    price: 28.0,
+  },
+  {
+    id: "j5",
+    date: "2026-01-25",
+    origin: "Madrid",
+    destination: "Valencia",
+    departTime: "11:15",
+    arriveTime: "12:55",
+    duration: "1h 40m",
+    price: 34.0,
+  },
+  {
+    id: "j6",
+    date: "2026-01-26",
+    origin: "Madrid",
+    destination: "Valencia",
+    departTime: "16:30",
+    arriveTime: "18:05",
+    duration: "1h 35m",
+    price: 30.0,
+  },
+  {
+    id: "j7",
+    date: "2026-01-27",
+    origin: "Madrid",
+    destination: "Valencia",
+    departTime: "19:10",
+    arriveTime: "20:55",
+    duration: "1h 45m",
+    price: 27.5,
+  },
+];
+
+export const fares = [
+  {
+    id: "basic",
+    name: "Básica",
+    description: "Cambio con coste, sin reembolso.",
+    price: 0,
+  },
+  {
+    id: "flex",
+    name: "Flexible",
+    description: "Cambios gratuitos, reembolso parcial.",
+    price: 10,
+  },
+  {
+    id: "premium",
+    name: "Premium",
+    description: "Cambios y reembolso total.",
+    price: 18,
+  },
+];
+
+export const extras = [
+  {
+    id: "seat",
+    name: "Asiento preferente",
+    description: "Ventana o pasillo.",
+    price: 6,
+  },
+  {
+    id: "luggage",
+    name: "Equipaje extra",
+    description: "Hasta 20kg adicionales.",
+    price: 8,
+  },
+  {
+    id: "pet",
+    name: "Mascota",
+    description: "Disponible en trenes pet-friendly.",
+    price: 12,
+  },
+];
+
+export const dayTabs = [
+  "2026-01-22",
+  "2026-01-23",
+  "2026-01-24",
+  "2026-01-25",
+  "2026-01-26",
+  "2026-01-27",
+  "2026-01-28",
+];

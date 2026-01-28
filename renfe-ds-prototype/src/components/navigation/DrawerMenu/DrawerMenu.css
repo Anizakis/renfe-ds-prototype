@@ -1,0 +1,215 @@
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawer__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgb(var(--color-neutral-950-rgb) / 0.45);
+  animation: drawer-overlay-in 320ms ease-out;
+}
+
+.drawer__panel {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  width: calc(var(--spacing-18) + var(--spacing-18));
+  max-width: 100%;
+  background: var(--color-neutral-25);
+  border-left: 1px solid var(--color-neutral-200);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-06);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-06);
+  animation: drawer-panel-in 420ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+@media (max-width: 768px) {
+  .drawer__panel {
+    width: 100%;
+    padding: var(--spacing-04);
+    gap: var(--spacing-04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drawer__overlay,
+  .drawer__panel {
+    animation: none;
+  }
+}
+
+@keyframes drawer-panel-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0.96;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+.drawer__search {
+  position: relative;
+}
+
+.drawer__search-icon {
+  position: absolute;
+  left: var(--spacing-04);
+  top: calc(var(--spacing-02) + (var(--type-text-m-line) / 2));
+  transform: translateY(-50%);
+  color: var(--color-neutral-600);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.drawer__search-icon .icon {
+  color: currentColor;
+}
+
+.drawer__search .input-textfield__header {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.drawer__search .input-textfield__control {
+  position: relative;
+}
+
+.drawer__search .input-textfield__input {
+  padding-left: var(--spacing-09);
+}
+
+.drawer__section {
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer__section-title {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-l-size);
+  line-height: var(--type-text-l-line);
+  margin: 0;
+  color: var(--color-neutral-700);
+}
+
+.drawer__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+.drawer__list li + li .drawer__row {
+  border-top: 1px solid var(--color-neutral-200);
+}
+
+.drawer__row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--spacing-03);
+  padding: var(--spacing-04) var(--spacing-03);
+  border-radius: var(--radius-02);
+  color: var(--color-neutral-900);
+  text-decoration: none;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+}
+
+.drawer__row:hover {
+  background: var(--color-neutral-50);
+}
+
+.drawer__row:focus-visible {
+  background: var(--color-neutral-50);
+  outline: none;
+  box-shadow: var(--effect-focus-primary);
+}
+
+.drawer__row-icon {
+  font-size: var(--icon-s-glyph);
+}
+
+.drawer__row-text {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+}
+
+.drawer__row-action {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  color: var(--color-brand-600);
+}
+
+.drawer__label {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+}
+
+.drawer__select {
+  padding: var(--spacing-03) var(--spacing-04);
+  border-radius: var(--radius-02);
+  border: 1px solid var(--color-neutral-200);
+  background: var(--color-neutral-25);
+  color: var(--color-neutral-900);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+}
+
+.drawer__select:focus-visible {
+  outline: none;
+  box-shadow: var(--effect-focus-primary);
+}
+
+.drawer__select:hover {
+  background: var(--color-neutral-50);
+  border-color: var(--color-neutral-300);
+}
+
+.drawer__row--static {
+  cursor: default;
+  background: transparent;
+}
+
+.drawer__row--static:hover,
+.drawer__row--static:focus-visible {
+  background: transparent;
+  box-shadow: none;
+}
+
+.drawer__modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--spacing-04);
+}

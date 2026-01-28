@@ -1,0 +1,24 @@
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+}
+
+.language-switcher__label {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-700);
+}
+
+.language-switcher__select {
+  border: 1px solid var(--color-neutral-300);
+  background: var(--color-neutral-25);
+  color: var(--color-neutral-900);
+}
+
+.language-switcher__select:focus-visible {
+  outline: none;
+  box-shadow: var(--effect-focus-primary);
+}
+

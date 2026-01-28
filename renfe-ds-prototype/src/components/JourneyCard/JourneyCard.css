@@ -1,0 +1,51 @@
+.journey-card {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: var(--spacing-04);
+  padding: var(--spacing-04);
+  border-radius: var(--radius-03);
+  border: 1px solid var(--color-neutral-200);
+  background: var(--color-neutral-25);
+}
+
+.journey-card.is-selected {
+  border-color: var(--color-brand-600);
+  box-shadow: var(--shadow-sm);
+}
+
+.journey-card__route {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  font-weight: var(--type-weight-medium);
+}
+
+.journey-card__arrow {
+  font-family: "Material Symbols Outlined";
+  font-variation-settings: "wght" var(--icon-weight);
+  font-size: var(--icon-s-glyph);
+}
+
+.journey-card__times {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  color: var(--color-neutral-600);
+}
+
+.journey-card__price {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-l-size);
+  line-height: var(--type-text-l-line);
+  font-weight: var(--type-weight-bold);
+  color: var(--color-neutral-900);
+}
+
