@@ -1,0 +1,91 @@
+.animated-stepper {
+  position: relative;
+  margin: 0 0 var(--spacing-05) 0;
+  padding-top: var(--spacing-03);
+}
+
+.animated-stepper__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--spacing-03) + 6px);
+  height: 2px;
+  background: var(--color-neutral-200);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.animated-stepper__fill {
+  display: block;
+  height: 100%;
+  width: var(--progress, 0%);
+  background: var(--color-brand-500);
+  transition: width 320ms ease;
+}
+
+.animated-stepper__list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-03);
+  padding: 0;
+  margin: 0;
+}
+
+.animated-stepper__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  background: var(--color-base-white);
+  color: var(--color-neutral-700);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  padding: var(--spacing-01) var(--spacing-02);
+  border-radius: var(--radius-02);
+  position: relative;
+  z-index: 1;
+}
+
+.animated-stepper__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-neutral-200);
+  border: 2px solid var(--color-neutral-200);
+  transition: background-color 240ms ease, border-color 240ms ease, transform 240ms ease;
+}
+
+.animated-stepper__item.is-complete .animated-stepper__dot {
+  background: var(--color-brand-300);
+  border-color: var(--color-brand-300);
+}
+
+.animated-stepper__item.is-current .animated-stepper__dot {
+  background: var(--color-brand-500);
+  border-color: var(--color-brand-500);
+  transform: scale(1.2);
+}
+
+.animated-stepper__item.is-current {
+  color: var(--color-brand-700);
+  font-weight: var(--type-weight-medium);
+}
+
+@media (max-width: 768px) {
+  .animated-stepper__label {
+    display: none;
+  }
+
+  .animated-stepper__item {
+    padding: var(--spacing-01);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-stepper__fill,
+  .animated-stepper__dot {
+    transition: none;
+  }
+}

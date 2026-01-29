@@ -1,0 +1,33 @@
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+  font-family: var(--font-family-primary);
+  color: var(--color-neutral-900);
+}
+
+.radio-group__label {
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-neutral-600);
+}
+
+.radio-group__options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-03);
+}
+
+.radio-option {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+}
+
+.radio-option input {
+  accent-color: var(--color-brand-600);
+}

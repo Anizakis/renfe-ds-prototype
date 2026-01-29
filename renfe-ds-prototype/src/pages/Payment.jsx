@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import Container from "../components/Container/Container.jsx";
 import Grid from "../components/Grid/Grid.jsx";
 import Stack from "../components/Stack/Stack.jsx";
-import CheckoutStepper from "../components/navigation/CheckoutStepper/CheckoutStepper.jsx";
+import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import InputText from "../components/InputText/InputText.jsx";
 import Button from "../components/Button/Button.jsx";
 import PriceBreakdown from "../components/PriceBreakdown/PriceBreakdown.jsx";
@@ -51,8 +51,8 @@ export default function Payment() {
 
   return (
     <Container as="section" className="page">
+      <AnimatedCheckoutStepper steps={steps} currentStep="payment" />
       <h1 className="page-title">{t("payment.title")}</h1>
-      <CheckoutStepper steps={steps} currentStep="payment" />
       {state.paymentError && (
         <Alert title={t("payment.errorTitle")}>
           {t("payment.errorBody")}

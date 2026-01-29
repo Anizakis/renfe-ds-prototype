@@ -1,12 +1,14 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "../components/Container/Container.jsx";
 import Grid from "../components/Grid/Grid.jsx";
 import InputText from "../components/InputText/InputText.jsx";
 import Button from "../components/Button/Button.jsx";
+import RadioGroup from "../components/RadioGroup/RadioGroup.jsx";
+import DatePicker from "../components/DatePicker/DatePicker.jsx";
+import PassengerSelector from "../components/PassengerSelector/PassengerSelector.jsx";
 import { useTravel } from "../app/store.jsx";
 import { useI18n } from "../app/i18n.jsx";
-import stations from "../data/stations.es.json";
 import {
   getStationSuggestions,
   isValidStation,
@@ -23,13 +25,36 @@ export default function Home() {
   const [errors, setErrors] = useState({});
   const [openDropdown, setOpenDropdown] = useState({ origin: false, destination: false });
   const [activeIndex, setActiveIndex] = useState({ origin: -1, destination: -1 });
+  const [focusedField, setFocusedField] = useState(null);
+  const [stationsData, setStationsData] = useState([]);
+  const [stationsLoading, setStationsLoading] = useState(true);
+  const [tripType, setTripType] = useState(form.returnDate ? "roundTrip" : "oneWay");
   const originRef = useRef(null);
   const destinationRef = useRef(null);
   const blurTimeoutRef = useRef(null);
 
+  useEffect(() => {
+    let isMounted = true;
+    setStationsLoading(true);
+    import("../data/stations.es.json")
+      .then((module) => {
+        if (!isMounted) return;
+        setStationsData(module.default ?? []);
+        setStationsLoading(false);
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setStationsData([]);
+        setStationsLoading(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   const stationNames = useMemo(
-    () => stations.map((station) => station.name).filter(Boolean),
-    []
+    () => stationsData.map((station) => station.name).filter(Boolean),
+    [stationsData]
   );
 
   const originSuggestions = useMemo(
@@ -43,6 +68,9 @@ export default function Home() {
   );
 
   const validateField = (field, value, { showRequired } = { showRequired: false }) => {
+    if (stationsLoading) {
+      return undefined;
+    }
     if (!value?.trim()) {
       if (!showRequired) return undefined;
       return field === "origin"
@@ -100,6 +128,7 @@ export default function Home() {
   };
 
   const handleFocus = (field, suggestions) => () => {
+    setFocusedField(field);
     if (blurTimeoutRef.current) {
       clearTimeout(blurTimeoutRef.current);
     }
@@ -109,6 +138,7 @@ export default function Home() {
   };
 
   const handleBlur = (field) => () => {
+    setFocusedField((prev) => (prev === field ? null : prev));
     blurTimeoutRef.current = setTimeout(() => {
       setOpenDropdown((prev) => ({ ...prev, [field]: false }));
       setActiveIndex((prev) => ({ ...prev, [field]: -1 }));
@@ -141,6 +171,7 @@ export default function Home() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (stationsLoading) return;
     const originError = validateField("origin", form.origin, { showRequired: true });
     const destinationError = validateField("destination", form.destination, { showRequired: true });
     setErrors({ origin: originError, destination: destinationError });
@@ -155,13 +186,21 @@ export default function Home() {
       return;
     }
 
-    dispatch({ type: "SET_SEARCH", payload: form });
+    dispatch({ type: "SET_SEARCH", payload: { ...form, tripType } });
     navigate("/results", { state: form });
   };
 
-  const isOriginValid = isValidStation(form.origin, stationNames);
-  const isDestinationValid = isValidStation(form.destination, stationNames);
-  const isReady = Boolean(isOriginValid && isDestinationValid);
+  const isOriginValid = !stationsLoading && isValidStation(form.origin, stationNames);
+  const isDestinationValid = !stationsLoading && isValidStation(form.destination, stationNames);
+  const originSuccess = focusedField === "origin"
+    && Boolean(form.origin?.trim())
+    && !errors.origin
+    && isOriginValid;
+  const destinationSuccess = focusedField === "destination"
+    && Boolean(form.destination?.trim())
+    && !errors.destination
+    && isDestinationValid;
+  const isReady = Boolean(!stationsLoading && isOriginValid && isDestinationValid);
 
   return (
     <Container as="section" className="page page--home">
@@ -179,11 +218,11 @@ export default function Home() {
                   label={t("home.origin")}
                   inputId="origin"
                   helperId="origin-helper"
-                  helperText={errors.origin}
-                  state={errors.origin ? "error" : "default"}
+                  helperText={errors.origin ?? (originSuccess ? t("home.stationValid") : "\u00A0")}
+                  state={errors.origin ? "error" : originSuccess ? "success" : "default"}
                   showCounter={false}
                   hideLabel={!form.origin?.trim()}
-                  hideHelper={!errors.origin}
+                  hideHelper={!errors.origin && !originSuccess}
                   value={form.origin}
                   onChange={handleChange("origin")}
                   placeholder={t("home.origin")}
@@ -236,11 +275,11 @@ export default function Home() {
                   label={t("home.destination")}
                   inputId="destination"
                   helperId="destination-helper"
-                  helperText={errors.destination}
-                  state={errors.destination ? "error" : "default"}
+                  helperText={errors.destination ?? (destinationSuccess ? t("home.stationValid") : "\u00A0")}
+                  state={errors.destination ? "error" : destinationSuccess ? "success" : "default"}
                   showCounter={false}
                   hideLabel={!form.destination?.trim()}
-                  hideHelper={!errors.destination}
+                  hideHelper={!errors.destination && !destinationSuccess}
                   value={form.destination}
                   onChange={handleChange("destination")}
                   placeholder={t("home.destination")}
@@ -286,16 +325,52 @@ export default function Home() {
                   </ul>
                 )}
               </div>
+              <div className="home-search-triptype">
+                <RadioGroup
+                  name="trip-type"
+                  label={t("home.tripType")}
+                  value={tripType}
+                  onChange={(value) => {
+                    setTripType(value);
+                    if (value === "oneWay") {
+                      setForm((prev) => ({ ...prev, returnDate: "" }));
+                    }
+                  }}
+                  options={[
+                    { value: "oneWay", label: t("home.oneWay") },
+                    { value: "roundTrip", label: t("home.roundTrip") },
+                  ]}
+                />
+              </div>
+              <div className="home-search-dates">
+                <DatePicker
+                  tripType={tripType}
+                  departDate={form.departDate}
+                  returnDate={form.returnDate}
+                  onChange={({ departDate, returnDate }) =>
+                    setForm((prev) => ({ ...prev, departDate, returnDate }))
+                  }
+                />
+              </div>
+              <div className="home-search-passengers">
+                <PassengerSelector
+                  value={form.passengers}
+                  onChange={(value) => setForm((prev) => ({ ...prev, passengers: value }))}
+                />
+              </div>
               <div className="home-search-actions">
-                <Button
-                  type="submit"
-                  variant="primary"
-                  size="l"
-                  disabled={!isReady}
-                  className="home-search-button"
-                >
-                  {t("home.search")}
-                </Button>
+                <div className="home-search-action-field">
+                  <span className="home-search-action-spacer" aria-hidden="true" />
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    size="l"
+                    disabled={!isReady}
+                    className="home-search-button"
+                  >
+                    {t("home.search")}
+                  </Button>
+                </div>
               </div>
             </div>
           </form>

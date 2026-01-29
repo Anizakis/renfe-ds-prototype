@@ -1,0 +1,36 @@
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-03);
+  font-family: var(--font-family-primary);
+  color: var(--color-neutral-900);
+  cursor: pointer;
+}
+
+.checkbox input {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-brand-600);
+}
+
+.checkbox__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-01);
+}
+
+.checkbox__label {
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+}
+
+.checkbox__description {
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-600);
+}
+
+.checkbox input:disabled + .checkbox__content {
+  color: var(--color-neutral-400);
+}

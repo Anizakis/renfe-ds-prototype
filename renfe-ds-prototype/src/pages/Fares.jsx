@@ -1,6 +1,6 @@
 import Container from "../components/Container/Container.jsx";
 import Grid from "../components/Grid/Grid.jsx";
-import CheckoutStepper from "../components/navigation/CheckoutStepper/CheckoutStepper.jsx";
+import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import FareComparison from "../components/FareComparison/FareComparison.jsx";
 import PriceBreakdown from "../components/PriceBreakdown/PriceBreakdown.jsx";
 import { useTravel } from "../app/store.jsx";
@@ -29,8 +29,8 @@ export default function Fares() {
 
   return (
     <Container as="section" className="page">
+      <AnimatedCheckoutStepper steps={steps} currentStep="fares" />
       <h1 className="page-title">{t("fares.title")}</h1>
-      <CheckoutStepper steps={steps} currentStep="fares" />
       <Grid>
         <div className="col-span-8">
           <div className="card">

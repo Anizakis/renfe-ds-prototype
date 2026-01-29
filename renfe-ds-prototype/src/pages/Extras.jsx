@@ -1,6 +1,6 @@
 import Container from "../components/Container/Container.jsx";
 import Grid from "../components/Grid/Grid.jsx";
-import CheckoutStepper from "../components/navigation/CheckoutStepper/CheckoutStepper.jsx";
+import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import ExtrasList from "../components/ExtrasList/ExtrasList.jsx";
 import PriceBreakdown from "../components/PriceBreakdown/PriceBreakdown.jsx";
 import { useTravel } from "../app/store.jsx";
@@ -29,8 +29,8 @@ export default function Extras() {
 
   return (
     <Container as="section" className="page">
+      <AnimatedCheckoutStepper steps={steps} currentStep="extras" />
       <h1 className="page-title">{t("extras.title")}</h1>
-      <CheckoutStepper steps={steps} currentStep="extras" />
       <Grid>
         <div className="col-span-8">
           <div className="card">

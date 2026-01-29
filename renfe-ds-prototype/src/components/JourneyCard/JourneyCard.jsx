@@ -1,7 +1,7 @@
 import "./JourneyCard.css";
 import Button from "../Button/Button.jsx";
 
-export default function JourneyCard({ journey, selected, onSelect, actionLabel }) {
+export default function JourneyCard({ journey, selected, onSelect, actionLabel, priceFromLabel }) {
   return (
     <li className={`journey-card ${selected ? "is-selected" : ""}`}>
       <div className="journey-card__info">
@@ -21,7 +21,10 @@ export default function JourneyCard({ journey, selected, onSelect, actionLabel }
           <span>{journey.duration}</span>
         </div>
       </div>
-      <div className="journey-card__price">{journey.price.toFixed(2)} €</div>
+      <div className="journey-card__price">
+        <span className="journey-card__price-label">{priceFromLabel}</span>
+        <span>{journey.price.toFixed(2)} €</span>
+      </div>
       <Button
         variant={selected ? "secondary" : "primary"}
         size="s"

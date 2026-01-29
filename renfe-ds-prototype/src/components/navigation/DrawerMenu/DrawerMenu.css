@@ -9,7 +9,7 @@
 .drawer__overlay {
   position: absolute;
   inset: 0;
-  background: rgb(var(--color-neutral-950-rgb) / 0.45);
+  background: rgb(var(--color-neutral-25-rgb) / 0.6);
   animation: drawer-overlay-in 320ms ease-out;
 }
 

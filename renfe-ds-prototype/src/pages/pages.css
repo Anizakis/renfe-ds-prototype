@@ -29,7 +29,7 @@
 .search-card {
   width: 100%;
   text-align: left;
-  background: var(--color-base-white);
+  background: var(--color-neutral-25);
   border: 1px solid var(--color-neutral-200);
   border-radius: var(--radius-04);
   box-shadow: var(--shadow-xs);
@@ -65,7 +65,7 @@
   left: 0;
   right: 0;
   margin-top: var(--spacing-02);
-  background: var(--color-base-white);
+  background: var(--color-neutral-25);
   border: 1px solid var(--color-neutral-200);
   border-radius: var(--radius-03);
   box-shadow: var(--shadow-sm);
@@ -97,7 +97,10 @@
 .home-search-origin,
 .home-search-destination,
 .home-search-swap,
-.home-search-actions {
+.home-search-actions,
+.home-search-dates,
+.home-search-passengers,
+.home-search-triptype {
   grid-column: span 12;
 }
 
@@ -121,11 +124,41 @@
   padding-top: calc(var(--type-text-m-line) + var(--spacing-03));
 }
 
+.home-search-action-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+  width: 100%;
+}
+
+.home-search-action-spacer {
+  display: block;
+  height: var(--type-text-m-line);
+}
+
+.home-search-dates,
+.home-search-passengers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.home-search-triptype {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
 .home-search-button {
   width: 100%;
 }
 
 @media (min-width: 768px) {
+  .home-search-header,
+  .home-search-triptype {
+    grid-column: span 8;
+  }
+
   .home-search-origin {
     grid-column: span 3;
   }
@@ -139,9 +172,19 @@
     justify-self: center;
   }
 
+  .home-search-dates {
+    grid-column: span 4;
+  }
+
+  .home-search-passengers {
+    grid-column: span 2;
+  }
+
   .home-search-actions {
-    grid-column: span 8;
+    grid-column: span 2;
     justify-content: flex-end;
+    align-self: end;
+    padding-top: 0;
   }
 
   .home-search-button {
@@ -151,20 +194,34 @@
 
 @media (min-width: 1024px) {
   .home-search-origin {
-    grid-column: span 4;
+    grid-column: span 5;
   }
 
   .home-search-destination {
-    grid-column: span 4;
+    grid-column: span 5;
   }
 
   .home-search-swap {
-    grid-column: span 1;
+    grid-column: span 2;
     justify-self: center;
+  }
+
+  .home-search-triptype {
+    grid-column: span 12;
+  }
+
+  .home-search-dates {
+    grid-column: span 7;
+  }
+
+  .home-search-passengers {
+    grid-column: span 2;
   }
 
   .home-search-actions {
     grid-column: span 3;
+    align-self: end;
+    padding-top: 0;
   }
 }
 

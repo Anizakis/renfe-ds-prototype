@@ -9,6 +9,7 @@ const initialState = {
     departDate: "",
     returnDate: "",
     passengers: 1,
+    tripType: "oneWay",
   },
   selectedJourneyId: null,
   selectedFareId: null,
