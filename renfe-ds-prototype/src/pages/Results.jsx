@@ -11,6 +11,7 @@ import SkeletonList from "../components/SkeletonList/SkeletonList.jsx";
 import StickySummaryBar from "../components/StickySummaryBar/StickySummaryBar.jsx";
 import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
 import ResultsFilters from "../components/ResultsFilters/ResultsFilters.jsx";
+import Dropdown from "../components/Dropdown/Dropdown.jsx";
 import { useTravel } from "../app/store.jsx";
 import { buildDayRange, generateJourneys } from "../data/mockData.js";
 import { getSelectedExtras, getSelectedJourney } from "../app/pricing.js";
@@ -94,15 +95,8 @@ function applyFilters(journeyList, filters) {
     if (selectedPetTypes.length > 0 && !journey.petFriendly) return false;
     if (selectedPetSizes.length > 0 && !journey.petFriendly) return false;
 
-    if (filters.onboardWifi && !journey.services.wifi) return false;
-    if (filters.onboardPower && !journey.services.power) return false;
-    if (filters.onboardQuiet && !journey.services.quiet) return false;
-    if (filters.onboardCafe && !journey.services.cafe) return false;
-
     if (filters.accessibilitySeat && !journey.accessibility.seat) return false;
     if (filters.accessibilityAssistance && !journey.accessibility.assistance) return false;
-    if (filters.accessibilityCompanion && !journey.accessibility.companion) return false;
-    if (filters.accessibilityAdjacent && !journey.accessibility.adjacent) return false;
 
     if (selectedTrains.length > 0 && !selectedTrains.includes(journey.service)) return false;
 
@@ -116,13 +110,14 @@ export default function Results() {
   const navigate = useNavigate();
   const initialDate = state.search?.departDate || new Date().toISOString().slice(0, 10);
   const [filters, setFilters] = useState(() => buildInitialFilters(state.search));
-  const rangeLength = filters.flexibleDates ? RANGE_LENGTH : RANGE_LENGTH;
+  const rangeLength = RANGE_LENGTH;
   const initialRangeStart = addDays(initialDate, -Math.floor(RANGE_LENGTH / 2));
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const [rangeStart, setRangeStart] = useState(initialRangeStart);
   const [loading, setLoading] = useState(true);
   const [announcement, setAnnouncement] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [sortKey, setSortKey] = useState("price");
   const loadingTimeout = useRef(null);
   const origin = state.search?.origin;
   const destination = state.search?.destination;
@@ -182,12 +177,6 @@ export default function Results() {
       dispatch({ type: "SET_JOURNEY", payload: null });
     }
   }, [filteredJourneys, selectedJourney, dispatch]);
-
-  useEffect(() => {
-    if (filters.flexibleDates) {
-      setRangeStart(addDays(selectedDate, -Math.floor(rangeLength / 2)));
-    }
-  }, [filters.flexibleDates, selectedDate, rangeLength]);
 
   useEffect(() => {
     const rangeDays = buildDayRange(rangeStart, rangeLength);
@@ -273,6 +262,17 @@ export default function Results() {
   };
 
   const journeysForSelectedDate = filteredJourneys.filter((journey) => journey.date === selectedDate);
+  const sortedJourneysForSelectedDate = useMemo(() => {
+    const list = [...journeysForSelectedDate];
+    if (sortKey === "depart") {
+      list.sort((a, b) => getMinutes(a.departTime) - getMinutes(b.departTime));
+    } else if (sortKey === "duration") {
+      list.sort((a, b) => a.durationMinutes - b.durationMinutes);
+    } else {
+      list.sort((a, b) => a.price - b.price);
+    }
+    return list;
+  }, [journeysForSelectedDate, sortKey]);
 
   return (
     <Container as="section" className="page results-page">
@@ -327,14 +327,17 @@ export default function Results() {
                 >
                   {t("results.filters")}
                 </Button>
-                <label className="results-sort">
-                  <span className="results-sort__label">{t("results.sortBy")}</span>
-                  <select className="results-sort__select" aria-label={t("results.sortBy")}>
-                    <option value="price">{t("results.sortPrice")}</option>
-                    <option value="depart">{t("results.sortDeparture")}</option>
-                    <option value="duration">{t("results.sortDuration")}</option>
-                  </select>
-                </label>
+                <Dropdown
+                  className="results-sort"
+                  label={t("results.sortBy")}
+                  value={sortKey}
+                  onChange={setSortKey}
+                  options={[
+                    { value: "price", label: t("results.sortPrice") },
+                    { value: "depart", label: t("results.sortDeparture") },
+                    { value: "duration", label: t("results.sortDuration") },
+                  ]}
+                />
               </div>
             </div>
 
@@ -358,7 +361,7 @@ export default function Results() {
             <Stack gap="03">
               {loading ? (
                 <SkeletonList />
-              ) : journeysForSelectedDate.length === 0 ? (
+              ) : sortedJourneysForSelectedDate.length === 0 ? (
                 <div className="results-empty" role="status">
                   <h3 className="results-empty__title">{t("results.emptyTitle")}</h3>
                   <p className="results-empty__body">{t("results.emptyBody")}</p>
@@ -370,10 +373,11 @@ export default function Results() {
                 </div>
               ) : (
                 <ul className="journey-list">
-                  {journeysForSelectedDate.map((journey) => (
+                  {sortedJourneysForSelectedDate.map((journey) => (
                     <JourneyCard
                       key={journey.id}
                       journey={journey}
+                      activeFilters={filters}
                       selected={state.selectedJourneyId === journey.id}
                       onSelect={(id) => {
                         dispatch({ type: "SET_JOURNEY", payload: journey });

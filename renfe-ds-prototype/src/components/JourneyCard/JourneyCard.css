@@ -14,7 +14,7 @@
 .journey-card__info {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-02);
+  gap: var(--spacing-03);
 }
 
 .journey-card.is-selected {
@@ -106,6 +106,50 @@
   border-color: var(--color-brand-200);
   background: var(--color-brand-25);
   color: var(--color-brand-700);
+}
+
+.journey-card__pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-02);
+}
+
+.journey-card__pill {
+  padding: var(--spacing-01) var(--spacing-02);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-neutral-200);
+  background: var(--color-neutral-50);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-700);
+}
+
+.journey-card__pill-overflow {
+  position: relative;
+}
+
+.journey-card__pill-button {
+  cursor: pointer;
+}
+
+.journey-card__pill-popover {
+  position: absolute;
+  top: calc(100% + var(--spacing-02));
+  right: 0;
+  min-width: 180px;
+  padding: var(--spacing-03);
+  border-radius: var(--radius-03);
+  border: 1px solid var(--color-neutral-200);
+  background: var(--color-neutral-0);
+  box-shadow: var(--shadow-md);
+  z-index: 2;
+}
+
+.journey-card__pill-popover-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-02);
 }
 
 .journey-card__price {

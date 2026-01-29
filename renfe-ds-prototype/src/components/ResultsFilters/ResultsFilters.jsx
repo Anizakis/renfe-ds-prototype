@@ -9,7 +9,6 @@ import { useI18n } from "../../app/i18n.jsx";
 import "./ResultsFilters.css";
 
 export const createDefaultFilters = () => ({
-  flexibleDates: false,
   petFriendly: false,
   petTypes: {
     dog: false,
@@ -26,7 +25,6 @@ export const createDefaultFilters = () => ({
   maxTransfers: "1",
   minConnection: "20",
   maxPrice: 120,
-  showFinalPrice: false,
   timePresets: {
     morning: false,
     afternoon: false,
@@ -39,13 +37,7 @@ export const createDefaultFilters = () => ({
   maxDuration: "3",
   accessibilitySeat: false,
   accessibilityAssistance: false,
-  accessibilityCompanion: false,
-  accessibilityAdjacent: false,
   prioritizeFewerTransfers: false,
-  onboardWifi: false,
-  onboardPower: false,
-  onboardQuiet: false,
-  onboardCafe: false,
   trainAve: false,
   trainAvlo: false,
   trainAlvia: false,
@@ -78,16 +70,12 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
 
   const appliedChips = useMemo(() => {
     const chips = [];
-    if (resolvedFilters.flexibleDates) chips.push(t("filtersPanel.sections.flexibleDates.toggle"));
     if (resolvedFilters.petFriendly) chips.push(t("filtersPanel.sections.pets.toggle"));
     if (resolvedFilters.directOnly) chips.push(t("filtersPanel.sections.connections.directOnly"));
     if (resolvedFilters.maxPrice !== createDefaultFilters().maxPrice) {
       chips.push(`${t("filtersPanel.sections.price.maxPrice")} €${resolvedFilters.maxPrice}`);
     }
     if (resolvedFilters.accessibilityAssistance) chips.push(t("filtersPanel.sections.accessibility.assistance"));
-    if (resolvedFilters.onboardWifi) chips.push(t("filtersPanel.sections.onboard.wifi"));
-    if (resolvedFilters.onboardPower) chips.push(t("filtersPanel.sections.onboard.power"));
-    if (resolvedFilters.onboardCafe) chips.push(t("filtersPanel.sections.onboard.cafe"));
     return chips;
   }, [resolvedFilters, t]);
   const updateFilters = (updater) => {
@@ -133,93 +121,6 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
         </div>
       )}
 
-      <FilterSection
-        title={t("filtersPanel.sections.flexibleDates.title")}
-        description={t("filtersPanel.sections.flexibleDates.note")}
-      >
-        <Switch
-          label={t("filtersPanel.sections.flexibleDates.toggle")}
-          checked={resolvedFilters.flexibleDates}
-          onChange={(value) => updateFilters((prev) => ({ ...prev, flexibleDates: value }))}
-        />
-      </FilterSection>
-
-      <FilterSection title={t("filtersPanel.sections.pets.title")}
-        description={t("filtersPanel.sections.pets.note")}
-      >
-        <Switch
-          label={t("filtersPanel.sections.pets.toggle")}
-          checked={resolvedFilters.petFriendly}
-          onChange={(value) => updateFilters((prev) => ({ ...prev, petFriendly: value }))}
-        />
-        {resolvedFilters.petFriendly && (
-          <div className="results-filters__group">
-            <span className="results-filters__label">{t("filtersPanel.sections.pets.typesLabel")}</span>
-            <div className="results-filters__grid">
-              <Checkbox
-                label={t("filtersPanel.sections.pets.typeDog")}
-                checked={resolvedFilters.petTypes.dog}
-                onChange={(value) => updateFilters((prev) => ({
-                  ...prev,
-                  petTypes: { ...prev.petTypes, dog: value },
-                }))}
-              />
-              <Checkbox
-                label={t("filtersPanel.sections.pets.typeCat")}
-                checked={resolvedFilters.petTypes.cat}
-                onChange={(value) => updateFilters((prev) => ({
-                  ...prev,
-                  petTypes: { ...prev.petTypes, cat: value },
-                }))}
-              />
-              <Checkbox
-                label={t("filtersPanel.sections.pets.typeOther")}
-                checked={resolvedFilters.petTypes.other}
-                onChange={(value) => updateFilters((prev) => ({
-                  ...prev,
-                  petTypes: { ...prev.petTypes, other: value },
-                }))}
-              />
-            </div>
-
-            <span className="results-filters__label">{t("filtersPanel.sections.pets.sizesLabel")}</span>
-            <div className="results-filters__grid">
-              <Checkbox
-                label={t("filtersPanel.sections.pets.sizeSmall")}
-                checked={resolvedFilters.petSizes.small}
-                onChange={(value) => updateFilters((prev) => ({
-                  ...prev,
-                  petSizes: { ...prev.petSizes, small: value },
-                }))}
-              />
-              <Checkbox
-                label={t("filtersPanel.sections.pets.sizeMedium")}
-                checked={resolvedFilters.petSizes.medium}
-                onChange={(value) => updateFilters((prev) => ({
-                  ...prev,
-                  petSizes: { ...prev.petSizes, medium: value },
-                }))}
-              />
-              <Checkbox
-                label={t("filtersPanel.sections.pets.sizeLarge")}
-                checked={resolvedFilters.petSizes.large}
-                onChange={(value) => updateFilters((prev) => ({
-                  ...prev,
-                  petSizes: { ...prev.petSizes, large: value },
-                }))}
-              />
-            </div>
-
-            <Switch
-              label={t("filtersPanel.sections.pets.onlyAllowed")}
-              checked={resolvedFilters.petOnlyAllowed}
-              onChange={(value) => updateFilters((prev) => ({ ...prev, petOnlyAllowed: value }))}
-            />
-            <a className="results-filters__link" href="#rules">{t("filtersPanel.sections.pets.rulesLink")}</a>
-          </div>
-        )}
-      </FilterSection>
-
       <FilterSection title={t("filtersPanel.sections.connections.title")}
         description={t("filtersPanel.sections.connections.note")}
       >
@@ -263,11 +164,6 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
           step={5}
           suffix="€"
           onChange={(value) => updateFilters((prev) => ({ ...prev, maxPrice: value }))}
-        />
-        <Switch
-          label={t("filtersPanel.sections.price.showFinal")}
-          checked={resolvedFilters.showFinalPrice}
-          onChange={(value) => updateFilters((prev) => ({ ...prev, showFinalPrice: value }))}
         />
       </FilterSection>
 
@@ -366,67 +262,6 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
         />
       </FilterSection>
 
-      <FilterSection title={t("filtersPanel.sections.accessibility.title")}
-        description={t("filtersPanel.sections.accessibility.note")}
-      >
-        <div className="results-filters__grid">
-          <Checkbox
-            label={t("filtersPanel.sections.accessibility.seat")}
-            checked={resolvedFilters.accessibilitySeat}
-            onChange={(value) => updateFilters((prev) => ({ ...prev, accessibilitySeat: value }))}
-          />
-          <Checkbox
-            label={t("filtersPanel.sections.accessibility.assistance")}
-            checked={resolvedFilters.accessibilityAssistance}
-            onChange={(value) => updateFilters((prev) => ({ ...prev, accessibilityAssistance: value }))}
-          />
-          <Checkbox
-            label={t("filtersPanel.sections.accessibility.companion")}
-            checked={resolvedFilters.accessibilityCompanion}
-            onChange={(value) => updateFilters((prev) => ({ ...prev, accessibilityCompanion: value }))}
-          />
-          <Checkbox
-            label={t("filtersPanel.sections.accessibility.adjacent")}
-            checked={resolvedFilters.accessibilityAdjacent}
-            onChange={(value) => updateFilters((prev) => ({ ...prev, accessibilityAdjacent: value }))}
-          />
-        </div>
-        {resolvedFilters.accessibilityAssistance && (
-          <Switch
-            label={t("filtersPanel.sections.accessibility.prioritizeTransfers")}
-            checked={resolvedFilters.prioritizeFewerTransfers}
-            onChange={(value) => updateFilters((prev) => ({ ...prev, prioritizeFewerTransfers: value }))}
-          />
-        )}
-      </FilterSection>
-
-      <FilterSection title={t("filtersPanel.sections.onboard.title")}
-        description={t("filtersPanel.sections.onboard.note")}
-      >
-        <div className="results-filters__grid">
-          <Checkbox
-            label={t("filtersPanel.sections.onboard.wifi")}
-            checked={resolvedFilters.onboardWifi}
-            onChange={(value) => updateFilters((prev) => ({ ...prev, onboardWifi: value }))}
-          />
-          <Checkbox
-            label={t("filtersPanel.sections.onboard.power")}
-            checked={resolvedFilters.onboardPower}
-            onChange={(value) => updateFilters((prev) => ({ ...prev, onboardPower: value }))}
-          />
-          <Checkbox
-            label={t("filtersPanel.sections.onboard.quiet")}
-            checked={resolvedFilters.onboardQuiet}
-            onChange={(value) => updateFilters((prev) => ({ ...prev, onboardQuiet: value }))}
-          />
-          <Checkbox
-            label={t("filtersPanel.sections.onboard.cafe")}
-            checked={resolvedFilters.onboardCafe}
-            onChange={(value) => updateFilters((prev) => ({ ...prev, onboardCafe: value }))}
-          />
-        </div>
-      </FilterSection>
-
       <FilterSection title={t("filtersPanel.sections.train.title")}
         description={t("filtersPanel.sections.train.note")}
       >
@@ -457,6 +292,106 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
           checked={resolvedFilters.altStations}
           onChange={(value) => updateFilters((prev) => ({ ...prev, altStations: value }))}
         />
+      </FilterSection>
+
+      <FilterSection title={t("filtersPanel.sections.pets.title")}
+        description={t("filtersPanel.sections.pets.note")}
+      >
+        <Switch
+          label={t("filtersPanel.sections.pets.toggle")}
+          checked={resolvedFilters.petFriendly}
+          onChange={(value) => updateFilters((prev) => ({ ...prev, petFriendly: value }))}
+        />
+        {resolvedFilters.petFriendly && (
+          <div className="results-filters__group">
+            <span className="results-filters__label">{t("filtersPanel.sections.pets.typesLabel")}</span>
+            <div className="results-filters__grid">
+              <Checkbox
+                label={t("filtersPanel.sections.pets.typeDog")}
+                checked={resolvedFilters.petTypes.dog}
+                onChange={(value) => updateFilters((prev) => ({
+                  ...prev,
+                  petTypes: { ...prev.petTypes, dog: value },
+                }))}
+              />
+              <Checkbox
+                label={t("filtersPanel.sections.pets.typeCat")}
+                checked={resolvedFilters.petTypes.cat}
+                onChange={(value) => updateFilters((prev) => ({
+                  ...prev,
+                  petTypes: { ...prev.petTypes, cat: value },
+                }))}
+              />
+              <Checkbox
+                label={t("filtersPanel.sections.pets.typeOther")}
+                checked={resolvedFilters.petTypes.other}
+                onChange={(value) => updateFilters((prev) => ({
+                  ...prev,
+                  petTypes: { ...prev.petTypes, other: value },
+                }))}
+              />
+            </div>
+
+            <span className="results-filters__label">{t("filtersPanel.sections.pets.sizesLabel")}</span>
+            <div className="results-filters__grid">
+              <Checkbox
+                label={t("filtersPanel.sections.pets.sizeSmall")}
+                checked={resolvedFilters.petSizes.small}
+                onChange={(value) => updateFilters((prev) => ({
+                  ...prev,
+                  petSizes: { ...prev.petSizes, small: value },
+                }))}
+              />
+              <Checkbox
+                label={t("filtersPanel.sections.pets.sizeMedium")}
+                checked={resolvedFilters.petSizes.medium}
+                onChange={(value) => updateFilters((prev) => ({
+                  ...prev,
+                  petSizes: { ...prev.petSizes, medium: value },
+                }))}
+              />
+              <Checkbox
+                label={t("filtersPanel.sections.pets.sizeLarge")}
+                checked={resolvedFilters.petSizes.large}
+                onChange={(value) => updateFilters((prev) => ({
+                  ...prev,
+                  petSizes: { ...prev.petSizes, large: value },
+                }))}
+              />
+            </div>
+
+            <Switch
+              label={t("filtersPanel.sections.pets.onlyAllowed")}
+              checked={resolvedFilters.petOnlyAllowed}
+              onChange={(value) => updateFilters((prev) => ({ ...prev, petOnlyAllowed: value }))}
+            />
+            <a className="results-filters__link" href="#rules">{t("filtersPanel.sections.pets.rulesLink")}</a>
+          </div>
+        )}
+      </FilterSection>
+
+      <FilterSection title={t("filtersPanel.sections.accessibility.title")}
+        description={t("filtersPanel.sections.accessibility.note")}
+      >
+        <div className="results-filters__grid">
+          <Checkbox
+            label={t("filtersPanel.sections.accessibility.seat")}
+            checked={resolvedFilters.accessibilitySeat}
+            onChange={(value) => updateFilters((prev) => ({ ...prev, accessibilitySeat: value }))}
+          />
+          <Checkbox
+            label={t("filtersPanel.sections.accessibility.assistance")}
+            checked={resolvedFilters.accessibilityAssistance}
+            onChange={(value) => updateFilters((prev) => ({ ...prev, accessibilityAssistance: value }))}
+          />
+        </div>
+        {resolvedFilters.accessibilityAssistance && (
+          <Switch
+            label={t("filtersPanel.sections.accessibility.prioritizeTransfers")}
+            checked={resolvedFilters.prioritizeFewerTransfers}
+            onChange={(value) => updateFilters((prev) => ({ ...prev, prioritizeFewerTransfers: value }))}
+          />
+        )}
       </FilterSection>
     </div>
   );
