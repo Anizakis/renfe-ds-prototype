@@ -16,6 +16,7 @@ const initialState = {
     tripType: "oneWay",
   },
   selectedJourneyId: null,
+  selectedJourney: null,
   selectedFareId: null,
   extras: {},
   paymentError: null,
@@ -26,7 +27,14 @@ function reducer(state, action) {
     case "SET_SEARCH":
       return { ...state, search: { ...state.search, ...action.payload } };
     case "SET_JOURNEY":
-      return { ...state, selectedJourneyId: action.payload };
+      if (typeof action.payload === "string") {
+        return { ...state, selectedJourneyId: action.payload, selectedJourney: null };
+      }
+      return {
+        ...state,
+        selectedJourneyId: action.payload?.id ?? null,
+        selectedJourney: action.payload ?? null,
+      };
     case "SET_FARE":
       return { ...state, selectedFareId: action.payload };
     case "TOGGLE_EXTRA":

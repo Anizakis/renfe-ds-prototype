@@ -34,6 +34,8 @@ export default function DayPickerStrip({
   availability,
   isLoading,
   onChange,
+  onPrevRange,
+  onNextRange,
 }) {
   const { t, language } = useI18n();
   const listRef = useRef(null);
@@ -69,7 +71,7 @@ export default function DayPickerStrip({
       <button
         type="button"
         className="day-picker__nav"
-        onClick={() => handleScroll("prev")}
+        onClick={() => (onPrevRange ? onPrevRange() : handleScroll("prev"))}
         aria-label={t("results.prevDays")}
       >
         <Icon name="chevron_left" size="md" decorative />
@@ -103,6 +105,7 @@ export default function DayPickerStrip({
               aria-selected={isSelected ? "true" : "false"}
               aria-disabled={!isAvailable ? "true" : undefined}
               disabled={!isAvailable}
+              tabIndex={isSelected ? 0 : -1}
               onClick={() => onChange?.(day)}
             >
               <span className="day-tile__label">{label}</span>
@@ -126,7 +129,7 @@ export default function DayPickerStrip({
       <button
         type="button"
         className="day-picker__nav"
-        onClick={() => handleScroll("next")}
+        onClick={() => (onNextRange ? onNextRange() : handleScroll("next"))}
         aria-label={t("results.nextDays")}
       >
         <Icon name="chevron_right" size="md" decorative />

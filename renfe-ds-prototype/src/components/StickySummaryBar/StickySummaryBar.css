@@ -12,12 +12,13 @@
 }
 
 .sticky-summary__inner {
-  padding: var(--spacing-04);
+  padding: var(--spacing-04) var(--grid-margin);
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--spacing-04);
   flex-wrap: wrap;
+  min-height: var(--spacing-10);
 }
 
 .sticky-summary__totals {
@@ -75,6 +76,7 @@
   .sticky-summary__inner {
     flex-direction: column;
     align-items: stretch;
+    min-height: var(--spacing-12);
   }
 
   .sticky-summary__actions {

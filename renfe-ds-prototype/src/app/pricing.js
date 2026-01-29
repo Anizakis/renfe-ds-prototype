@@ -1,7 +1,7 @@
-import { fares, journeys, extras } from "../data/mockData.js";
+import { fares, extras } from "../data/mockData.js";
 
 export function getSelectedJourney(state) {
-  return journeys.find((journey) => journey.id === state.selectedJourneyId) ?? null;
+  return state.selectedJourney ?? null;
 }
 
 export function getSelectedFare(state) {

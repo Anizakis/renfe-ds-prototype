@@ -1,82 +1,120 @@
-export const journeys = [
-  {
-    id: "j1",
-    date: "2026-01-22",
-    origin: "Madrid",
-    destination: "Valencia",
-    service: "AVE",
-    departTime: "08:30",
-    arriveTime: "10:05",
-    duration: "1h 35m",
-    price: 32.5,
-  },
-  {
-    id: "j2",
-    date: "2026-01-22",
-    origin: "Madrid",
-    destination: "Valencia",
-    service: "AVLO",
-    departTime: "12:10",
-    arriveTime: "13:50",
-    duration: "1h 40m",
-    price: 29.0,
-  },
-  {
-    id: "j3",
-    date: "2026-01-23",
-    origin: "Madrid",
-    destination: "Valencia",
-    service: "ALVIA",
-    departTime: "09:20",
-    arriveTime: "11:05",
-    duration: "1h 45m",
-    price: 31.0,
-  },
-  {
-    id: "j4",
-    date: "2026-01-24",
-    origin: "Madrid",
-    destination: "Valencia",
-    service: "AVANT",
-    departTime: "07:45",
-    arriveTime: "09:20",
-    duration: "1h 35m",
-    price: 28.0,
-  },
-  {
-    id: "j5",
-    date: "2026-01-25",
-    origin: "Madrid",
-    destination: "Valencia",
-    service: "AVE",
-    departTime: "11:15",
-    arriveTime: "12:55",
-    duration: "1h 40m",
-    price: 34.0,
-  },
-  {
-    id: "j6",
-    date: "2026-01-26",
-    origin: "Madrid",
-    destination: "Valencia",
-    service: "AVLO",
-    departTime: "16:30",
-    arriveTime: "18:05",
-    duration: "1h 35m",
-    price: 30.0,
-  },
-  {
-    id: "j7",
-    date: "2026-01-27",
-    origin: "Madrid",
-    destination: "Valencia",
-    service: "ALVIA",
-    departTime: "19:10",
-    arriveTime: "20:55",
-    duration: "1h 45m",
-    price: 27.5,
-  },
+const TRAIN_TYPES = [
+  { name: "AVE", speed: 250, basePrice: 42 },
+  { name: "AVLO", speed: 230, basePrice: 28 },
+  { name: "ALVIA", speed: 210, basePrice: 36 },
+  { name: "MD", speed: 160, basePrice: 22 },
+  { name: "AVANT", speed: 200, basePrice: 30 },
 ];
+
+const DEPART_HOURS = [6, 7, 8, 9, 11, 12, 14, 15, 17, 18, 19, 20, 21];
+
+function formatTime(totalMinutes) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+}
+
+function formatDuration(totalMinutes) {
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+  return `${hours}h ${String(minutes).padStart(2, "0")}m`;
+}
+
+function mulberry32(seed) {
+  return function () {
+    let t = seed += 0x6D2B79F5;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function dateKey(date) {
+  const d = new Date(date);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+export function buildDayRange(startDate, days) {
+  const start = new Date(startDate);
+  return Array.from({ length: days }, (_, idx) => {
+    const date = new Date(start);
+    date.setDate(date.getDate() + idx);
+    return dateKey(date);
+  });
+}
+
+export function generateJourneys({ startDate, days, origin, destination }) {
+  const dayKeys = buildDayRange(startDate, days);
+  const journeys = [];
+  dayKeys.forEach((day, dayIndex) => {
+    const seedBase = Number(day.replace(/-/g, "")) + dayIndex * 97;
+    const rand = mulberry32(seedBase);
+    const totalPerDay = 8 + Math.floor(rand() * 9);
+    for (let i = 0; i < totalPerDay; i += 1) {
+      const type = TRAIN_TYPES[Math.floor(rand() * TRAIN_TYPES.length)];
+      const departHour = DEPART_HOURS[(dayIndex + i) % DEPART_HOURS.length];
+      const departMinute = Math.floor(rand() * 60 / 5) * 5;
+      const direct = rand() > 0.25;
+      const transfers = direct ? 0 : (rand() > 0.6 ? 2 : 1);
+      const connectionMins = direct ? 0 : [10, 20, 30, 45][Math.floor(rand() * 4)];
+      const durationMinutes = Math.max(
+        60,
+        Math.floor((220 - type.speed) / 2 + 70 + rand() * 40) + (transfers * 15)
+      );
+      const departTimeMinutes = departHour * 60 + departMinute;
+      const arriveTimeMinutes = departTimeMinutes + durationMinutes + connectionMins;
+      const basePrice = type.basePrice + durationMinutes * 0.08;
+      const price = Math.round((basePrice + (rand() * 12) - 4) * 100) / 100;
+      const services = {
+        wifi: rand() > 0.35,
+        power: rand() > 0.4,
+        quiet: rand() > 0.6,
+        cafe: rand() > 0.5,
+      };
+      const accessibility = {
+        seat: rand() > 0.6,
+        assistance: rand() > 0.7,
+        companion: rand() > 0.75,
+        adjacent: rand() > 0.65,
+      };
+      const petFriendly = rand() > 0.7;
+      const petSizes = {
+        small: petFriendly && rand() > 0.3,
+        medium: petFriendly && rand() > 0.5,
+        large: petFriendly && rand() > 0.8,
+      };
+
+      journeys.push({
+        id: `${day}-${i}`,
+        date: day,
+        origin,
+        destination,
+        service: type.name,
+        departTime: formatTime(departTimeMinutes),
+        arriveTime: formatTime(arriveTimeMinutes),
+        duration: formatDuration(durationMinutes),
+        durationMinutes,
+        price,
+        direct,
+        transfers,
+        connectionMins,
+        services,
+        accessibility,
+        petFriendly,
+        petSizes,
+      });
+    }
+  });
+
+  return journeys;
+}
+
+export const journeys = generateJourneys({
+  startDate: "2026-01-20",
+  days: 14,
+  origin: "Madrid",
+  destination: "Valencia",
+});
 
 export const fares = [
   {
@@ -120,12 +158,4 @@ export const extras = [
   },
 ];
 
-export const dayTabs = [
-  "2026-01-22",
-  "2026-01-23",
-  "2026-01-24",
-  "2026-01-25",
-  "2026-01-26",
-  "2026-01-27",
-  "2026-01-28",
-];
+export const dayTabs = buildDayRange("2026-01-22", 7);
