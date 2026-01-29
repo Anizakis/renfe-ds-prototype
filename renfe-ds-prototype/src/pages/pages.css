@@ -143,6 +143,12 @@
   gap: var(--spacing-03);
 }
 
+.home-search-date-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-03);
+}
+
 .home-search-triptype {
   display: flex;
   flex-direction: column;
@@ -183,7 +189,7 @@
   .home-search-actions {
     grid-column: span 2;
     justify-content: flex-end;
-    align-self: end;
+    align-self: start;
     padding-top: 0;
   }
 
@@ -220,8 +226,14 @@
 
   .home-search-actions {
     grid-column: span 3;
-    align-self: end;
+    align-self: start;
     padding-top: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-search-date-grid {
+    grid-template-columns: 1fr;
   }
 }
 

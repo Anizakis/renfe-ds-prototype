@@ -19,6 +19,7 @@ export default function InputText({
   size = "m",
   inputProps = {},
   inputRef,
+  trailing = null,
 }) {
   const isDisabled = disabled || state === "disabled";
   const isReadOnly = readOnly || state === "readOnly";
@@ -62,6 +63,11 @@ export default function InputText({
           aria-invalid={isError ? "true" : undefined}
           aria-describedby={describedBy}
         />
+        {trailing && (
+          <span className="input-textfield__trailing">
+            {trailing}
+          </span>
+        )}
       </div>
 
       {showHelper && (

@@ -55,10 +55,12 @@
   padding-inline: calc(var(--spacing-03) + var(--spacing-02)); /* 8px + 4px = 12px */
   display: flex;
   align-items: center;
+  box-sizing: border-box;
 }
 
 .input-textfield__input {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   border: 0;
   outline: none;
   background: transparent;
@@ -66,6 +68,12 @@
   font-size: var(--type-text-m-size);
   line-height: var(--type-text-m-line);
   color: var(--itf-text);
+}
+
+.input-textfield__trailing {
+  display: inline-flex;
+  align-items: center;
+  margin-left: var(--spacing-02);
 }
 
 .input-textfield__input::placeholder {
@@ -122,7 +130,7 @@
 
 .input-textfield--l .input-textfield__control {
   padding-block: var(--spacing-05);
-  min-height: calc(var(--type-text-l-line) + (var(--spacing-05) * 2));
+  height: 78px;
 }
 
 .input-textfield--l .input-textfield__input {

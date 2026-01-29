@@ -8,7 +8,11 @@ const initialState = {
     destination: "",
     departDate: "",
     returnDate: "",
-    passengers: 1,
+    passengers: {
+      adults: 1,
+      children: 0,
+      infants: 0,
+    },
     tripType: "oneWay",
   },
   selectedJourneyId: null,

@@ -17,6 +17,14 @@ import "./pages.css";
 
 const SUGGESTIONS_LIMIT = 8;
 
+function toIsoDate(date) {
+  if (!date) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
+
 export default function Home() {
   const { state, dispatch } = useTravel();
   const { t } = useI18n();
@@ -200,7 +208,37 @@ export default function Home() {
     && Boolean(form.destination?.trim())
     && !errors.destination
     && isDestinationValid;
-  const isReady = Boolean(!stationsLoading && isOriginValid && isDestinationValid);
+  const todayDate = new Date();
+  const departDateValue = form.departDate ? new Date(form.departDate) : null;
+  const returnDateValue = form.returnDate ? new Date(form.returnDate) : null;
+  const returnMinDate = departDateValue && departDateValue > todayDate
+    ? departDateValue
+    : todayDate;
+  const normalizedPassengers = (() => {
+    if (!form.passengers) return { adults: 1, children: 0, infants: 0 };
+    if (typeof form.passengers === "number") {
+      return { adults: Math.max(1, form.passengers), children: 0, infants: 0 };
+    }
+    return {
+      adults: Math.max(1, Number(form.passengers.adults ?? 1)),
+      children: Math.max(0, Number(form.passengers.children ?? 0)),
+      infants: Math.max(0, Number(form.passengers.infants ?? 0)),
+    };
+  })();
+  const passengerTotal = normalizedPassengers.adults
+    + normalizedPassengers.children
+    + normalizedPassengers.infants;
+  const hasPassengers = passengerTotal > 0 && normalizedPassengers.adults > 0;
+  const hasDepartDate = Boolean(form.departDate);
+  const hasReturnDate = tripType === "oneWay" ? true : Boolean(form.returnDate);
+  const isReady = Boolean(
+    !stationsLoading
+    && isOriginValid
+    && isDestinationValid
+    && hasPassengers
+    && hasDepartDate
+    && hasReturnDate
+  );
 
   return (
     <Container as="section" className="page page--home">
@@ -343,18 +381,53 @@ export default function Home() {
                 />
               </div>
               <div className="home-search-dates">
-                <DatePicker
-                  tripType={tripType}
-                  departDate={form.departDate}
-                  returnDate={form.returnDate}
-                  onChange={({ departDate, returnDate }) =>
-                    setForm((prev) => ({ ...prev, departDate, returnDate }))
-                  }
-                />
+                <div className="home-search-date-grid">
+                  <DatePicker
+                    label={t("home.departDate")}
+                    inputId="depart-date"
+                    helperId="depart-date-helper"
+                    value={departDateValue}
+                    onChange={(date) => {
+                      const nextDepart = toIsoDate(date);
+                      setForm((prev) => {
+                        const nextReturn = prev.returnDate
+                          && nextDepart
+                          && prev.returnDate < nextDepart
+                          ? ""
+                          : prev.returnDate;
+                        return {
+                          ...prev,
+                          departDate: nextDepart,
+                          returnDate: tripType === "roundTrip" ? nextReturn : "",
+                        };
+                      });
+                    }}
+                    minDate={todayDate}
+                    ariaLabel={t("home.departDate")}
+                    required
+                  />
+                  {tripType === "roundTrip" && (
+                    <DatePicker
+                      label={t("home.returnDate")}
+                      inputId="return-date"
+                      helperId="return-date-helper"
+                      value={returnDateValue}
+                      onChange={(date) =>
+                        setForm((prev) => ({
+                          ...prev,
+                          returnDate: toIsoDate(date),
+                        }))
+                      }
+                      minDate={returnMinDate}
+                      ariaLabel={t("home.returnDate")}
+                      required
+                    />
+                  )}
+                </div>
               </div>
               <div className="home-search-passengers">
                 <PassengerSelector
-                  value={form.passengers}
+                  value={normalizedPassengers}
                   onChange={(value) => setForm((prev) => ({ ...prev, passengers: value }))}
                 />
               </div>

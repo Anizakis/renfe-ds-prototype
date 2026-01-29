@@ -1,38 +1,100 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import InputText from "../InputText/InputText.jsx";
-import Button from "../Button/Button.jsx";
 import Icon from "../../ui/Icon/Icon.jsx";
 import { useI18n } from "../../app/i18n.jsx";
 import "./DatePicker.css";
 
-function toIso(date) {
-  return date.toISOString().slice(0, 10);
+const MIN_YEAR = 1900;
+const MAX_YEAR = 2100;
+
+function pad2(value) {
+  return String(value).padStart(2, "0");
 }
 
-function parseDate(value) {
-  if (!value) return null;
-  const parts = value.trim().split(/[\./-]/);
-  if (parts.length < 2) return null;
-  const day = Number(parts[0]);
-  const month = Number(parts[1]) - 1;
-  const year = parts[2] ? Number(parts[2]) : new Date().getFullYear();
-  if (!day || month < 0 || month > 11) return null;
-  const date = new Date(year, month, day);
-  if (Number.isNaN(date.getTime())) return null;
+function toIso(date) {
+  return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+}
+
+function formatDate(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  return `${pad2(date.getDate())}-${pad2(date.getMonth() + 1)}-${date.getFullYear()}`;
+}
+
+function startOfMonth(date) {
+  return new Date(date.getFullYear(), date.getMonth(), 1);
+}
+
+function addMonths(date, amount) {
+  const next = new Date(date);
+  const day = next.getDate();
+  next.setDate(1);
+  next.setMonth(next.getMonth() + amount);
+  const maxDay = new Date(next.getFullYear(), next.getMonth() + 1, 0).getDate();
+  next.setDate(Math.min(day, maxDay));
+  return next;
+}
+
+function addDays(date, amount) {
+  const next = new Date(date);
+  next.setDate(next.getDate() + amount);
+  return next;
+}
+
+function isSameDay(a, b) {
+  if (!a || !b) return false;
+  return a.getFullYear() === b.getFullYear()
+    && a.getMonth() === b.getMonth()
+    && a.getDate() === b.getDate();
+}
+
+function isBefore(a, b) {
+  return a.getTime() < b.getTime();
+}
+
+function isAfter(a, b) {
+  return a.getTime() > b.getTime();
+}
+
+function stripTime(date) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
+
+function normalizeDigits(value) {
+  return value.replace(/\D/g, "").slice(0, 8);
+}
+
+function formatFromDigits(digits) {
+  const parts = [];
+  if (digits.length <= 2) return digits;
+  parts.push(digits.slice(0, 2));
+  if (digits.length <= 4) return `${parts[0]}-${digits.slice(2)}`;
+  parts.push(digits.slice(2, 4));
+  parts.push(digits.slice(4));
+  return parts.filter(Boolean).join("-");
+}
+
+function caretFromDigitsCount(count) {
+  if (count <= 2) return count;
+  if (count <= 4) return count + 1;
+  return count + 2;
+}
+
+function parseDigitsToDate(digits) {
+  if (digits.length !== 8) return null;
+  const day = Number(digits.slice(0, 2));
+  const month = Number(digits.slice(2, 4));
+  const year = Number(digits.slice(4, 8));
+  if (Number.isNaN(day) || Number.isNaN(month) || Number.isNaN(year)) return null;
+  if (year < MIN_YEAR || year > MAX_YEAR) return null;
+  if (month < 1 || month > 12) return null;
+  if (day < 1 || day > 31) return null;
+  const date = new Date(year, month - 1, day);
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) return null;
   return date;
 }
 
-function formatDate(value, locale) {
-  if (!value) return "";
-  const date = new Date(value);
-  return new Intl.DateTimeFormat(locale, {
-    day: "2-digit",
-    month: "2-digit",
-    year: "2-digit",
-  }).format(date);
-}
-
-function getMonthMatrix(baseDate) {
+function buildMonthMatrix(baseDate) {
   const year = baseDate.getFullYear();
   const month = baseDate.getMonth();
   const start = new Date(year, month, 1);
@@ -48,115 +110,343 @@ function getMonthMatrix(baseDate) {
   return days;
 }
 
+function formatMonthTitle(date, locale, language) {
+  const label = new Intl.DateTimeFormat(locale, {
+    month: "long",
+    year: "numeric",
+  }).format(date);
+  if (language === "es" && label) {
+    return label.charAt(0).toUpperCase() + label.slice(1);
+  }
+  return label;
+}
+
 export default function DatePicker({
-  tripType,
-  departDate,
-  returnDate,
+  label,
+  value,
   onChange,
+  minDate,
+  maxDate,
+  disabled = false,
+  required = false,
+  inputId,
+  helperId,
+  ariaLabel,
 }) {
   const { t, language } = useI18n();
   const locale = language === "en" ? "en-US" : "es-ES";
+  const inputRef = useRef(null);
+  const panelRef = useRef(null);
+  const containerRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [draftDepart, setDraftDepart] = useState(departDate ? formatDate(departDate, locale) : "");
-  const [draftReturn, setDraftReturn] = useState(returnDate ? formatDate(returnDate, locale) : "");
+  const [inputValue, setInputValue] = useState(value ? formatDate(value) : "");
+  const [visibleMonthStart, setVisibleMonthStart] = useState(
+    startOfMonth(value ? new Date(value) : new Date())
+  );
+  const [focusedDate, setFocusedDate] = useState(value ? new Date(value) : new Date());
+  const [showValidation, setShowValidation] = useState(false);
 
-  const baseMonth = useMemo(() => {
-    return departDate ? new Date(departDate) : new Date();
-  }, [departDate]);
-  const nextMonth = useMemo(() => {
-    const d = new Date(baseMonth);
-    d.setMonth(d.getMonth() + 1);
-    return d;
-  }, [baseMonth]);
+  const selectedDate = value ? new Date(value) : null;
+  const min = minDate ? stripTime(new Date(minDate)) : null;
+  const max = maxDate ? stripTime(new Date(maxDate)) : null;
 
-  const monthDays = getMonthMatrix(baseMonth);
-  const nextMonthDays = getMonthMatrix(nextMonth);
+  useEffect(() => {
+    const nextValue = value ? new Date(value) : null;
+    setInputValue(nextValue ? formatDate(nextValue) : "");
+    const monthStart = startOfMonth(nextValue ?? new Date());
+    setVisibleMonthStart(monthStart);
+    setFocusedDate(nextValue ?? new Date());
+  }, [value]);
 
-  const handleSelect = (date) => {
-    if (!date) return;
-    const iso = toIso(date);
-    if (tripType === "oneWay") {
-      onChange?.({ departDate: iso, returnDate: "" });
-      setDraftDepart(formatDate(iso, locale));
-      setDraftReturn("");
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const handleClickOutside = (event) => {
+      if (panelRef.current?.contains(event.target) || containerRef.current?.contains(event.target)) {
+        return;
+      }
       setIsOpen(false);
+    };
+    window.addEventListener("mousedown", handleClickOutside);
+    return () => window.removeEventListener("mousedown", handleClickOutside);
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (!isOpen || !panelRef.current) return;
+    const focusTarget = panelRef.current.querySelector(
+      `[data-date="${toIso(focusedDate)}"]`
+    );
+    focusTarget?.focus();
+  }, [isOpen, focusedDate]);
+
+  const validation = useMemo(() => {
+    const digits = normalizeDigits(inputValue);
+    if (!digits) {
+      return { status: "empty", date: null };
+    }
+    if (digits.length < 8) {
+      return { status: "incomplete", date: null };
+    }
+    const parsed = parseDigitsToDate(digits);
+    if (!parsed) {
+      return { status: "invalid", date: null };
+    }
+    if ((min && isBefore(parsed, min)) || (max && isAfter(parsed, max))) {
+      return { status: "invalid", date: null };
+    }
+    return { status: "valid", date: parsed };
+  }, [inputValue, min, max]);
+
+  const showError = showValidation && (
+    (required && validation.status === "empty")
+    || validation.status === "invalid"
+    || validation.status === "incomplete"
+  );
+
+  const helperText = showError
+    ? (
+      validation.status === "incomplete"
+        ? t("home.dateIncomplete")
+        : validation.status === "empty"
+          ? t("home.dateRequired")
+          : t("home.dateInvalid")
+    )
+    : "\u00A0";
+
+  const isDateDisabled = (date) => {
+    if (min && isBefore(date, min)) return true;
+    if (max && isAfter(date, max)) return true;
+    return false;
+  };
+
+  const monthA = visibleMonthStart;
+  const monthB = addMonths(monthA, 1);
+  const monthDaysA = buildMonthMatrix(monthA);
+  const monthDaysB = buildMonthMatrix(monthB);
+
+  const applyCaret = (nextCaret) => {
+    requestAnimationFrame(() => {
+      if (!inputRef.current) return;
+      inputRef.current.setSelectionRange(nextCaret, nextCaret);
+    });
+  };
+
+  const updateInputValue = (rawValue, caretPosition) => {
+    const digitsBeforeCaret = rawValue.slice(0, caretPosition).replace(/\D/g, "").length;
+    const digits = normalizeDigits(rawValue);
+    const formatted = formatFromDigits(digits);
+    setInputValue(formatted);
+    setShowValidation(false);
+    applyCaret(caretFromDigitsCount(digitsBeforeCaret));
+  };
+
+  const handleInputChange = (event) => {
+    const rawValue = event.target.value;
+    const caret = event.target.selectionStart ?? rawValue.length;
+    updateInputValue(rawValue, caret);
+  };
+
+  const handleKeyDown = (event) => {
+    const { key } = event;
+    if (key !== "Backspace" && key !== "Delete" && key !== "Enter") return;
+    if (key === "Enter") {
+      setShowValidation(true);
+      if (validation.status === "valid" && validation.date) {
+        onChange?.(validation.date);
+        setVisibleMonthStart(startOfMonth(validation.date));
+        setFocusedDate(validation.date);
+        setIsOpen(false);
+      }
       return;
     }
-    if (!departDate || (returnDate && iso < departDate)) {
-      onChange?.({ departDate: iso, returnDate: "" });
-      setDraftDepart(formatDate(iso, locale));
-      setDraftReturn("");
-      return;
+
+    const valueText = inputValue;
+    const caret = event.target.selectionStart ?? valueText.length;
+    const selectionEnd = event.target.selectionEnd ?? caret;
+    if (caret !== selectionEnd) return;
+
+    if (key === "Backspace" && caret > 0 && valueText[caret - 1] === "-") {
+      event.preventDefault();
+      const digits = normalizeDigits(valueText);
+      const digitsBeforeCaret = valueText.slice(0, caret).replace(/\D/g, "").length;
+      const removeIndex = Math.max(digitsBeforeCaret - 1, 0);
+      const nextDigits = digits.slice(0, removeIndex) + digits.slice(removeIndex + 1);
+      const formatted = formatFromDigits(nextDigits);
+      setInputValue(formatted);
+      applyCaret(caretFromDigitsCount(removeIndex));
     }
-    if (!returnDate && iso >= departDate) {
-      onChange?.({ departDate, returnDate: iso });
-      setDraftReturn(formatDate(iso, locale));
-      setIsOpen(false);
+
+    if (key === "Delete" && valueText[caret] === "-") {
+      event.preventDefault();
+      const digits = normalizeDigits(valueText);
+      const digitsBeforeCaret = valueText.slice(0, caret).replace(/\D/g, "").length;
+      const removeIndex = Math.min(digitsBeforeCaret, digits.length - 1);
+      const nextDigits = digits.slice(0, removeIndex) + digits.slice(removeIndex + 1);
+      const formatted = formatFromDigits(nextDigits);
+      setInputValue(formatted);
+      applyCaret(caretFromDigitsCount(removeIndex));
     }
   };
 
-  const handleInputBlur = (type) => (event) => {
-    const parsed = parseDate(event.target.value);
-    if (!parsed) return;
-    const iso = toIso(parsed);
-    if (type === "depart") {
-      onChange?.({ departDate: iso, returnDate: tripType === "roundTrip" ? returnDate : "" });
-    } else if (tripType === "roundTrip") {
-      onChange?.({ departDate, returnDate: iso });
+  const handlePaste = (event) => {
+    const pasted = event.clipboardData.getData("text");
+    if (!pasted) return;
+    const digits = normalizeDigits(pasted);
+    if (!digits) return;
+    event.preventDefault();
+    const formatted = formatFromDigits(digits);
+    setInputValue(formatted);
+    setShowValidation(false);
+    applyCaret(formatted.length);
+  };
+
+  const handleBlur = () => {
+    setShowValidation(true);
+    if (validation.status === "valid" && validation.date) {
+      onChange?.(validation.date);
+      setVisibleMonthStart(startOfMonth(validation.date));
+      setFocusedDate(validation.date);
     }
+  };
+
+  const selectDate = (date) => {
+    if (!date || isDateDisabled(date)) return;
+    onChange?.(date);
+    setInputValue(formatDate(date));
+    setVisibleMonthStart(startOfMonth(date));
+    setFocusedDate(date);
+    setIsOpen(false);
+  };
+
+  const handleCalendarKeyDown = (event) => {
+    if (!isOpen) return;
+    const { key } = event;
+    const dayDelta = {
+      ArrowLeft: -1,
+      ArrowRight: 1,
+      ArrowUp: -7,
+      ArrowDown: 7,
+    }[key];
+
+    if (dayDelta) {
+      event.preventDefault();
+      let next = addDays(focusedDate, dayDelta);
+      let guard = 0;
+      while (isDateDisabled(next) && guard < 365) {
+        next = addDays(next, dayDelta > 0 ? 1 : -1);
+        guard += 1;
+      }
+      setFocusedDate(next);
+      if (next.getMonth() !== visibleMonthStart.getMonth()
+        || next.getFullYear() !== visibleMonthStart.getFullYear()) {
+        setVisibleMonthStart(startOfMonth(next));
+      }
+      return;
+    }
+
+    if (key === "PageUp" || key === "PageDown") {
+      event.preventDefault();
+      const delta = key === "PageUp" ? -1 : 1;
+      const next = addMonths(focusedDate, delta);
+      setFocusedDate(next);
+      setVisibleMonthStart(startOfMonth(next));
+      return;
+    }
+
+    if (key === "Enter") {
+      event.preventDefault();
+      selectDate(focusedDate);
+      return;
+    }
+
+    if (key === "Escape") {
+      event.preventDefault();
+      setIsOpen(false);
+      inputRef.current?.focus();
+    }
+  };
+
+  const handlePrevMonth = () => {
+    const next = addMonths(visibleMonthStart, -1);
+    setVisibleMonthStart(startOfMonth(next));
+  };
+
+  const handleNextMonth = () => {
+    const next = addMonths(visibleMonthStart, 1);
+    setVisibleMonthStart(startOfMonth(next));
   };
 
   return (
     <div className="date-picker">
-      <div className="date-picker__fields">
+      <div className="date-picker__input" ref={containerRef}>
         <InputText
-          label={t("home.departDate")}
-          inputId="depart-date"
-          helperId="depart-date-helper"
-          helperText=""
+          label={label}
+          inputId={inputId}
+          helperId={helperId}
+          helperText={helperText}
           showCounter={false}
           hideHelper={false}
-          placeholder="dd/mm/aa"
-          value={draftDepart}
-          onChange={(event) => setDraftDepart(event.target.value)}
-          inputProps={{ onFocus: () => setIsOpen(true), onBlur: handleInputBlur("depart") }}
+          placeholder="dd-mm-aaaa"
+          value={inputValue}
+          onChange={handleInputChange}
           size="l"
+          disabled={disabled}
+          state={showError ? "error" : "default"}
+          inputRef={inputRef}
+          inputProps={{
+            onFocus: () => setIsOpen(true),
+            onBlur: handleBlur,
+            onKeyDown: handleKeyDown,
+            onPaste: handlePaste,
+            inputMode: "numeric",
+            "aria-label": ariaLabel ?? t("home.dateAriaLabel"),
+          }}
+          trailing={(
+            <button
+              type="button"
+              className="date-picker__icon"
+              aria-label={t("home.openCalendar")}
+              onClick={() => setIsOpen((prev) => !prev)}
+              disabled={disabled}
+            >
+              <Icon name="calendar_month" size="sm" decorative />
+            </button>
+          )}
         />
-        {tripType === "roundTrip" && (
-          <InputText
-            label={t("home.returnDate")}
-            inputId="return-date"
-            helperId="return-date-helper"
-            helperText=""
-            showCounter={false}
-            hideHelper={false}
-            placeholder="dd/mm/aa"
-            value={draftReturn}
-            onChange={(event) => setDraftReturn(event.target.value)}
-            inputProps={{ onFocus: () => setIsOpen(true), onBlur: handleInputBlur("return") }}
-            size="l"
-          />
-        )}
       </div>
 
-      {isOpen && (
-        <div className="date-picker__panel" role="dialog" aria-label={t("home.dates")}
-          onMouseDown={(event) => event.preventDefault()}
+      {isOpen && !disabled && (
+        <div
+          className={`date-picker__panel ${isOpen ? "is-open" : ""}`}
+          role="dialog"
+          aria-label={t("home.dates")}
+          onKeyDown={handleCalendarKeyDown}
+          ref={panelRef}
         >
           <div className="date-picker__panel-header">
+            <button
+              type="button"
+              className="date-picker__nav"
+              onClick={handlePrevMonth}
+              aria-label={t("home.prevMonth")}
+            >
+              <Icon name="chevron_left" size="sm" decorative />
+            </button>
             <span className="date-picker__panel-title">{t("home.dates")}</span>
             <button
               type="button"
-              className="date-picker__close"
-              aria-label={t("common.accept")}
-              onClick={() => setIsOpen(false)}
+              className="date-picker__nav"
+              onClick={handleNextMonth}
+              aria-label={t("home.nextMonth")}
             >
-              <Icon name="close" size="sm" decorative />
+              <Icon name="chevron_right" size="sm" decorative />
             </button>
           </div>
           <div className="date-picker__months">
-            {[{ date: baseMonth, days: monthDays }, { date: nextMonth, days: nextMonthDays }].map((month) => {
-              const monthLabel = new Intl.DateTimeFormat(locale, { month: "long", year: "numeric" }).format(month.date);
+            {[
+              { date: monthA, days: monthDaysA },
+              { date: monthB, days: monthDaysB },
+            ].map((month) => {
+              const monthLabel = formatMonthTitle(month.date, locale, language);
               return (
                 <div key={monthLabel} className="date-picker__month">
                   <div className="date-picker__month-title">{monthLabel}</div>
@@ -165,22 +455,35 @@ export default function DatePicker({
                       <span key={label} className="date-picker__weekday">{label}</span>
                     ))}
                   </div>
-                  <div className="date-picker__grid">
+                  <div className="date-picker__grid" role="grid">
                     {month.days.map((day, idx) => {
-                      if (!day) return <span key={`empty-${idx}`} className="date-picker__cell is-empty" />;
+                      if (!day) {
+                        return <span key={`empty-${idx}`} className="date-picker__cell is-empty" />;
+                      }
                       const iso = toIso(day);
-                      const isSelected = iso === departDate || iso === returnDate;
-                      const isInRange = departDate && returnDate && iso > departDate && iso < returnDate;
+                      const selected = isSameDay(day, selectedDate);
+                      const today = isSameDay(day, new Date());
+                      const disabledDay = isDateDisabled(day);
                       return (
                         <button
                           key={iso}
                           type="button"
+                          data-date={iso}
                           className={[
                             "date-picker__cell",
-                            isSelected ? "is-selected" : "",
-                            isInRange ? "is-range" : "",
+                            selected ? "is-selected" : "",
+                            today ? "is-today" : "",
                           ].filter(Boolean).join(" ")}
-                          onClick={() => handleSelect(day)}
+                          onClick={() => selectDate(day)}
+                          aria-selected={selected}
+                          aria-disabled={disabledDay}
+                          disabled={disabledDay}
+                          tabIndex={selected || isSameDay(day, focusedDate) ? 0 : -1}
+                          aria-label={new Intl.DateTimeFormat(locale, {
+                            day: "2-digit",
+                            month: "long",
+                            year: "numeric",
+                          }).format(day)}
                         >
                           {day.getDate()}
                         </button>
@@ -190,18 +493,6 @@ export default function DatePicker({
                 </div>
               );
             })}
-          </div>
-          <div className="date-picker__actions">
-            <Button
-              variant="tertiary"
-              size="s"
-              onClick={() => onChange?.({ departDate: "", returnDate: "" })}
-            >
-              {t("home.resetDates")}
-            </Button>
-            <Button variant="primary" size="s" onClick={() => setIsOpen(false)}>
-              {t("common.accept")}
-            </Button>
           </div>
         </div>
       )}
