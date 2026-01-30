@@ -4,6 +4,10 @@
   gap: var(--spacing-06);
 }
 
+.page--fares {
+  padding-bottom: var(--spacing-12);
+}
+
 .page--home {
   align-items: stretch;
   text-align: left;
@@ -566,72 +570,51 @@
   color: var(--color-neutral-600);
 }
 
-.fares-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--spacing-04);
-  align-items: stretch;
-}
-
-.fare-card {
+.tariff-compare {
+  padding: var(--spacing-05);
   display: flex;
   flex-direction: column;
   gap: var(--spacing-04);
-  padding: var(--spacing-05);
-  background: var(--color-neutral-25);
-  border: 1px solid var(--color-neutral-200);
-  border-radius: var(--radius-04);
-  box-shadow: var(--shadow-xs);
-  min-height: 360px;
+  overflow-x: auto;
+  margin-top: var(--spacing-05);
 }
 
-.fare-card.is-selected {
-  border-color: var(--color-accent-primaryaccent-500);
-  box-shadow: var(--shadow-sm);
+.tariff-compare__grid {
+  display: grid;
+  grid-template-columns: minmax(180px, 1.1fr) repeat(4, minmax(160px, 1fr));
+  align-items: stretch;
 }
 
-.fare-card__accent {
-  height: 6px;
+.tariff-compare__accent {
+  height: var(--spacing-01);
   border-radius: var(--radius-02);
   background: var(--color-neutral-200);
+  width: 100%;
 }
 
-.fare-card[data-tone="basic"] .fare-card__accent {
+.tariff-compare__cell--header[data-tone="basic"] .tariff-compare__accent {
   background: var(--color-neutral-300);
 }
 
-.fare-card[data-tone="choose"] .fare-card__accent {
+.tariff-compare__cell--header[data-tone="choose"] .tariff-compare__accent {
   background: var(--color-accent-primaryaccent-500);
 }
 
-.fare-card[data-tone="comfort"] .fare-card__accent {
+.tariff-compare__cell--header[data-tone="choose-comfort"] .tariff-compare__accent {
   background: var(--color-warning-500);
 }
 
-.fare-card[data-tone="choose-comfort"] .fare-card__accent {
-  background: var(--color-warning-500);
-}
-
-.fare-card[data-tone="premium"] .fare-card__accent {
+.tariff-compare__cell--header[data-tone="premium"] .tariff-compare__accent {
   background: var(--color-brand-500);
 }
 
-.fare-card__header {
+.tariff-compare__title {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--spacing-03);
+  flex-direction: column;
+  gap: var(--spacing-01);
 }
 
-.fare-card__name {
-  font-family: var(--font-family-primary);
-  font-size: var(--type-text-l-size);
-  line-height: var(--type-text-l-line);
-  font-weight: var(--type-weight-semibold);
-  color: var(--color-neutral-900);
-}
-
-.fare-card__price {
+.tariff-compare__name {
   font-family: var(--font-family-primary);
   font-size: var(--type-text-m-size);
   line-height: var(--type-text-m-line);
@@ -639,181 +622,128 @@
   color: var(--color-neutral-900);
 }
 
-.fare-card__highlights {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-02);
-}
-
-.fare-card__highlight {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--spacing-03);
+.tariff-compare__price {
   font-family: var(--font-family-primary);
-  font-size: var(--type-text-s-size);
-  line-height: var(--type-text-s-line);
-  color: var(--color-neutral-700);
-}
-
-.fare-card__highlight-label {
-  color: var(--color-neutral-500);
-}
-
-.fare-card__highlight-value {
-  font-weight: var(--type-weight-medium);
+  font-size: var(--type-text-l-size);
+  line-height: var(--type-text-l-line);
+  font-weight: var(--type-weight-semibold);
   color: var(--color-neutral-900);
 }
 
-.fare-card__cta {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-02);
-}
-
-.fare-card__selected {
+.tariff-compare__microcopy {
   font-family: var(--font-family-primary);
   font-size: var(--type-text-xs-size);
   line-height: var(--type-text-xs-line);
-  color: var(--color-success-700);
+  color: var(--color-neutral-500);
 }
 
-.comparison {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-04);
-  padding: var(--spacing-05);
-}
-
-.comparison__header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--spacing-04);
-  flex-wrap: wrap;
-}
-
-.comparison__subtitle {
-  margin: var(--spacing-01) 0 0 0;
+.tariff-compare__link {
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
   font-family: var(--font-family-primary);
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
-  color: var(--color-neutral-600);
-}
-
-.comparison__controls {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-02);
-}
-
-.comparison__toggle {
-  border: 1px solid var(--color-neutral-200);
-  background: var(--color-neutral-25);
-  color: var(--color-neutral-800);
-  padding: var(--spacing-02) var(--spacing-03);
-  border-radius: var(--radius-03);
-  font-family: var(--font-family-primary);
-  font-size: var(--type-text-s-size);
-  line-height: var(--type-text-s-line);
-  cursor: pointer;
-  min-height: 44px;
-}
-
-.comparison__toggle[aria-pressed="true"],
-.comparison__toggle[aria-expanded="true"] {
-  border-color: var(--color-accent-primaryaccent-500);
   color: var(--color-accent-primaryaccent-600);
+  text-decoration: underline;
+  cursor: pointer;
 }
 
-.comparison__toggle:focus-visible {
+.tariff-compare__link:focus-visible {
   outline: 2px solid var(--color-accent-primaryaccent-500);
   outline-offset: 2px;
 }
 
-.comparison__table {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-03);
-  overflow-x: auto;
+.tariff-compare__row {
+  display: contents;
 }
 
-.comparison__row,
-.comparison__section-title {
-  display: grid;
-  grid-template-columns: minmax(180px, 1.2fr) repeat(4, minmax(110px, 1fr));
-  gap: var(--spacing-03);
-  align-items: center;
-  padding: var(--spacing-03) 0;
+.tariff-compare__cell {
+  padding: var(--spacing-03);
   border-bottom: 1px solid var(--color-neutral-200);
-  min-width: 760px;
-}
-
-.comparison__row--header {
-  font-weight: var(--type-weight-semibold);
-  color: var(--color-neutral-800);
-  border-bottom: 1px solid var(--color-neutral-300);
-  padding-top: 0;
-}
-
-.comparison__section-title {
-  position: sticky;
-  top: var(--spacing-05);
-  background: var(--color-neutral-25);
-  font-weight: var(--type-weight-semibold);
-  color: var(--color-neutral-700);
-  border-bottom: 1px solid var(--color-neutral-200);
-}
-
-.comparison__cell {
   font-family: var(--font-family-primary);
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
   color: var(--color-neutral-800);
+  min-height: var(--spacing-08);
+  display: flex;
+  align-items: center;
 }
 
-.comparison__cell--feature {
-  display: flex;
+.tariff-compare__cell--col {
+  border-left: 1px solid var(--color-neutral-200);
+}
+
+.tariff-compare__cell--header {
+  align-items: flex-start;
   flex-direction: column;
+  gap: var(--spacing-02);
+  padding-bottom: var(--spacing-04);
+  background: transparent;
+}
+
+.tariff-compare__row--header .tariff-compare__cell {
+  border-bottom: 1px solid var(--color-neutral-300);
+}
+
+.tariff-compare__cell--cta {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-02);
+  padding-top: var(--spacing-04);
+}
+
+.tariff-compare__cell--col.is-selected {
+  box-shadow: inset 0 0 0 1px var(--color-accent-primaryaccent-500);
+}
+
+.tariff-compare__cell--feature {
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--spacing-01);
 }
 
-.comparison__feature-label {
+.tariff-compare__label {
   font-weight: var(--type-weight-medium);
 }
 
-.comparison__feature-helper {
+.tariff-compare__helper {
   font-size: var(--type-text-xs-size);
   line-height: var(--type-text-xs-line);
   color: var(--color-neutral-500);
 }
 
-.comparison__tariff-name {
-  display: block;
-  font-weight: var(--type-weight-semibold);
+.tariff-compare__value {
+  font-weight: var(--type-weight-regular);
 }
 
-.comparison__tariff-price {
-  display: block;
-  font-size: var(--type-text-xs-size);
+.tariff-conditions__subtitle {
+  margin: 0 0 var(--spacing-03) 0;
   color: var(--color-neutral-600);
 }
 
-.comparison__value {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-01);
+.tariff-conditions__list {
+  margin: 0 0 var(--spacing-04) 0;
+  padding-left: var(--spacing-04);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+  color: var(--color-neutral-700);
+}
+
+.tariff-conditions__actions {
+  display: flex;
+  justify-content: flex-end;
 }
 
 @media (max-width: 768px) {
-  .fares-grid {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  .page--fares {
+    padding-bottom: var(--spacing-13);
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .comparison__table {
-    scroll-behavior: auto;
+  .tariff-compare__grid {
+    min-width: 820px;
   }
 }
 
