@@ -1,33 +1,242 @@
-.fare-table {
-  width: 100%;
-  border-collapse: collapse;
+.fareComparison {
   background: var(--color-neutral-25);
-  border: 1px solid var(--color-neutral-200);
-  border-radius: var(--radius-03);
-  overflow: hidden;
+  border: var(--spacing-01) solid var(--color-neutral-200);
+  border-radius: var(--radius-04);
+  padding: var(--spacing-06);
+  box-shadow: var(--shadow-xs);
+  overflow-x: auto;
+}
+
+.fareComparisonGrid {
+  display: grid;
+  grid-template-columns: minmax(var(--spacing-11), 1.2fr) repeat(4, minmax(0, 1fr));
+  grid-auto-rows: auto;
+  row-gap: var(--spacing-03);
+  align-items: stretch;
+}
+
+.fareComparisonCell {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-03) var(--spacing-05);
   font-family: var(--font-family-primary);
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
+  color: var(--color-neutral-800);
 }
 
-.fare-table th,
-.fare-table td {
-  padding: var(--spacing-03) var(--spacing-04);
-  border-bottom: 1px solid var(--color-neutral-200);
-  text-align: left;
+.fareComparisonRow {
+  display: contents;
 }
 
-.fare-table thead th {
-  background: var(--color-neutral-50);
-  font-weight: var(--type-weight-medium);
+.fareComparisonCell--corner,
+.fareComparisonCell--cta-spacer {
+  color: transparent;
 }
 
-.fare-table__price {
-  font-weight: var(--type-weight-bold);
+.fareComparisonCell--header {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-02);
+}
+
+.fareComparisonHeaderStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-01);
+}
+
+.fareComparisonCell--label {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-01);
+  color: var(--color-neutral-700);
+}
+
+.fareComparisonCell--value {
+  gap: var(--spacing-02);
+}
+
+.fareComparisonCell--cta {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-02);
+}
+
+.fareComparisonCell--cta .btn {
+  width: 100%;
+  min-height: var(--spacing-08);
+}
+
+.fareComparisonName {
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  font-weight: var(--type-weight-semibold);
   color: var(--color-neutral-900);
 }
 
-.fare-table tr.is-selected {
-  background: var(--color-brand-25);
+.fareComparisonPrice {
+  font-size: var(--type-text-l-size);
+  line-height: var(--type-text-l-line);
+  font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-900);
+}
+
+.fareComparisonMicrocopy {
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-500);
+}
+
+.fareComparisonLabel {
+  font-weight: var(--type-weight-medium);
+  color: var(--color-neutral-800);
+}
+
+.fareComparisonHelper {
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-500);
+}
+
+.fareComparisonIcon {
+  font-family: "Material Symbols Outlined";
+  font-size: var(--icon-s-glyph);
+  line-height: 1;
+  margin-right: var(--spacing-02);
+}
+
+.fareComparisonIcon--included {
+  color: var(--color-success-600);
+}
+
+.fareComparisonIcon--excluded {
+  color: var(--color-neutral-500);
+}
+
+.fareComparisonIcon--extra {
+  color: var(--color-accent-primaryaccent-500);
+}
+
+.col-basic {
+  background: rgba(var(--color-neutral-50-rgb), 0.5);
+}
+
+.col-elige {
+  background: rgba(var(--color-accent-primaryaccent-50-rgb), 0.35);
+}
+
+.col-comfort {
+  background: rgba(var(--color-warning-50-rgb), 0.35);
+}
+
+.col-premium {
+  background: rgba(var(--color-brand-50-rgb), 0.25);
+}
+
+.col-basic.is-selected {
+  background: rgba(var(--color-neutral-100-rgb), 0.6);
+}
+
+.col-elige.is-selected {
+  background: rgba(var(--color-accent-primaryaccent-100-rgb), 0.35);
+}
+
+.col-comfort.is-selected {
+  background: rgba(var(--color-warning-100-rgb), 0.35);
+}
+
+.col-premium.is-selected {
+  background: rgba(var(--color-brand-100-rgb), 0.3);
+}
+
+.fareComparisonAccent {
+  width: 100%;
+  height: var(--spacing-01);
+  border-radius: var(--radius-02);
+  background: var(--color-neutral-300);
+}
+
+.col-basic .fareComparisonAccent {
+  background: var(--color-neutral-300);
+}
+
+.col-elige .fareComparisonAccent {
+  background: var(--color-accent-primaryaccent-500);
+}
+
+.col-comfort .fareComparisonAccent {
+  background: var(--color-warning-500);
+}
+
+.col-premium .fareComparisonAccent {
+  background: var(--color-brand-500);
+}
+
+.fareComparisonLink {
+  border: none;
+  background: none;
+  padding: 0;
+  text-align: left;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  color: var(--color-accent-primaryaccent-600);
+  text-decoration: underline;
+  cursor: pointer;
+  margin-top: var(--spacing-02);
+}
+
+.fareComparisonLink:focus-visible {
+  outline: var(--spacing-01) solid var(--color-accent-primaryaccent-500);
+  outline-offset: var(--spacing-01);
+}
+
+.fareComparisonModalTitle {
+  margin: 0 0 var(--spacing-02) 0;
+}
+
+.fareComparisonModalSubtitle {
+  margin: 0 0 var(--spacing-04) 0;
+  color: var(--color-neutral-600);
+}
+
+.fareComparisonModalGroups {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+}
+
+.fareComparisonModalGroupTitle {
+  margin: 0 0 var(--spacing-02) 0;
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-900);
+}
+
+.fareComparisonModalList {
+  margin: 0;
+  padding-left: var(--spacing-04);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+  color: var(--color-neutral-700);
+}
+
+.fareComparisonModalActions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--spacing-04);
+}
+
+@media (max-width: 768px) {
+  .fareComparison {
+    padding: var(--spacing-05);
+  }
+
+  .fareComparisonGrid {
+    min-width: calc(var(--spacing-12) * 8);
+  }
 }
 
