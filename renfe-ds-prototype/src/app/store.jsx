@@ -17,6 +17,8 @@ const initialState = {
   },
   selectedJourneyId: null,
   selectedJourney: null,
+  selectedReturnJourneyId: null,
+  selectedReturnJourney: null,
   selectedFareId: null,
   extras: {},
   paymentError: null,
@@ -34,6 +36,15 @@ function reducer(state, action) {
         ...state,
         selectedJourneyId: action.payload?.id ?? null,
         selectedJourney: action.payload ?? null,
+      };
+    case "SET_RETURN_JOURNEY":
+      if (typeof action.payload === "string") {
+        return { ...state, selectedReturnJourneyId: action.payload, selectedReturnJourney: null };
+      }
+      return {
+        ...state,
+        selectedReturnJourneyId: action.payload?.id ?? null,
+        selectedReturnJourney: action.payload ?? null,
       };
     case "SET_FARE":
       return { ...state, selectedFareId: action.payload };

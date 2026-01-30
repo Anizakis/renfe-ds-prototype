@@ -9,6 +9,8 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--spacing-03);
+  padding-top: var(--spacing-04);
+  padding-bottom: var(--spacing-03);
 }
 
 .results-filters__updating {

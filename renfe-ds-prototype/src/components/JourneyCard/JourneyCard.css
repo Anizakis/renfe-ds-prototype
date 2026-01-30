@@ -14,7 +14,7 @@
 .journey-card__info {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-03);
+  gap: var(--spacing-02);
 }
 
 .journey-card.is-selected {
@@ -83,6 +83,7 @@
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
   color: var(--color-neutral-600);
+  margin-bottom: var(--spacing-02);
 }
 
 .journey-card__tags {

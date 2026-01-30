@@ -6,6 +6,13 @@
   font-family: var(--font-family-primary);
   color: var(--color-neutral-900);
   background: var(--color-neutral-50);
+  --color-neutral-0: var(--color-base-white);
+}
+
+.dark,
+html.dark,
+body.dark {
+  --color-neutral-0: var(--color-neutral-50);
 }
 
 body {

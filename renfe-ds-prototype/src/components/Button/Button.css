@@ -113,7 +113,7 @@
 
 .btn--terciary:disabled,
 .btn--terciary[aria-disabled="true"] {
-  background: var(--color-base-transparent);
+  background: var(--color-neutral-0);
   color: var(--color-neutral-500);
 }
 

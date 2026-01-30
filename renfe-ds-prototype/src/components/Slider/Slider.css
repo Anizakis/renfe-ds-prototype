@@ -27,4 +27,5 @@
 .slider input[type="range"] {
   width: 100%;
   accent-color: var(--color-brand-600);
+  background: transparent;
 }

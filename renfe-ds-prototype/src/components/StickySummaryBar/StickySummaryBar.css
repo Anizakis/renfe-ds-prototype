@@ -23,8 +23,9 @@
 
 .sticky-summary__totals {
   display: flex;
-  align-items: center;
-  gap: var(--spacing-04);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-02);
   flex-wrap: wrap;
   font-family: var(--font-family-primary);
   font-size: var(--type-text-s-size);
@@ -62,6 +63,32 @@
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
   color: var(--color-neutral-900);
+}
+
+.sticky-summary__trip {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-01);
+}
+
+.sticky-summary__trip-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-04);
+}
+
+.sticky-summary__trip-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-01);
+}
+
+.sticky-summary__trip-line {
+  white-space: nowrap;
+}
+
+.sticky-summary__trip-line {
+  display: block;
 }
 
 .sticky-summary__actions {

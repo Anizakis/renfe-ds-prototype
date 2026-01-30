@@ -12,14 +12,16 @@ import StickySummaryBar from "../components/StickySummaryBar/StickySummaryBar.js
 import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
 import ResultsFilters from "../components/ResultsFilters/ResultsFilters.jsx";
 import Dropdown from "../components/Dropdown/Dropdown.jsx";
+import PriceDetailsModal from "../components/PriceDetailsModal/PriceDetailsModal.jsx";
 import { useTravel } from "../app/store.jsx";
 import { buildDayRange, generateJourneys } from "../data/mockData.js";
-import { getSelectedExtras, getSelectedJourney } from "../app/pricing.js";
+import { getSelectedExtras, getSelectedJourney, getSelectedReturnJourney, getTotalPrice, getSelectedFare, getPassengersTotal } from "../app/pricing.js";
 import { useI18n } from "../app/i18n.jsx";
 import { createDefaultFilters } from "../components/ResultsFilters/ResultsFilters.jsx";
+import Tabs from "../components/Tabs/Tabs.jsx";
 import "./pages.css";
 
-const RANGE_LENGTH = 7;
+const RANGE_LENGTH = 5;
 
 function addDays(dateKey, amount) {
   const date = new Date(dateKey);
@@ -111,13 +113,17 @@ export default function Results() {
   const initialDate = state.search?.departDate || new Date().toISOString().slice(0, 10);
   const [filters, setFilters] = useState(() => buildInitialFilters(state.search));
   const rangeLength = RANGE_LENGTH;
-  const initialRangeStart = addDays(initialDate, -Math.floor(RANGE_LENGTH / 2));
   const [selectedDate, setSelectedDate] = useState(initialDate);
-  const [rangeStart, setRangeStart] = useState(initialRangeStart);
+  const rangeStart = useMemo(
+    () => addDays(selectedDate, -Math.floor(rangeLength / 2)),
+    [selectedDate, rangeLength]
+  );
   const [loading, setLoading] = useState(true);
   const [announcement, setAnnouncement] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [sortKey, setSortKey] = useState("price");
+  const [priceModalOpen, setPriceModalOpen] = useState(false);
+  const priceTriggerRef = useRef(null);
   const loadingTimeout = useRef(null);
   const origin = state.search?.origin;
   const destination = state.search?.destination;
@@ -126,34 +132,50 @@ export default function Results() {
   const returnDate = state.search?.returnDate;
   const passengers = state.search?.passengers;
   const selectedJourney = getSelectedJourney(state);
+  const selectedReturnJourney = getSelectedReturnJourney(state);
   const selectedExtras = getSelectedExtras(state);
-  const canContinue = Boolean(state.selectedJourneyId);
+  const selectedFare = getSelectedFare(state);
+  const isRoundTrip = tripType === "roundTrip";
+  const [activeLeg, setActiveLeg] = useState("outbound");
+  const canContinue = isRoundTrip
+    ? Boolean(state.selectedJourneyId && state.selectedReturnJourneyId)
+    : Boolean(state.selectedJourneyId);
 
-  const passengersTotal = useMemo(() => {
-    if (!passengers) return 1;
-    if (typeof passengers === "number") return passengers;
-    return (passengers.adults ?? 0) + (passengers.children ?? 0) + (passengers.infants ?? 0);
-  }, [passengers]);
+  const passengersTotal = getPassengersTotal(state);
 
   const passengersLabel = passengersTotal === 1
     ? `1 ${t("home.adults")}`
     : `${passengersTotal} ${t("home.passengers")}`;
 
-  const totalPrice = selectedJourney
-    ? selectedJourney.price * passengersTotal
-    : 0;
+  const totals = getTotalPrice(state);
+  const totalPrice = totals.total;
+  const outboundPrice = selectedJourney?.price ?? 0;
+  const returnPrice = selectedReturnJourney?.price ?? 0;
+  const baseTotal = outboundPrice + (isRoundTrip ? returnPrice : 0);
+  const fareTotal = selectedFare?.price ?? 0;
+  const extrasTotal = selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
+  const perPassengerTotal = baseTotal + fareTotal + extrasTotal;
+  const formatPrice = (value) => `${value.toFixed(2)} €`;
+  const breakdownItems = [
+    { label: t("summary.baseFare"), value: formatPrice(baseTotal) },
+    { label: t("summary.fare"), value: formatPrice(fareTotal) },
+    { label: t("summary.extras"), value: formatPrice(extrasTotal) },
+    { label: t("summary.passengers"), value: `x${passengersTotal}` },
+  ];
 
   const baseOrigin = origin || "Madrid-Príncipe Pío";
   const baseDestination = destination || "Valencia";
+  const legOrigin = activeLeg === "return" ? baseDestination : baseOrigin;
+  const legDestination = activeLeg === "return" ? baseOrigin : baseDestination;
   const dataStart = addDays(rangeStart, -7);
   const generatedJourneys = useMemo(
     () => generateJourneys({
       startDate: dataStart,
       days: rangeLength + 14,
-      origin: baseOrigin,
-      destination: baseDestination,
+      origin: legOrigin,
+      destination: legDestination,
     }),
-    [dataStart, rangeLength, baseOrigin, baseDestination]
+    [dataStart, rangeLength, legOrigin, legDestination]
   );
   const filteredJourneys = useMemo(
     () => applyFilters(generatedJourneys, filters),
@@ -161,29 +183,44 @@ export default function Results() {
   );
 
   useEffect(() => {
+    if (activeLeg === "return") {
+      if (state.search?.returnDate && state.search.returnDate !== selectedDate) {
+        setSelectedDate(state.search.returnDate);
+      }
+      return;
+    }
     if (state.search?.departDate && state.search.departDate !== selectedDate) {
       setSelectedDate(state.search.departDate);
     }
-  }, [state.search, selectedDate]);
+  }, [state.search, selectedDate, activeLeg]);
 
   useEffect(() => {
-    dispatch({ type: "SET_JOURNEY", payload: null });
-  }, [selectedDate, dispatch]);
-
-  useEffect(() => {
-    if (!selectedJourney) return;
-    const stillAvailable = filteredJourneys.some((journey) => journey.id === selectedJourney.id);
+    if (activeLeg === "outbound") {
+      if (!selectedJourney) return;
+      if (selectedJourney.date !== selectedDate) return;
+      const stillAvailable = filteredJourneys.some((journey) => journey.id === selectedJourney.id);
+      if (!stillAvailable) {
+        dispatch({ type: "SET_JOURNEY", payload: null });
+      }
+      return;
+    }
+    if (!selectedReturnJourney) return;
+    if (selectedReturnJourney.date !== selectedDate) return;
+    const stillAvailable = filteredJourneys.some((journey) => journey.id === selectedReturnJourney.id);
     if (!stillAvailable) {
-      dispatch({ type: "SET_JOURNEY", payload: null });
+      dispatch({ type: "SET_RETURN_JOURNEY", payload: null });
     }
-  }, [filteredJourneys, selectedJourney, dispatch]);
+  }, [filteredJourneys, selectedJourney, selectedReturnJourney, dispatch, activeLeg]);
 
   useEffect(() => {
-    const rangeDays = buildDayRange(rangeStart, rangeLength);
-    if (!rangeDays.includes(selectedDate)) {
-      setRangeStart(addDays(selectedDate, -Math.floor(rangeLength / 2)));
+    if (!isRoundTrip) return;
+    if (activeLeg === "outbound" && departDate && departDate !== selectedDate) {
+      setSelectedDate(departDate);
     }
-  }, [selectedDate, rangeStart, rangeLength]);
+    if (activeLeg === "return" && returnDate && returnDate !== selectedDate) {
+      setSelectedDate(returnDate);
+    }
+  }, [activeLeg, isRoundTrip, departDate, returnDate, selectedDate]);
 
   const formatDate = (value) => {
     if (!value) return "";
@@ -253,12 +290,19 @@ export default function Results() {
   const handleDayChange = (id) => {
     if (id === selectedDate) return;
     setSelectedDate(id);
-    dispatch({ type: "SET_SEARCH", payload: { departDate: id } });
+    if (activeLeg === "return") {
+      dispatch({ type: "SET_SEARCH", payload: { returnDate: id } });
+      dispatch({ type: "SET_RETURN_JOURNEY", payload: null });
+    } else {
+      dispatch({ type: "SET_SEARCH", payload: { departDate: id } });
+      dispatch({ type: "SET_JOURNEY", payload: null });
+    }
   };
 
   const handleRangeShift = (direction) => {
-    const delta = direction === "next" ? rangeLength : -rangeLength;
-    setRangeStart(addDays(rangeStart, delta));
+    const delta = direction === "next" ? 1 : -1;
+    const nextDate = addDays(selectedDate, delta);
+    handleDayChange(nextDate);
   };
 
   const journeysForSelectedDate = filteredJourneys.filter((journey) => journey.date === selectedDate);
@@ -277,9 +321,11 @@ export default function Results() {
   return (
     <Container as="section" className="page results-page">
       <VisuallyHidden as="h1">{t("results.title")}</VisuallyHidden>
-      <AnimatedCheckoutStepper steps={steps} currentStep="results" />
+      <div className="results-stepper">
+        <AnimatedCheckoutStepper steps={steps} currentStep="results" />
+      </div>
       <div className="results-summary">
-        <div className="results-summary__main">
+        <div className="results-summary__main summary-left">
           <div className="results-summary__route">
             {origin || "—"}
             <span className="results-route__arrow" aria-hidden="true">arrow_forward</span>
@@ -294,8 +340,10 @@ export default function Results() {
           </div>
         </div>
         <Button
-          variant="tertiary"
+          variant="secondary"
           size="s"
+          className="summary-action"
+          aria-label={`${t("results.modifySearch")}: ${origin || "—"} ${destination || "—"}`}
           onClick={() => navigate("/")}
         >
           {t("results.modifySearch")}
@@ -341,6 +389,18 @@ export default function Results() {
               </div>
             </div>
 
+            {isRoundTrip && (
+              <Tabs
+                label={t("results.journeys")}
+                activeId={activeLeg}
+                onChange={setActiveLeg}
+                tabs={[
+                  { id: "outbound", label: t("home.departDate") },
+                  { id: "return", label: t("home.returnDate") },
+                ]}
+              />
+            )}
+
             <div className="results-daypicker">
               <DayPickerStrip
                 days={rangeDays}
@@ -378,12 +438,28 @@ export default function Results() {
                       key={journey.id}
                       journey={journey}
                       activeFilters={filters}
-                      selected={state.selectedJourneyId === journey.id}
+                      selected={activeLeg === "return"
+                        ? state.selectedReturnJourneyId === journey.id
+                        : state.selectedJourneyId === journey.id}
                       onSelect={(id) => {
-                        dispatch({ type: "SET_JOURNEY", payload: journey });
+                        if (activeLeg === "return") {
+                          dispatch({ type: "SET_RETURN_JOURNEY", payload: journey });
+                          dispatch({ type: "SET_SEARCH", payload: { returnDate: journey.date } });
+                        } else {
+                          dispatch({ type: "SET_JOURNEY", payload: journey });
+                          dispatch({ type: "SET_SEARCH", payload: { departDate: journey.date } });
+                          if (isRoundTrip) {
+                            setActiveLeg("return");
+                            if (returnDate) {
+                              setSelectedDate(returnDate);
+                            }
+                          }
+                        }
                       }}
                       actionLabel={
-                        state.selectedJourneyId === journey.id
+                        (activeLeg === "return"
+                          ? state.selectedReturnJourneyId === journey.id
+                          : state.selectedJourneyId === journey.id)
                           ? t("results.selected")
                           : t("results.select")
                       }
@@ -420,9 +496,54 @@ export default function Results() {
           <div className="sticky-summary__group">
             <span className="sticky-summary__label">{t("summary.journey")}</span>
             <span className="sticky-summary__value">
-              {selectedJourney
-                ? `${selectedJourney.origin} → ${selectedJourney.destination} · ${selectedJourney.date} · ${selectedJourney.departTime}-${selectedJourney.arriveTime} · ${selectedJourney.service}`
-                : "—"}
+              {isRoundTrip ? (
+                <span className="sticky-summary__trip-grid">
+                  <span className="sticky-summary__trip-column">
+                    <span className="sticky-summary__trip-line">
+                      {t("home.departDate")}: {selectedJourney
+                        ? `${selectedJourney.origin} → ${selectedJourney.destination}`
+                        : "—"}
+                    </span>
+                    <span className="sticky-summary__trip-line">
+                      {selectedJourney ? selectedJourney.date : "—"}
+                    </span>
+                    <span className="sticky-summary__trip-line">
+                      {selectedJourney
+                        ? `${selectedJourney.departTime}-${selectedJourney.arriveTime} · ${selectedJourney.service}`
+                        : "—"}
+                    </span>
+                  </span>
+                  <span className="sticky-summary__trip-column">
+                    <span className="sticky-summary__trip-line">
+                      {t("home.returnDate")}: {selectedReturnJourney
+                        ? `${selectedReturnJourney.origin} → ${selectedReturnJourney.destination}`
+                        : "—"}
+                    </span>
+                    <span className="sticky-summary__trip-line">
+                      {selectedReturnJourney ? selectedReturnJourney.date : "—"}
+                    </span>
+                    <span className="sticky-summary__trip-line">
+                      {selectedReturnJourney
+                        ? `${selectedReturnJourney.departTime}-${selectedReturnJourney.arriveTime} · ${selectedReturnJourney.service}`
+                        : "—"}
+                    </span>
+                  </span>
+                </span>
+              ) : selectedJourney ? (
+                <span className="sticky-summary__trip">
+                  <span className="sticky-summary__trip-line">
+                    {selectedJourney.origin} → {selectedJourney.destination}
+                  </span>
+                  <span className="sticky-summary__trip-line">
+                    {selectedJourney.date}
+                  </span>
+                  <span className="sticky-summary__trip-line">
+                    {selectedJourney.departTime}-{selectedJourney.arriveTime} · {selectedJourney.service}
+                  </span>
+                </span>
+              ) : (
+                "—"
+              )}
             </span>
           </div>
           <div className="sticky-summary__group">
@@ -436,7 +557,15 @@ export default function Results() {
         </div>
         <div className="sticky-summary__actions">
           <div className="sticky-summary__totals">
-            <span>{t("summary.total")}: {totalPrice.toFixed(2)} €</span>
+            <span className="sticky-summary__total">{t("summary.total")}: {totalPrice.toFixed(2)} €</span>
+            <button
+              type="button"
+              className="sticky-summary__details-link"
+              onClick={() => setPriceModalOpen(true)}
+              ref={priceTriggerRef}
+            >
+              {t("summary.viewDetails")}
+            </button>
             {!canContinue && (
               <span className="sticky-summary__helper">{t("summary.selectJourneyHelper")}</span>
             )}
@@ -457,6 +586,13 @@ export default function Results() {
           {canContinue ? t("summary.priceUpdated") : t("summary.selectJourneyHelper")}
         </VisuallyHidden>
       </StickySummaryBar>
+      <PriceDetailsModal
+        isOpen={priceModalOpen}
+        onClose={() => setPriceModalOpen(false)}
+        triggerRef={priceTriggerRef}
+        items={breakdownItems}
+        total={formatPrice(totalPrice)}
+      />
     </Container>
   );
 }

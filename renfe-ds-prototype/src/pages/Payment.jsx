@@ -10,6 +10,7 @@ import StickySummaryBar from "../components/StickySummaryBar/StickySummaryBar.js
 import Alert from "../components/Alert/Alert.jsx";
 import Modal from "../components/Modal/Modal.jsx";
 import Loading from "../components/Loading/Loading.jsx";
+import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
 import { useTravel } from "../app/store.jsx";
 import { getTotalPrice } from "../app/pricing.js";
 import { useI18n } from "../app/i18n.jsx";
@@ -52,7 +53,7 @@ export default function Payment() {
   return (
     <Container as="section" className="page">
       <AnimatedCheckoutStepper steps={steps} currentStep="payment" />
-      <h1 className="page-title">{t("payment.title")}</h1>
+      <VisuallyHidden as="h1">{t("payment.title")}</VisuallyHidden>
       {state.paymentError && (
         <Alert title={t("payment.errorTitle")}>
           {t("payment.errorBody")}

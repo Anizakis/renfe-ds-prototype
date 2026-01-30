@@ -33,9 +33,10 @@
 .day-picker__list {
   display: flex;
   gap: var(--spacing-03);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 0 var(--spacing-02);
+  width: 100%;
+  overflow: hidden;
+  scroll-snap-type: none;
+  padding: 0;
 }
 
 .day-picker__list::-webkit-scrollbar {
@@ -43,7 +44,8 @@
 }
 
 .day-tile {
-  min-width: 112px;
+  flex: 1 1 0;
+  min-width: 0;
   padding: var(--spacing-03);
   border-radius: var(--radius-03);
   border: 1px solid var(--color-neutral-200);
@@ -52,7 +54,6 @@
   flex-direction: column;
   gap: var(--spacing-01);
   text-align: left;
-  scroll-snap-align: start;
   cursor: pointer;
   position: relative;
 }

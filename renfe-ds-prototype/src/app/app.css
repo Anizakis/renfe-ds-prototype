@@ -10,6 +10,11 @@
   padding-top: calc(var(--spacing-11) + var(--spacing-06));
 }
 
+.app-main--results {
+  padding-top: var(--spacing-11);
+  padding-bottom: var(--spacing-06);
+}
+
 .skip-link {
   position: absolute;
   left: var(--spacing-04);

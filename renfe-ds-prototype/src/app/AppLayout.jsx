@@ -20,7 +20,12 @@ export default function AppLayout() {
     <div className="app-root">
       <a href="#main" className="skip-link">{t("common.skipToContent")}</a>
       <TopNav />
-      <main id="main" ref={mainRef} tabIndex={-1} className="app-main">
+      <main
+        id="main"
+        ref={mainRef}
+        tabIndex={-1}
+        className={`app-main${location.pathname.startsWith("/results") ? " app-main--results" : ""}`}
+      >
         <Outlet />
       </main>
     </div>
