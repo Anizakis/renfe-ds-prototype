@@ -17,54 +17,54 @@ const rows = [
     labelTitle: "Tipo de asiento",
     labelHelper: "Comodidad",
     values: {
-      basic: { type: "text", text: "Estándar" },
-      elige: { type: "text", text: "Estándar" },
-      comfort: { type: "text", text: "XL Confort" },
-      premium: { type: "text", text: "XL Confort" },
+      basic: { text: "Estándar", icon: "seat-standard" },
+      elige: { text: "Estándar", icon: "seat-standard" },
+      comfort: { text: "XL Confort", icon: "seat-xl" },
+      premium: { text: "XL Confort", icon: "seat-xl" },
     },
   },
   {
     id: "changes",
     labelTitle: "Cambios",
-    labelHelper: "Flexibilidad",
+    labelHelper: "Se abonará la diferencia de precio",
     values: {
-      basic: { type: "text", text: "Con coste" },
-      elige: { type: "text", text: "1º cambio gratis" },
-      comfort: { type: "text", text: "1º cambio gratis" },
-      premium: { type: "text", text: "Ilimitados" },
+      basic: { text: "Extra: 10 €", icon: "check" },
+      elige: { text: "1º cambio gratis", icon: "check" },
+      comfort: { text: "1º cambio gratis", icon: "check" },
+      premium: { text: "Cambios ilimitados", icon: "check" },
     },
   },
   {
     id: "refund",
-    labelTitle: "Anulación / Reembolso",
-    labelHelper: "Condición",
+    labelTitle: "Anulación",
+    labelHelper: "",
     values: {
-      basic: { type: "excluded", text: "No" },
-      elige: { type: "text", text: "70%" },
-      comfort: { type: "text", text: "70%" },
-      premium: { type: "text", text: "Hasta 100%" },
+      basic: { text: "No incluido", icon: "close" },
+      elige: { text: "Reembolso 70%", icon: "check" },
+      comfort: { text: "Reembolso 70%", icon: "check" },
+      premium: { text: "Reembolso 100%", icon: "check" },
     },
   },
   {
     id: "seatSelection",
     labelTitle: "Selección de asiento",
-    labelHelper: "Incluido",
+    labelHelper: "Escoge el asiento en el que quieras viajar",
     values: {
-      basic: { type: "extra", text: "Extra: 5 €" },
-      elige: { type: "extra", text: "Extra: 5 €" },
-      comfort: { type: "extra", text: "Extra: 5 €" },
-      premium: { type: "included", text: "Incluido" },
+      basic: { text: "Extra: 5 €", icon: "check" },
+      elige: { text: "Extra: 5 €", icon: "check" },
+      comfort: { text: "Extra: 5 €", icon: "check" },
+      premium: { text: "Incluido", icon: "check" },
     },
   },
-  {
+    {
     id: "lounge",
     labelTitle: "Acceso a Salas Club",
-    labelHelper: "Servicios",
+    labelHelper: "",
     values: {
-      basic: { type: "excluded", text: "No incluido" },
-      elige: { type: "excluded", text: "No incluido" },
-      comfort: { type: "excluded", text: "No incluido" },
-      premium: { type: "included", text: "Incluido" },
+      basic: { text: "No incluido", icon: "close" },
+      elige: { text: "No incluido", icon: "close" },
+      comfort: { text: "No incluido", icon: "close" },
+      premium: { text: "Incluido", icon: "check" },
     },
   },
 ];
@@ -127,20 +127,21 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
   );
 
   return (
-    <div className="fareComparison">
-      <div className="fareComparisonGrid" role="table" aria-label="Comparativa de tarifas">
-        <div className="fareComparisonCell fareComparisonCell--corner" />
+    <section className="fareComparisonSection">
+      <div className="fareComparisonCard">
+        <div className="fareComparisonGrid" role="table" aria-label="Comparativa de tarifas">
+          <div className="fareComparisonCell fareComparisonCell--corner" />
         {COLUMN_ORDER.map((column) => {
           const fare = fares.find((item) => item.id === column.id);
           if (!fare) return null;
+          const isSelected = fare.id === selectedFareId;
           return (
             <div
               key={`${fare.id}-header`}
-              className={`fareComparisonCell fareComparisonCell--header ${column.className}`}
+              className={`fareComparisonCell fareComparisonCell--header fareComparisonCell--column-top ${column.className}${isSelected ? " is-selected" : ""}`}
             >
-              <span className="fareComparisonAccent" aria-hidden="true" />
               <div className="fareComparisonHeaderStack">
-                <span className="fareComparisonName">{fare.name}</span>
+                <span className={`fareComparisonName fareComparisonName--${column.className.replace('col-','')}`}>{fare.name}</span>
                 <span className="fareComparisonPrice">+{fare.price.toFixed(2)} €</span>
                 <span className="fareComparisonMicrocopy">Sobre el precio base</span>
               </div>
@@ -156,19 +157,33 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
             </div>
             {COLUMN_ORDER.map((column) => {
               const value = row.values[column.key];
-              const icon = value?.type ? iconByType[value.type] : null;
+              // Lógica explícita por celda: usa value.icon si existe
+              let showTick = value?.icon === 'check';
+              let showCross = value?.icon === 'close';
+              let showSeatStandard = value?.icon === 'seat-standard';
+              let showSeatXL = value?.icon === 'seat-xl';
               const isSelected = column.id === selectedFareId;
               return (
                 <div
                   key={`${row.id}-${column.key}`}
                   className={`fareComparisonCell fareComparisonCell--value ${column.className}${isSelected ? " is-selected" : ""}`}
                 >
-                  {icon && (
-                    <span className={`fareComparisonIcon fareComparisonIcon--${icon.tone}`} aria-hidden="true">
-                      {icon.name}
-                    </span>
+                  {showTick && (
+                    <span className="fareComparisonIcon fareComparisonIcon--included" aria-hidden="true">check</span>
                   )}
-                  {icon && <VisuallyHidden>{icon.label}</VisuallyHidden>}
+                  {showTick && <VisuallyHidden>Incluido</VisuallyHidden>}
+                  {showCross && (
+                    <span className="fareComparisonIcon fareComparisonIcon--excluded" aria-hidden="true">close</span>
+                  )}
+                  {showCross && <VisuallyHidden>No incluido</VisuallyHidden>}
+                  {showSeatStandard && (
+                    <span className="fareComparisonIcon fareComparisonIcon--seat" aria-hidden="true">event_seat</span>
+                  )}
+                  {showSeatStandard && <VisuallyHidden>Asiento estándar</VisuallyHidden>}
+                  {showSeatXL && (
+                    <span className="fareComparisonIcon fareComparisonIcon--seat" aria-hidden="true">weekend</span>
+                  )}
+                  {showSeatXL && <VisuallyHidden>Asiento XL Confort</VisuallyHidden>}
                   <span>{value?.text ?? "—"}</span>
                 </div>
               );
@@ -184,7 +199,7 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
           return (
             <div
               key={`${fare.id}-cta`}
-              className={`fareComparisonCell fareComparisonCell--cta ${column.className}${isSelected ? " is-selected" : ""}`}
+              className={`fareComparisonCell fareComparisonCell--cta fareComparisonCell--column-bottom ${column.className}${isSelected ? " is-selected" : ""}`}
             >
               <Button
                 size="s"
@@ -204,39 +219,39 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
             </div>
           );
         })}
+        </div>
+        <Modal
+          isOpen={conditionsOpen}
+          onClose={() => setConditionsOpen(false)}
+          titleId="fare-conditions-title"
+          descriptionId="fare-conditions-description"
+          triggerRef={triggerRef}
+        >
+          <h2 id="fare-conditions-title" className="fareComparisonModalTitle">
+            {activeFare?.name} · +{activeFare?.price?.toFixed(2) ?? "0.00"} €
+          </h2>
+          <p id="fare-conditions-description" className="fareComparisonModalSubtitle">
+            Condiciones completas de la tarifa seleccionada.
+          </p>
+          <div className="fareComparisonModalGroups">
+            {groupedConditions.map((group) => (
+              <div key={group.title} className="fareComparisonModalGroup">
+                <h3 className="fareComparisonModalGroupTitle">{group.title}</h3>
+                <ul className="fareComparisonModalList">
+                  {group.items.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+          <div className="fareComparisonModalActions">
+            <Button variant="primary" onClick={() => setConditionsOpen(false)}>
+              Cerrar
+            </Button>
+          </div>
+        </Modal>
       </div>
-
-      <Modal
-        isOpen={conditionsOpen}
-        onClose={() => setConditionsOpen(false)}
-        titleId="fare-conditions-title"
-        descriptionId="fare-conditions-description"
-        triggerRef={triggerRef}
-      >
-        <h2 id="fare-conditions-title" className="fareComparisonModalTitle">
-          {activeFare?.name} · +{activeFare?.price?.toFixed(2) ?? "0.00"} €
-        </h2>
-        <p id="fare-conditions-description" className="fareComparisonModalSubtitle">
-          Condiciones completas de la tarifa seleccionada.
-        </p>
-        <div className="fareComparisonModalGroups">
-          {groupedConditions.map((group) => (
-            <div key={group.title} className="fareComparisonModalGroup">
-              <h3 className="fareComparisonModalGroupTitle">{group.title}</h3>
-              <ul className="fareComparisonModalList">
-                {group.items.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-        <div className="fareComparisonModalActions">
-          <Button variant="primary" onClick={() => setConditionsOpen(false)}>
-            Cerrar
-          </Button>
-        </div>
-      </Modal>
-    </div>
+    </section>
   );
 }

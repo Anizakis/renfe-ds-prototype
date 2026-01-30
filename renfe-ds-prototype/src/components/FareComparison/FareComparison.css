@@ -1,18 +1,47 @@
-.fareComparison {
+.fareComparisonIcon--seat {
+  color: var(--color-neutral-500);
+  font-size: var(--icon-s-glyph);
+  margin-right: var(--spacing-02);
+}
+.fareComparisonIcon--seat {
+  color: var(--color-neutral-800);
+  font-size: var(--icon-s-glyph);
+  margin-right: var(--spacing-02);
+}
+
+.fareComparisonSection {
+  margin-top: var(--spacing-06);
+  margin-bottom: var(--spacing-06);
+}
+.fareComparisonIcon--included {
+  color: var(--color-success-800);
+}
+
+.fareComparisonCard {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
   background: var(--color-neutral-25);
   border: var(--spacing-01) solid var(--color-neutral-200);
   border-radius: var(--radius-04);
-  padding: var(--spacing-06);
+  padding: var(--spacing-05);
   box-shadow: var(--shadow-xs);
   overflow-x: auto;
+  padding-left: var(--grid-margin);
+  padding-right: var(--grid-margin);}
+.fareComparisonIcon--excluded {
+  color: var(--color-neutral-800);
 }
 
 .fareComparisonGrid {
   display: grid;
   grid-template-columns: minmax(var(--spacing-11), 1.2fr) repeat(4, minmax(0, 1fr));
   grid-auto-rows: auto;
-  row-gap: var(--spacing-03);
-  align-items: stretch;
+  row-gap: var(--spacing-00);
+  align-items: stretch;}
+.fareComparisonIcon--extra {
+  color: var(--color-accent-primaryaccent-800);
 }
 
 .fareComparisonCell {
@@ -21,8 +50,15 @@
   padding: var(--spacing-03) var(--spacing-05);
   font-family: var(--font-family-primary);
   font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);}
+.fareComparisonCell {
+  display: flex;
+  align-items: center;
+  padding: var(--spacing-03) var(--spacing-05);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
-  color: var(--color-neutral-800);
+  color: var(--color-neutral-900);
 }
 
 .fareComparisonRow {
@@ -49,29 +85,50 @@
 .fareComparisonCell--label {
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--spacing-01);
-  color: var(--color-neutral-700);
+  gap: var(--spacing-03);}
+.fareComparisonCell--label {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-03);
+  color: var(--color-neutral-900);
+  padding: var(--spacing-03);
 }
 
 .fareComparisonCell--value {
   gap: var(--spacing-02);
+  padding-top: var(--spacing-03);
+  padding-bottom: var(--spacing-03);}
+.fareComparisonLabel {
+  font-weight: var(--type-weight-medium);
+  color: var(--color-neutral-900);
 }
 
 .fareComparisonCell--cta {
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--spacing-02);
+  gap: var(--spacing-02);}
+.fareComparisonHelper {
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-700);
 }
 
 .fareComparisonCell--cta .btn {
   width: 100%;
-  min-height: var(--spacing-08);
+  min-height: var(--spacing-08);}
+.fareComparisonMicrocopy {
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-700);
 }
 
 .fareComparisonName {
   font-size: var(--type-text-m-size);
   line-height: var(--type-text-m-line);
   font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-900);}
+.col-basic.is-selected {
+  background: var(--color-neutral-100);
   color: var(--color-neutral-900);
 }
 
@@ -79,18 +136,27 @@
   font-size: var(--type-text-l-size);
   line-height: var(--type-text-l-line);
   font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-900);}
+.col-elige.is-selected {
+  background: var(--color-accent-primaryaccent-100);
   color: var(--color-neutral-900);
 }
 
 .fareComparisonMicrocopy {
   font-size: var(--type-text-xs-size);
   line-height: var(--type-text-xs-line);
-  color: var(--color-neutral-500);
+  color: var(--color-neutral-500);}
+.col-comfort.is-selected {
+  background: var(--color-warning-100);
+  color: var(--color-neutral-900);
 }
 
 .fareComparisonLabel {
   font-weight: var(--type-weight-medium);
-  color: var(--color-neutral-800);
+  color: var(--color-neutral-800);}
+.col-premium.is-selected {
+  background: var(--color-brand-100);
+  color: var(--color-neutral-900);
 }
 
 .fareComparisonHelper {
@@ -118,59 +184,44 @@
   color: var(--color-accent-primaryaccent-500);
 }
 
-.col-basic {
-  background: rgba(var(--color-neutral-50-rgb), 0.5);
-}
-
-.col-elige {
-  background: rgba(var(--color-accent-primaryaccent-50-rgb), 0.35);
-}
-
-.col-comfort {
-  background: rgba(var(--color-warning-50-rgb), 0.35);
-}
-
-.col-premium {
-  background: rgba(var(--color-brand-50-rgb), 0.25);
-}
-
 .col-basic.is-selected {
-  background: rgba(var(--color-neutral-100-rgb), 0.6);
+  background: var(--color-neutral-100);
 }
 
 .col-elige.is-selected {
-  background: rgba(var(--color-accent-primaryaccent-100-rgb), 0.35);
+  background: var(--color-accent-primaryaccent-100);
 }
 
 .col-comfort.is-selected {
-  background: rgba(var(--color-warning-100-rgb), 0.35);
+  background: var(--color-warning-100);
 }
 
 .col-premium.is-selected {
-  background: rgba(var(--color-brand-100-rgb), 0.3);
+  background: var(--color-brand-100);
 }
 
-.fareComparisonAccent {
-  width: 100%;
-  height: var(--spacing-01);
-  border-radius: var(--radius-02);
-  background: var(--color-neutral-300);
+.fareComparisonCell--column-top.is-selected {
+  border-top-left-radius: var(--radius-03);
+  border-top-right-radius: var(--radius-03);
 }
 
-.col-basic .fareComparisonAccent {
-  background: var(--color-neutral-300);
+.fareComparisonCell--column-bottom.is-selected {
+  border-bottom-left-radius: var(--radius-03);
+  border-bottom-right-radius: var(--radius-03);
 }
 
-.col-elige .fareComparisonAccent {
-  background: var(--color-accent-primaryaccent-500);
-}
 
-.col-comfort .fareComparisonAccent {
-  background: var(--color-warning-500);
+.fareComparisonName--basic {
+  color: var(--color-neutral-700);
 }
-
-.col-premium .fareComparisonAccent {
-  background: var(--color-brand-500);
+.fareComparisonName--elige {
+  color: var(--color-accent-primaryaccent-600);
+}
+.fareComparisonName--comfort {
+  color: var(--color-warning-700);
+}
+.fareComparisonName--premium {
+  color: var(--color-brand-700);
 }
 
 .fareComparisonLink {
