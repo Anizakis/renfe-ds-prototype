@@ -1,3 +1,4 @@
+import { useRef, useState } from "react";
 import Container from "../components/Container/Container.jsx";
 import Grid from "../components/Grid/Grid.jsx";
 import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
@@ -6,6 +7,7 @@ import PriceBreakdown from "../components/PriceBreakdown/PriceBreakdown.jsx";
 import StickySummaryBar from "../components/StickySummaryBar/StickySummaryBar.jsx";
 import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
 import Button from "../components/Button/Button.jsx";
+import PriceDetailsModal from "../components/PriceDetailsModal/PriceDetailsModal.jsx";
 import { useTravel } from "../app/store.jsx";
 import { extras } from "../data/mockData.js";
 import { getTotalPrice, getSelectedJourney, getSelectedFare, getSelectedExtras, getPassengersTotal } from "../app/pricing.js";
@@ -17,11 +19,23 @@ export default function Extras() {
   const { state, dispatch } = useTravel();
   const { t } = useI18n();
   const navigate = useNavigate();
+  const priceTriggerRef = useRef(null);
+  const [priceModalOpen, setPriceModalOpen] = useState(false);
   const totals = getTotalPrice(state);
   const journey = getSelectedJourney(state);
   const fare = getSelectedFare(state);
   const selectedExtras = getSelectedExtras(state);
   const passengersTotal = getPassengersTotal(state);
+
+  // Añadido: función para formatear precios
+  const formatPrice = (value) => `${value.toFixed(2)} €`;
+
+  // Añadido: cálculos de desglose
+  const outboundPrice = journey?.price ?? 0;
+  const returnPrice = state.search?.tripType === "roundTrip" && state.selectedReturnJourney ? state.selectedReturnJourney.price ?? 0 : 0;
+  const baseTotal = outboundPrice + returnPrice;
+  const farePrice = fare?.price ?? 0;
+  const extrasTotal = selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
 
   const steps = [
     { id: "results", label: t("stepper.results") },
@@ -31,9 +45,9 @@ export default function Extras() {
   ];
 
   const breakdownItems = [
-    { label: t("summary.journey"), value: journey ? journey.label || journey.name : t("summary.noJourney") },
-    { label: t("summary.fare"), value: fare ? fare.name : t("summary.noFare") },
-    { label: t("summary.extras"), value: selectedExtras.length ? selectedExtras.map(e => e.name).join(", ") : t("summary.noExtras") },
+    { label: t("summary.baseFare"), value: formatPrice(baseTotal) },
+    { label: t("summary.fare"), value: formatPrice(farePrice) },
+    { label: t("summary.extras"), value: formatPrice(extrasTotal) },
     { label: t("summary.passengers"), value: `x${passengersTotal}` },
   ];
 
@@ -45,39 +59,52 @@ export default function Extras() {
     <Container as="section" className="page">
       <AnimatedCheckoutStepper steps={steps} currentStep="extras" />
       <VisuallyHidden as="h1">{t("extras.title")}</VisuallyHidden>
-      <Grid>
-        <div className="col-span-8">
-          <div className="card">
-            <h2 className="section-title">{t("extras.select")}</h2>
+      <section className="extrasSection">
+        <div className="extrasCard">
+          <h2 className="section-title">{t("extras.select")}</h2>
+          <div className="extrasGridWrap">
             <ExtrasList
               extras={extras}
               selectedExtras={state.extras}
               onToggle={(id) => dispatch({ type: "TOGGLE_EXTRA", payload: id })}
             />
           </div>
+          <div className="extrasCTA">
+            <Button
+              variant="primary"
+              size="l"
+              onClick={handleContinue}
+              className="extrasCTA__button"
+            >
+              Continúa con la compra
+            </Button>
+          </div>
         </div>
-        <div className="col-span-4">
-          <PriceBreakdown
-            title={t("summary.title")}
-            items={breakdownItems}
-            total={totals.total}
-            totalLabel={t("summary.total")}
-          />
-        </div>
-      </Grid>
-      <StickySummaryBar>
-        <div className="sticky-summary__totals">
-          <span>{t("summary.total")}: <strong>{totals.total.toFixed(2)} €</strong></span>
-          <span>{journey ? journey.label || journey.name : t("summary.noJourney")}</span>
-          <span>{fare ? fare.name : t("summary.noFare")}</span>
-          {selectedExtras.length > 0 && (
-            <span>{selectedExtras.map(e => e.name).join(", ")}</span>
-          )}
-        </div>
-        <Button size="l" variant="primary" onClick={handleContinue}>
-          {t("actions.continue")}
-        </Button>
-      </StickySummaryBar>
+      </section>
+      <StickySummaryBar
+        journey={journey}
+        returnJourney={state.search?.tripType === "roundTrip" ? state.selectedReturnJourney : null}
+        fare={fare}
+        extras={selectedExtras}
+        total={totals.total}
+        breakdownItems={breakdownItems}
+        canContinue={true}
+        onContinue={handleContinue}
+        onViewDetails={() => setPriceModalOpen(true)}
+        t={t}
+        priceTriggerRef={priceTriggerRef}
+        pendingFare={false}
+        pendingExtras={selectedExtras.length === 0}
+        helper={null}
+        ariaLive={null}
+      />
+      <PriceDetailsModal
+        isOpen={priceModalOpen}
+        onClose={() => setPriceModalOpen(false)}
+        triggerRef={priceTriggerRef}
+        items={breakdownItems}
+        total={formatPrice(totals.total)}
+      />
     </Container>
   );
 }

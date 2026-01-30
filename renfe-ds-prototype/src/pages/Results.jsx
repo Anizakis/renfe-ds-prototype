@@ -491,101 +491,26 @@ export default function Results() {
           </div>
         </div>
       )}
-      <StickySummaryBar>
-        <div className="sticky-summary__details">
-          <div className="sticky-summary__group">
-            <span className="sticky-summary__label">{t("summary.journey")}</span>
-            <span className="sticky-summary__value">
-              {isRoundTrip ? (
-                <span className="sticky-summary__trip-grid">
-                  <span className="sticky-summary__trip-column">
-                    <span className="sticky-summary__trip-line">
-                      {t("home.departDate")}: {selectedJourney
-                        ? `${selectedJourney.origin} → ${selectedJourney.destination}`
-                        : "—"}
-                    </span>
-                    <span className="sticky-summary__trip-line">
-                      {selectedJourney ? selectedJourney.date : "—"}
-                    </span>
-                    <span className="sticky-summary__trip-line">
-                      {selectedJourney
-                        ? `${selectedJourney.departTime}-${selectedJourney.arriveTime} · ${selectedJourney.service}`
-                        : "—"}
-                    </span>
-                  </span>
-                  <span className="sticky-summary__trip-column">
-                    <span className="sticky-summary__trip-line">
-                      {t("home.returnDate")}: {selectedReturnJourney
-                        ? `${selectedReturnJourney.origin} → ${selectedReturnJourney.destination}`
-                        : "—"}
-                    </span>
-                    <span className="sticky-summary__trip-line">
-                      {selectedReturnJourney ? selectedReturnJourney.date : "—"}
-                    </span>
-                    <span className="sticky-summary__trip-line">
-                      {selectedReturnJourney
-                        ? `${selectedReturnJourney.departTime}-${selectedReturnJourney.arriveTime} · ${selectedReturnJourney.service}`
-                        : "—"}
-                    </span>
-                  </span>
-                </span>
-              ) : selectedJourney ? (
-                <span className="sticky-summary__trip">
-                  <span className="sticky-summary__trip-line">
-                    {selectedJourney.origin} → {selectedJourney.destination}
-                  </span>
-                  <span className="sticky-summary__trip-line">
-                    {selectedJourney.date}
-                  </span>
-                  <span className="sticky-summary__trip-line">
-                    {selectedJourney.departTime}-{selectedJourney.arriveTime} · {selectedJourney.service}
-                  </span>
-                </span>
-              ) : (
-                "—"
-              )}
-            </span>
-          </div>
-          <div className="sticky-summary__group">
-            <span className="sticky-summary__label">{t("summary.fare")}</span>
-            <span className="sticky-summary__value">{t("summary.pending")}</span>
-          </div>
-          <div className="sticky-summary__group">
-            <span className="sticky-summary__label">{t("summary.extras")}</span>
-            <span className="sticky-summary__value">{t("summary.pending")}</span>
-          </div>
-        </div>
-        <div className="sticky-summary__actions">
-          <div className="sticky-summary__totals">
-            <span className="sticky-summary__total">{t("summary.total")}: {totalPrice.toFixed(2)} €</span>
-            <button
-              type="button"
-              className="sticky-summary__details-link"
-              onClick={() => setPriceModalOpen(true)}
-              ref={priceTriggerRef}
-            >
-              {t("summary.viewDetails")}
-            </button>
-            {!canContinue && (
-              <span className="sticky-summary__helper">{t("summary.selectJourneyHelper")}</span>
-            )}
-          </div>
-          <Button
-            variant="primary"
-            size="l"
-            disabled={!canContinue}
-            onClick={() => {
-              if (!canContinue) return;
-              navigate("/fares");
-            }}
-          >
-            {t("common.continue")}
-          </Button>
-        </div>
-        <VisuallyHidden as="p" aria-live="polite">
-          {canContinue ? t("summary.priceUpdated") : t("summary.selectJourneyHelper")}
-        </VisuallyHidden>
-      </StickySummaryBar>
+      <StickySummaryBar
+        journey={selectedJourney}
+        returnJourney={isRoundTrip ? selectedReturnJourney : null}
+        fare={null}
+        extras={[]}
+        total={totalPrice}
+        breakdownItems={breakdownItems}
+        canContinue={canContinue}
+        onContinue={() => {
+          if (!canContinue) return;
+          navigate("/fares");
+        }}
+        onViewDetails={() => setPriceModalOpen(true)}
+        t={t}
+        priceTriggerRef={priceTriggerRef}
+        pendingFare={true}
+        pendingExtras={true}
+        helper={!canContinue ? t("summary.selectJourneyHelper") : null}
+        ariaLive={canContinue ? t("summary.priceUpdated") : t("summary.selectJourneyHelper")}
+      />
       <PriceDetailsModal
         isOpen={priceModalOpen}
         onClose={() => setPriceModalOpen(false)}

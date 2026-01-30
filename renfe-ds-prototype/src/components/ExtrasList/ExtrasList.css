@@ -1,3 +1,55 @@
+/* Sección y card contenedora */
+.extrasSection {
+  margin-top: var(--spacing-07);
+  margin-bottom: var(--spacing-08);
+  display: flex;
+  justify-content: center;
+  padding-bottom: var(--spacing-09); /* Para evitar corte inferior */
+}
+
+.extrasCard {
+  width: 100%;
+  max-width: 900px; /* O el valor DS usado en FareComparison */
+  margin: 0 auto;
+  padding: var(--spacing-06);
+  border-radius: var(--radius-03);
+  border: 1px solid var(--color-neutral-200);
+  background: var(--color-neutral-25);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Grid de extras dentro de la card */
+.extrasGridWrap {
+  padding-top: var(--spacing-03);
+  padding-bottom: var(--spacing-03);
+}
+
+.extras-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-05);
+}
+
+@media (max-width: 768px) {
+  .extras-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* CTA inferior */
+.extrasCTA {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--spacing-06);
+  padding-bottom: var(--spacing-03);
+}
+
+.extrasCTA__button {
+  min-width: 240px;
+}
+
 .extras-list {
   list-style: none;
   margin: 0;
@@ -49,5 +101,126 @@
   line-height: var(--type-text-m-line);
   font-weight: var(--type-weight-bold);
   color: var(--color-neutral-900);
+}
+
+.extras-card {
+  background: var(--color-neutral-25);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-03);
+  box-shadow: var(--shadow-xs);
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  padding: var(--spacing-05);
+  transition: box-shadow 0.2s, background 0.2s;
+  outline: none;
+}
+
+.extras-card:focus-visible {
+  box-shadow: 0 0 0 2px var(--color-accent-500);
+}
+
+.extras-card--selected {
+  background: var(--color-accent-25);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent-200);
+}
+
+.extras-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-03);
+  margin-bottom: var(--spacing-03);
+}
+
+.extras-card__icon-title {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+}
+
+.extras-card__icon {
+  font-size: 2rem;
+  color: var(--color-accent-500);
+}
+
+.extras-card__title {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-900);
+}
+
+.extras-card__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--spacing-01);
+}
+
+.extras-card__per {
+  font-size: var(--type-text-xs-size);
+  color: var(--color-neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.extras-card__price {
+  font-size: var(--type-text-m-size);
+  font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-900);
+}
+
+.extras-card__price--free {
+  color: var(--color-accent-500);
+  font-weight: var(--type-weight-bold);
+}
+
+.extras-card__checkbox {
+  margin-top: var(--spacing-01);
+}
+
+.extras-card__desc {
+  flex: 1 1 auto;
+  margin: var(--spacing-03) 0;
+  color: var(--color-neutral-700);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.extras-card__action {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: var(--spacing-03);
+}
+
+.extras-card__add-btn {
+  background: none;
+  border: none;
+  color: var(--color-accent-700);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  font-weight: var(--type-weight-semibold);
+  cursor: pointer;
+  padding: var(--spacing-01) var(--spacing-03);
+  border-radius: var(--radius-02);
+  transition: background 0.2s;
+}
+
+.extras-card__add-btn:focus-visible {
+  outline: 2px solid var(--color-accent-500);
+  background: var(--color-accent-25);
+}
+
+.extras-card__added {
+  color: var(--color-accent-700);
+  font-weight: var(--type-weight-semibold);
+  font-size: var(--type-text-m-size);
 }
 
