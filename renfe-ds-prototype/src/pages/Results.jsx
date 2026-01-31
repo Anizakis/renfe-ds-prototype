@@ -22,6 +22,8 @@ import { useI18n } from "../app/i18n.jsx";
 import { createDefaultFilters } from "../components/ResultsFilters/ResultsFilters.jsx";
 import Tabs from "../components/Tabs/Tabs.jsx";
 import "./pages.css";
+import { formatPrice } from "../app/utils.js";
+import { getBreakdownItems } from "../app/breakdown.js";
 
 const RANGE_LENGTH = 5;
 
@@ -158,12 +160,7 @@ export default function Results() {
   const extrasTotal = selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
   const perPassengerTotal = baseTotal + fareTotal + extrasTotal;
   const formatPrice = (value) => `${value.toFixed(2)} €`;
-  const breakdownItems = [
-    { label: t("summary.baseFare"), value: formatPrice(baseTotal) },
-    { label: t("summary.fare"), value: formatPrice(fareTotal) },
-    { label: t("summary.extras"), value: formatPrice(extrasTotal) },
-    { label: t("summary.passengers"), value: `x${passengersTotal}` },
-  ];
+  const breakdownItems = getBreakdownItems({ t, baseTotal, farePrice: fareTotal, extrasTotal, passengersTotal });
 
   const baseOrigin = origin || "Madrid-Príncipe Pío";
   const baseDestination = destination || "Valencia";

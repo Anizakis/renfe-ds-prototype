@@ -1,0 +1,95 @@
+/* Use base-100 for white (adapts to dark mode as black) */
+.traveler-card {
+  background: var(--color-base-25);
+  border: var(--spacing-01) solid var(--color-neutral-200);
+  border-radius: var(--radius-04);
+  padding: var(--spacing-06) var(--spacing-07);
+  box-shadow: var(--shadow-xs);
+  margin-bottom: var(--spacing-07);
+}
+
+.traveler-card__section {
+  padding-bottom: var(--spacing-06);
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.traveler-card__title {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-title-m-size);
+  font-weight: 700;
+  margin-bottom: var(--spacing-05);
+}
+
+.traveler-card__subtitle {
+  font-weight: 400;
+  font-size: var(--type-text-m-size);
+  color: var(--color-neutral-700);
+}
+
+.traveler-form {
+  margin-top: var(--spacing-04);
+}
+
+.traveler-form__fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.traveler-form__legend {
+  font-weight: 700;
+  font-size: var(--type-text-l-size);
+  margin-bottom: var(--spacing-04);
+}
+
+.traveler-form__row {
+  display: flex;
+  gap: var(--spacing-04);
+  margin-bottom: var(--spacing-04);
+}
+
+.traveler-form__input {
+  flex: 1;
+  padding: var(--spacing-03);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-02);
+  font-size: var(--type-text-m-size);
+  font-family: var(--font-family-primary);
+}
+
+.traveler-form__select {
+  min-width: 120px;
+}
+
+.traveler-form__row--checkbox {
+  align-items: center;
+  margin-bottom: 0;
+}
+
+.traveler-form__checkbox-label {
+  font-size: var(--type-text-m-size);
+  font-family: var(--font-family-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+}
+
+.traveler-form__checkbox {
+  margin-right: var(--spacing-02);
+}
+
+.traveler-card__accordion {
+  margin-top: var(--spacing-06);
+}
+
+.traveler-card__accordion details {
+  border-top: 1px solid var(--color-neutral-200);
+  padding: var(--spacing-04) 0;
+}
+
+.traveler-card__accordion summary {
+  font-weight: 700;
+  font-size: var(--type-text-m-size);
+  cursor: pointer;
+  outline: none;
+}

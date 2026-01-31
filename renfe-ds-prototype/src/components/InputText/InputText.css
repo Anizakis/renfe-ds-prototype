@@ -56,6 +56,16 @@
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  gap: var(--icon-m-gap, 0.5rem);
+}
+
+.input-textfield__leading-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--icon-m-box, 1.5rem);
+  min-height: var(--icon-m-box, 1.5rem);
+  color: var(--itf-placeholder);
 }
 
 .input-textfield__input {
@@ -85,6 +95,10 @@
   font-size: var(--type-text-xs-size);
   line-height: var(--type-text-xs-line);
   color: var(--itf-helper);
+  min-height: calc(var(--icon-s-box, 1.375rem) + 2px); /* always reserve space for icon+text */
+  display: flex;
+  align-items: flex-start;
+  gap: var(--icon-s-gap, 0.375rem);
 }
 
 .input-textfield__helper.is-error { color: var(--itf-error); }

@@ -70,38 +70,8 @@
   position: relative;
 }
 
-.drawer__search-icon {
-  position: absolute;
-  left: var(--spacing-04);
-  top: calc(var(--spacing-02) + (var(--type-text-m-line) / 2));
-  transform: translateY(-50%);
-  color: var(--color-neutral-600);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.drawer__search-icon .icon {
-  color: currentColor;
-}
-
-.drawer__search .input-textfield__header {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  border: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-}
-
-.drawer__search .input-textfield__control {
-  position: relative;
-}
-
-.drawer__search .input-textfield__input {
-  padding-left: var(--spacing-09);
-}
+/* Eliminado el icono flotante, ahora el icono se gestiona por leadingIcon en InputText */
+/* .drawer__search-icon y padding-left eliminados */
 
 .drawer__section {
   display: flex;

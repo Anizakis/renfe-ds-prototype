@@ -3,11 +3,7 @@ import Icon from "../../ui/Icon/Icon.jsx";
 import { useState } from "react";
 import ExtraDetailModal from "./ExtraDetailModal.jsx";
 import { useTravel } from "../../app/store.jsx";
-
-// Helper for price formatting
-function formatPrice(price) {
-  return price === 0 ? "GRATIS" : price.toFixed(2).replace(".", ",") + " €";
-}
+import { formatPrice } from "../../app/utils.js";
 
 export default function ExtrasList({ extras, selectedExtras, onToggle }) {
   const [modalExtra, setModalExtra] = useState(null);

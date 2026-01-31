@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useMemo, useRef, useState } from "react";
 import Container from "../Container/Container.jsx";
+import InputText from "../InputText/InputText.jsx";
 import "./TopNav.css";
 import { useI18n } from "../../app/i18n.jsx";
 import DrawerMenu from "../navigation/DrawerMenu/DrawerMenu.jsx";
@@ -115,19 +116,19 @@ export default function TopNav() {
               <Icon name="close" size="md" decorative />
             </button>
           </div>
-          <label className="nav-search-modal__field">
-            <span className="nav-search-modal__icon" aria-hidden="true">
-              <Icon name="search" size="md" decorative />
-            </span>
-            <input
-              type="search"
+          <div className="nav-search-modal__field">
+            <InputText
+              inputId="nav-search-modal-input"
+              label={t("navSearch.title")}
+              hideLabel={true}
               value={searchValue}
               onChange={(event) => setSearchValue(event.target.value)}
               placeholder={t("navSearch.placeholder")}
-              className="nav-search-modal__input"
-              autoFocus
+              leadingIcon={<Icon name="search" size="m" decorative />}
+              inputProps={{ type: "search", autoFocus: true }}
+              helperText={"\u00A0"}
             />
-          </label>
+          </div>
           <div className="nav-search-modal__section">
             <span className="nav-search-modal__label">{t("navSearch.suggestionsLabel")}</span>
             <ul className="nav-search-modal__list">

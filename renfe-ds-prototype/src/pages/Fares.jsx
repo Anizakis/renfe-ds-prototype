@@ -13,6 +13,8 @@ import { fares as fareDetails } from "../data/mockData.js";
 import { getSelectedExtras, getSelectedFare, getSelectedJourney, getSelectedReturnJourney, getPassengersTotal, getTotalPrice } from "../app/pricing.js";
 import { useI18n } from "../app/i18n.jsx";
 import "./pages.css";
+import { formatPrice } from "../app/utils.js";
+import { getBreakdownItems } from "../app/breakdown.js";
 
 export default function Fares() {
   const { state, dispatch } = useTravel();
@@ -43,12 +45,7 @@ export default function Fares() {
     { id: "payment", label: t("stepper.payment") },
   ];
 
-  const breakdownItems = [
-    { label: t("summary.baseFare"), value: formatPrice(baseTotal) },
-    { label: t("summary.fare"), value: formatPrice(farePrice) },
-    { label: t("summary.extras"), value: formatPrice(extrasTotal) },
-    { label: t("summary.passengers"), value: `x${passengersTotal}` },
-  ];
+  const breakdownItems = getBreakdownItems({ t, baseTotal, farePrice, extrasTotal, passengersTotal });
 
   return (
     <Container as="section">

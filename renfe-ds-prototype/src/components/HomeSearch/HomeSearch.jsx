@@ -238,11 +238,17 @@ export default function HomeSearch({ onSubmit: onSubmitProp }) {
             label={t("home.origin")}
             inputId="origin"
             helperId="origin-helper"
-            helperText={errors.origin ?? (originSuccess ? t("home.stationValid") : "\u00A0")}
+            helperText={
+              errors.origin
+                ? errors.origin
+                : originSuccess
+                ? t("home.stationValid")
+                : "\u00A0"
+            }
             state={errors.origin ? "error" : originSuccess ? "success" : "default"}
             showCounter={false}
             hideLabel={!form.origin?.trim()}
-            hideHelper={!errors.origin && !originSuccess}
+            hideHelper={false}
             value={form.origin}
             onChange={handleChange("origin")}
             placeholder={t("home.origin")}
@@ -295,11 +301,17 @@ export default function HomeSearch({ onSubmit: onSubmitProp }) {
             label={t("home.destination")}
             inputId="destination"
             helperId="destination-helper"
-            helperText={errors.destination ?? (destinationSuccess ? t("home.stationValid") : "\u00A0")}
+            helperText={
+              errors.destination
+                ? errors.destination
+                : destinationSuccess
+                ? t("home.stationValid")
+                : "\u00A0"
+            }
             state={errors.destination ? "error" : destinationSuccess ? "success" : "default"}
             showCounter={false}
             hideLabel={!form.destination?.trim()}
-            hideHelper={!errors.destination && !destinationSuccess}
+            hideHelper={false}
             value={form.destination}
             onChange={handleChange("destination")}
             placeholder={t("home.destination")}

@@ -1,0 +1,59 @@
+.traveler-accordion {
+  background: var(--color-neutral-25);
+  border: var(--spacing-01) solid var(--color-neutral-200);
+  border-radius: var(--radius-04);
+}
+
+.traveler-accordion:first-child {
+  border-top-left-radius: var(--radius-04);
+  border-top-right-radius: var(--radius-04);
+}
+.traveler-accordion:last-child {
+  border-bottom-left-radius: var(--radius-04);
+  border-bottom-right-radius: var(--radius-04);
+}
+
+.traveler-accordion__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-06) var(--spacing-07);
+  cursor: pointer;
+  font-size: var(--type-title-m-size);
+  font-family: var(--font-family-primary);
+  font-weight: 700;
+  border-radius: var(--radius-04);
+  transition: background 0.2s;
+}
+
+.traveler-accordion__header:hover {
+  background: var(--color-neutral-50);
+}
+
+.traveler-accordion__title {
+  font-weight: 700;
+}
+
+.traveler-accordion__subtitle {
+  font-weight: 400;
+  font-size: var(--type-text-m-size);
+  color: var(--color-neutral-700);
+  margin-left: var(--spacing-02);
+}
+
+.traveler-accordion__icon {
+  color: var(--color-brand-500);
+  font-size: var(--icon-l-glyph);
+  width: var(--icon-l-box);
+  height: var(--icon-l-box);
+  font-weight: 700;
+  transition: transform 0.2s;
+}
+
+.traveler-accordion__icon.open {
+  transform: rotate(360deg);
+}
+
+.traveler-accordion__content {
+  padding: 0 var(--spacing-07) var(--spacing-07) var(--spacing-07);
+}

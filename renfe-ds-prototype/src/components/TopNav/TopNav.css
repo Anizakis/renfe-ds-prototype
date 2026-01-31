@@ -184,6 +184,7 @@
   line-height: var(--type-text-m-line);
   color: var(--color-neutral-900);
 }
+/* El layout y estilos del input y el icono ahora los gestiona InputText */
 
 .nav-search-modal__section {
   display: flex;

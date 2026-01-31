@@ -11,6 +11,17 @@
   gap: var(--spacing-03);
   padding-top: var(--spacing-04);
   padding-bottom: var(--spacing-03);
+  flex-wrap: nowrap;
+}
+
+.results-filters__header > div:first-child {
+  min-width: 0;
+  flex-shrink: 1;
+}
+
+.results-filters__header button {
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .results-filters__updating {

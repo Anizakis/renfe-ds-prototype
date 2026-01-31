@@ -20,7 +20,7 @@
   font-family: var(--font-family-primary);
   font-size: var(--type-heading-h2-size);
   line-height: var(--type-heading-h2-line);
-  margin: 0 0 var(--spacing-05) 0;
+  
   text-align: left;
 }
 
@@ -32,6 +32,10 @@
   align-items: start;
 }
 
+.home-search-origin,
+.home-search-destination {
+  position: relative;
+}
 .home-search-origin,
 .home-search-destination,
 .home-search-swap,

@@ -35,9 +35,6 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
       <div className="drawer__panel" ref={panelRef} id="drawer-menu">
 
         <div className="drawer__search">
-          <span className="drawer__search-icon" aria-hidden="true">
-            <Icon name="search" size="md" decorative />
-          </span>
           <InputText
             label={t("drawer.searchLabel")}
             inputId="drawer-search"
@@ -46,6 +43,7 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
             placeholder={t("drawer.searchPlaceholder")}
             value={searchValue}
             onChange={(event) => setSearchValue(event.target.value)}
+            leadingIcon={<Icon name="search" size="m" decorative />}
           />
         </div>
 

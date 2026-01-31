@@ -1,3 +1,11 @@
+.datepicker-calendar-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--icon-m-box, 1.5rem);
+  min-height: var(--icon-m-box, 1.5rem);
+  color: var(--itf-placeholder);
+}
 .date-picker {
   position: relative;
 }

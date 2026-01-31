@@ -1,3 +1,5 @@
+
+import Icon from "../../ui/Icon/Icon.jsx";
 import "./InputText.css";
 
 export default function InputText({
@@ -19,7 +21,7 @@ export default function InputText({
   size = "m",
   inputProps = {},
   inputRef,
-  trailing = null,
+  leadingIcon,
 }) {
   const isDisabled = disabled || state === "disabled";
   const isReadOnly = readOnly || state === "readOnly";
@@ -49,6 +51,9 @@ export default function InputText({
       </div>
 
       <div className="input-textfield__control">
+        {leadingIcon && (
+          <span className="input-textfield__leading-icon">{leadingIcon}</span>
+        )}
         <input
           className="input-textfield__input"
           type="text"
@@ -63,11 +68,6 @@ export default function InputText({
           aria-invalid={isError ? "true" : undefined}
           aria-describedby={describedBy}
         />
-        {trailing && (
-          <span className="input-textfield__trailing">
-            {trailing}
-          </span>
-        )}
       </div>
 
       {showHelper && (
@@ -79,7 +79,14 @@ export default function InputText({
             hideHelper ? "is-hidden" : ""
           }`}
         >
-          {helperText}
+          {isError ? (
+            <>
+              <Icon name="error" size="sm" decorative={false} label="Error" />
+              <span style={{ marginLeft: 4 }}>{helperText}</span>
+            </>
+          ) : (
+            helperText
+          )}
         </div>
       )}
     </div>

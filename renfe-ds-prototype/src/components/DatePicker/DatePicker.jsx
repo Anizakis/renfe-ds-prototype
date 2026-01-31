@@ -400,17 +400,23 @@ export default function DatePicker({
             inputMode: "numeric",
             "aria-label": ariaLabel ?? t("home.dateAriaLabel"),
           }}
-          trailing={(
+          leadingIcon={
             <button
               type="button"
               className="date-picker__icon"
               aria-label={t("home.openCalendar")}
-              onClick={() => setIsOpen((prev) => !prev)}
+              tabIndex={-1}
+              onClick={e => {
+                e.preventDefault();
+                setIsOpen(true);
+                inputRef.current?.focus();
+              }}
               disabled={disabled}
+              style={{ background: "none", border: 0, padding: 0, marginRight: 8, cursor: "pointer", display: "flex", alignItems: "center" }}
             >
               <Icon name="calendar_month" size="sm" decorative />
             </button>
-          )}
+          }
         />
       </div>
 
