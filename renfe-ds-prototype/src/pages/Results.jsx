@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "../components/Container/Container.jsx";
+import PageStack from "../components/PageStack/PageStack.jsx";
 import Grid from "../components/Grid/Grid.jsx";
 import Stack from "../components/Stack/Stack.jsx";
 import DayPickerStrip from "../components/DayPickerStrip/DayPickerStrip.jsx";
@@ -9,6 +10,7 @@ import Button from "../components/Button/Button.jsx";
 import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import SkeletonList from "../components/SkeletonList/SkeletonList.jsx";
 import StickySummaryBar from "../components/StickySummaryBar/StickySummaryBar.jsx";
+import ResultsSummary from "../components/ResultsSummary/ResultsSummary.jsx";
 import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
 import ResultsFilters from "../components/ResultsFilters/ResultsFilters.jsx";
 import Dropdown from "../components/Dropdown/Dropdown.jsx";
@@ -319,55 +321,43 @@ export default function Results() {
   }, [journeysForSelectedDate, sortKey]);
 
   return (
-    <Container as="section" className="page results-page">
-      <VisuallyHidden as="h1">{t("results.title")}</VisuallyHidden>
-      <div className="results-stepper">
-        <AnimatedCheckoutStepper steps={steps} currentStep="results" />
-      </div>
-      <div className="results-summary">
-        <div className="results-summary__main summary-left">
-          <div className="results-summary__route">
-            {origin || "—"}
-            <span className="results-route__arrow" aria-hidden="true">arrow_forward</span>
-            {destination || "—"}
-          </div>
-          <div className="results-summary__meta">
-            <span>{t("home.departDate")}: {formatDate(selectedDate) || "—"}</span>
-            {tripType === "roundTrip" && (
-              <span>{t("home.returnDate")}: {formatDate(returnDate) || "—"}</span>
-            )}
-            <span>{passengersLabel}</span>
-          </div>
+    <Container as="section" className="results-page">
+      <PageStack gap="03" align="stretch" textAlign="left">
+        <VisuallyHidden as="h1">{t("results.title")}</VisuallyHidden>
+        <div className="results-stepper">
+          <AnimatedCheckoutStepper steps={steps} currentStep="results" />
         </div>
-        <Button
-          variant="secondary"
-          size="s"
-          className="summary-action"
-          aria-label={`${t("results.modifySearch")}: ${origin || "—"} ${destination || "—"}`}
-          onClick={() => navigate("/")}
-        >
-          {t("results.modifySearch")}
-        </Button>
-      </div>
 
-      <Grid className="results-grid">
-        <aside className="results-sidebar">
-          <div className="results-panel">
-            <ResultsFilters
-              value={filters}
-              onChange={setFilters}
-              defaultFilters={buildInitialFilters(state.search)}
-            />
-          </div>
-        </aside>
-        <section className="results-content">
-          <div className="results-panel results-panel--content">
-            <div className="results-header">
-              <div className="results-header__titles">
-                <h2 className="section-title">{t("results.journeys")}</h2>
-              </div>
-              <div className="results-header__actions">
-                <Button
+        <ResultsSummary
+          origin={origin}
+          destination={destination}
+          selectedDate={selectedDate}
+          returnDate={returnDate}
+          tripType={tripType}
+          passengersLabel={passengersLabel}
+          t={t}
+          onModifySearch={() => navigate("/")}
+          formatDate={formatDate}
+        />
+
+        <Grid className="results-grid">
+          <aside className="results-sidebar">
+            <div className="results-panel">
+              <ResultsFilters
+                value={filters}
+                onChange={setFilters}
+                defaultFilters={buildInitialFilters(state.search)}
+              />
+            </div>
+          </aside>
+          <section className="results-content">
+            <div className="results-panel results-panel--content">
+              <div className="results-header">
+                <div className="results-header__titles">
+                  <h2 className="section-title">{t("results.journeys")}</h2>
+                </div>
+                <div className="results-header__actions">
+                  <Button
                   variant="secondary"
                   size="s"
                   className="results-filters-toggle"
@@ -473,51 +463,52 @@ export default function Results() {
         </section>
       </Grid>
 
-      {filtersOpen && (
-        <div className="results-filters-drawer" role="dialog" aria-modal="true">
-          <div className="results-filters-drawer__backdrop" onClick={() => setFiltersOpen(false)} />
-          <div className="results-filters-drawer__panel">
-            <div className="results-filters-drawer__header">
-              <span className="results-filters-drawer__title">{t("filtersPanel.title")}</span>
-              <Button variant="tertiary" size="s" onClick={() => setFiltersOpen(false)}>
-                {t("common.accept")}
-              </Button>
+        {filtersOpen && (
+          <div className="results-filters-drawer" role="dialog" aria-modal="true">
+            <div className="results-filters-drawer__backdrop" onClick={() => setFiltersOpen(false)} />
+            <div className="results-filters-drawer__panel">
+              <div className="results-filters-drawer__header">
+                <span className="results-filters-drawer__title">{t("filtersPanel.title")}</span>
+                <Button variant="tertiary" size="s" onClick={() => setFiltersOpen(false)}>
+                  {t("common.accept")}
+                </Button>
+              </div>
+              <ResultsFilters
+                value={filters}
+                onChange={setFilters}
+                defaultFilters={buildInitialFilters(state.search)}
+              />
             </div>
-            <ResultsFilters
-              value={filters}
-              onChange={setFilters}
-              defaultFilters={buildInitialFilters(state.search)}
-            />
           </div>
-        </div>
-      )}
-      <StickySummaryBar
-        journey={selectedJourney}
-        returnJourney={isRoundTrip ? selectedReturnJourney : null}
-        fare={null}
-        extras={[]}
-        total={totalPrice}
-        breakdownItems={breakdownItems}
-        canContinue={canContinue}
-        onContinue={() => {
-          if (!canContinue) return;
-          navigate("/fares");
-        }}
-        onViewDetails={() => setPriceModalOpen(true)}
-        t={t}
-        priceTriggerRef={priceTriggerRef}
-        pendingFare={true}
-        pendingExtras={true}
-        helper={!canContinue ? t("summary.selectJourneyHelper") : null}
-        ariaLive={canContinue ? t("summary.priceUpdated") : t("summary.selectJourneyHelper")}
-      />
-      <PriceDetailsModal
-        isOpen={priceModalOpen}
-        onClose={() => setPriceModalOpen(false)}
-        triggerRef={priceTriggerRef}
-        items={breakdownItems}
-        total={formatPrice(totalPrice)}
-      />
+        )}
+        <StickySummaryBar
+          journey={selectedJourney}
+          returnJourney={isRoundTrip ? selectedReturnJourney : null}
+          fare={null}
+          extras={[]}
+          total={totalPrice}
+          breakdownItems={breakdownItems}
+          canContinue={canContinue}
+          onContinue={() => {
+            if (!canContinue) return;
+            navigate("/fares");
+          }}
+          onViewDetails={() => setPriceModalOpen(true)}
+          t={t}
+          priceTriggerRef={priceTriggerRef}
+          pendingFare={true}
+          pendingExtras={true}
+          helper={!canContinue ? t("summary.selectJourneyHelper") : null}
+          ariaLive={canContinue ? t("summary.priceUpdated") : t("summary.selectJourneyHelper")}
+        />
+        <PriceDetailsModal
+          isOpen={priceModalOpen}
+          onClose={() => setPriceModalOpen(false)}
+          triggerRef={priceTriggerRef}
+          items={breakdownItems}
+          total={formatPrice(totalPrice)}
+        />
+      </PageStack>
     </Container>
   );
 }

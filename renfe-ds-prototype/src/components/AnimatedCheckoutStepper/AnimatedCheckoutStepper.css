@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: flex-start;
   width: 100%;
-  padding: var(--spacing-04) var(--spacing-05);
+  padding-inline: var(--spacing-05);
   min-height: var(--spacing-10);
 }
 

@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import Container from "../components/Container/Container.jsx";
-import Grid from "../components/Grid/Grid.jsx";
 import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import ExtrasList from "../components/ExtrasList/ExtrasList.jsx";
 import PriceBreakdown from "../components/PriceBreakdown/PriceBreakdown.jsx";
@@ -14,6 +13,7 @@ import { getTotalPrice, getSelectedJourney, getSelectedFare, getSelectedExtras, 
 import { useI18n } from "../app/i18n.jsx";
 import { useNavigate } from "react-router-dom";
 import "./pages.css";
+import PageStack from "../components/PageStack/PageStack.jsx";
 
 export default function Extras() {
   const { state, dispatch } = useTravel();
@@ -25,12 +25,19 @@ export default function Extras() {
   const journey = getSelectedJourney(state);
   const fare = getSelectedFare(state);
   const selectedExtras = getSelectedExtras(state);
+  // For ExtrasList, we need the raw selected object for toggling
+  const journeyKey = state.selectedJourneyId || "none";
+  const returnKey = state.selectedReturnJourneyId || null;
+  let selectedExtrasRaw = {};
+  if (!returnKey) {
+    selectedExtrasRaw = state.extrasByJourney?.[journeyKey] || {};
+  } else {
+    const comboKey = `${journeyKey}|${returnKey}`;
+    selectedExtrasRaw = state.extrasByJourney?.[comboKey] || {};
+  }
   const passengersTotal = getPassengersTotal(state);
 
-  // Añadido: función para formatear precios
   const formatPrice = (value) => `${value.toFixed(2)} €`;
-
-  // Añadido: cálculos de desglose
   const outboundPrice = journey?.price ?? 0;
   const returnPrice = state.search?.tripType === "roundTrip" && state.selectedReturnJourney ? state.selectedReturnJourney.price ?? 0 : 0;
   const baseTotal = outboundPrice + returnPrice;
@@ -56,55 +63,41 @@ export default function Extras() {
   };
 
   return (
-    <Container as="section" className="page">
-      <AnimatedCheckoutStepper steps={steps} currentStep="extras" />
-      <VisuallyHidden as="h1">{t("extras.title")}</VisuallyHidden>
-      <section className="extrasSection">
+    <Container as="section">
+      <PageStack gap="10" align="stretch" textAlign="left">
+        <AnimatedCheckoutStepper steps={steps} currentStep="extras" />
+        <VisuallyHidden as="h1">{t("extras.title")}</VisuallyHidden>
         <div className="extrasCard">
           <h2 className="section-title">{t("extras.select")}</h2>
           <div className="extrasGridWrap">
             <ExtrasList
               extras={extras}
-              selectedExtras={state.extras}
+              selectedExtras={selectedExtrasRaw}
               onToggle={(id) => dispatch({ type: "TOGGLE_EXTRA", payload: id })}
             />
           </div>
-          <div className="extrasCTA">
-            <Button
-              variant="primary"
-              size="l"
-              onClick={handleContinue}
-              className="extrasCTA__button"
-            >
-              Continúa con la compra
-            </Button>
-          </div>
         </div>
-      </section>
-      <StickySummaryBar
-        journey={journey}
-        returnJourney={state.search?.tripType === "roundTrip" ? state.selectedReturnJourney : null}
-        fare={fare}
-        extras={selectedExtras}
-        total={totals.total}
-        breakdownItems={breakdownItems}
-        canContinue={true}
-        onContinue={handleContinue}
-        onViewDetails={() => setPriceModalOpen(true)}
-        t={t}
-        priceTriggerRef={priceTriggerRef}
-        pendingFare={false}
-        pendingExtras={selectedExtras.length === 0}
-        helper={null}
-        ariaLive={null}
-      />
-      <PriceDetailsModal
-        isOpen={priceModalOpen}
-        onClose={() => setPriceModalOpen(false)}
-        triggerRef={priceTriggerRef}
-        items={breakdownItems}
-        total={formatPrice(totals.total)}
-      />
+        <StickySummaryBar
+          journey={journey}
+          returnJourney={state.search?.tripType === "roundTrip" ? state.selectedReturnJourney : null}
+          total={totals.total}
+          breakdownItems={breakdownItems}
+          canContinue={true}
+          onContinue={handleContinue}
+          onViewDetails={() => setPriceModalOpen(true)}
+          t={t}
+          priceTriggerRef={priceTriggerRef}
+          helper={null}
+          ariaLive={null}
+        />
+        <PriceDetailsModal
+          isOpen={priceModalOpen}
+          onClose={() => setPriceModalOpen(false)}
+          triggerRef={priceTriggerRef}
+          items={breakdownItems}
+          total={formatPrice(totals.total)}
+        />
+      </PageStack>
     </Container>
   );
 }

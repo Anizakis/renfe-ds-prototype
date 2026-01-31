@@ -20,7 +20,17 @@ export function getSelectedFare(state) {
 }
 
 export function getSelectedExtras(state) {
-  return extras.filter((extra) => state.extras[extra.id]);
+  // Determine current journey key (outbound or round trip combo)
+  const journeyKey = state.selectedJourneyId || "none";
+  const returnKey = state.selectedReturnJourneyId || null;
+  let selected = {};
+  if (!returnKey) {
+    selected = state.extrasByJourney?.[journeyKey] || {};
+  } else {
+    const comboKey = `${journeyKey}|${returnKey}`;
+    selected = state.extrasByJourney?.[comboKey] || {};
+  }
+  return extras.filter((extra) => selected[extra.id]);
 }
 
 export function getTotalPrice(state) {

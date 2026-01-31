@@ -20,7 +20,7 @@ const initialState = {
   selectedReturnJourneyId: null,
   selectedReturnJourney: null,
   selectedFareId: null,
-  extras: {},
+  extrasByJourney: {},
   paymentError: null,
 };
 
@@ -48,16 +48,34 @@ function reducer(state, action) {
       };
     case "SET_FARE":
       return { ...state, selectedFareId: action.payload };
-    case "TOGGLE_EXTRA":
+    case "TOGGLE_EXTRA": {
+      // Determine current journey key (outbound or return)
+      const journeyKey = state.selectedJourneyId || "none";
+      const returnKey = state.selectedReturnJourneyId || null;
+      let newExtrasByJourney = { ...state.extrasByJourney };
+      // Outbound
+      if (!returnKey) {
+        const prev = newExtrasByJourney[journeyKey] || {};
+        newExtrasByJourney[journeyKey] = {
+          ...prev,
+          [action.payload]: !prev[action.payload],
+        };
+      } else {
+        // Round trip: store as {outboundId|returnId: {extras}}
+        const comboKey = `${journeyKey}|${returnKey}`;
+        const prev = newExtrasByJourney[comboKey] || {};
+        newExtrasByJourney[comboKey] = {
+          ...prev,
+          [action.payload]: !prev[action.payload],
+        };
+      }
       return {
         ...state,
-        extras: {
-          ...state.extras,
-          [action.payload]: !state.extras[action.payload],
-        },
+        extrasByJourney: newExtrasByJourney,
       };
+    }
     case "CLEAR_EXTRAS":
-      return { ...state, extras: {} };
+      return { ...state, extrasByJourney: {} };
     case "SET_PAYMENT_ERROR":
       return { ...state, paymentError: action.payload };
     case "CLEAR_PAYMENT_ERROR":

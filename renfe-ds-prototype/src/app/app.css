@@ -6,11 +6,6 @@
 
 .app-main {
   outline: none;
-  padding-block: var(--spacing-06);
-  padding-top: calc(var(--spacing-11) + var(--spacing-06));
-}
-
-.app-main--results {
   padding-top: var(--spacing-11);
   padding-bottom: var(--spacing-06);
 }

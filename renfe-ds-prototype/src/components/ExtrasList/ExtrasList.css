@@ -9,9 +9,8 @@
 
 .extrasCard {
   width: 100%;
-  max-width: 900px; /* O el valor DS usado en FareComparison */
-  margin: 0 auto;
   padding: var(--spacing-06);
+  padding-bottom: var(--spacing-09); /* Extra padding para evitar corte inferior en última fila */
   border-radius: var(--radius-03);
   border: 1px solid var(--color-neutral-200);
   background: var(--color-neutral-25);
@@ -28,11 +27,17 @@
 
 .extras-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--spacing-05);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
+  .extras-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
   .extras-grid {
     grid-template-columns: 1fr;
   }
@@ -110,8 +115,8 @@
   box-shadow: var(--shadow-xs);
   display: flex;
   flex-direction: column;
-  min-height: 220px;
-  padding: var(--spacing-05);
+  min-height: 160px;
+  padding: var(--spacing-04);
   transition: box-shadow 0.2s, background 0.2s;
   outline: none;
 }
@@ -183,12 +188,12 @@
 
 .extras-card__desc {
   flex: 1 1 auto;
-  margin: var(--spacing-03) 0;
+  margin: var(--spacing-02) 0;
   color: var(--color-neutral-700);
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
@@ -197,7 +202,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: var(--spacing-03);
+  margin-top: var(--spacing-02);
 }
 
 .extras-card__add-btn {
@@ -222,5 +227,26 @@
   color: var(--color-accent-700);
   font-weight: var(--type-weight-semibold);
   font-size: var(--type-text-m-size);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-02);
+}
+
+.extras-card__remove-btn {
+  background: none;
+  border: none;
+  color: var(--color-neutral-500);
+  font-size: 1.2rem;
+  margin-left: var(--spacing-01);
+  cursor: pointer;
+  border-radius: var(--radius-02);
+  padding: var(--spacing-01);
+  transition: background 0.2s, color 0.2s;
+}
+
+.extras-card__remove-btn:focus-visible {
+  outline: 2px solid var(--color-accent-500);
+  background: var(--color-accent-25);
+  color: var(--color-accent-700);
 }
 

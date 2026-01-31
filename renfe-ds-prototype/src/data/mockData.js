@@ -177,22 +177,54 @@ export const fares = [
 
 export const extras = [
   {
+    id: "restauracion",
+    name: "Restauración",
+    description: "Selecciona tu menú ahora o hasta 12 horas antes de la salida",
+    price: 7.5,
+    priceLabel: "Desde 7,50 €",
+  },
+  {
+    id: "pack-superflex",
+    name: "Pack Superflex",
+    description: "Cambios gratuitos ilimitados + Puente AVE + Reembolso total",
+    price: 10,
+  },
+  {
     id: "seat",
-    name: "Asiento preferente",
-    description: "Ventana o pasillo.",
-    price: 6,
+    name: "Selección de asiento",
+    description: "Selecciona la plaza que deseas",
+    price: 5,
   },
   {
-    id: "luggage",
-    name: "Equipaje extra",
-    description: "Hasta 20kg adicionales.",
-    price: 8,
+    id: "puente-ave",
+    name: "Puente AVE",
+    description: "Cambia tu salida el mismo día del viaje sin coste extra",
+    price: 5,
   },
   {
-    id: "pet",
-    name: "Mascota",
-    description: "Disponible en trenes pet-friendly.",
-    price: 12,
+    id: "reembolso-total",
+    name: "Reembolso Total",
+    description: "En caso de anulación, recupera el 100% del importe del billete",
+    price: 5,
+  },
+  {
+    id: "mascotas",
+    name: "Mascotas",
+    description: "Animales hasta 10kg en transportín (máx. 60x35x35 cm) permitidos",
+    price: 10,
+  },
+  {
+    id: "bicicletas",
+    name: "Bicicletas",
+    description: "Solo bicicletas plegadas/embaladas (máx. 140x90x40 cm) permitidas.",
+    price: 0,
+    priceLabel: "GRATIS",
+  },
+  {
+    id: "cambios-ilimitados",
+    name: "Cambios Gratuitos Ilimitados",
+    description:  "Cambia fecha y hora sin límite, pagando solo diferencia de precio",
+    price: 5,
   },
 ];
 

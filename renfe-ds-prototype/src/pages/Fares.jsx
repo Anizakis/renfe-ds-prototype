@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Container from "../components/Container/Container.jsx";
+import PageStack from "../components/PageStack/PageStack.jsx";
 import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import StickySummaryBar from "../components/StickySummaryBar/StickySummaryBar.jsx";
 import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
@@ -49,44 +50,42 @@ export default function Fares() {
   ];
 
   return (
-    <Container as="section" className="page page--fares">
-      <VisuallyHidden as="h1">{t("fares.title")}</VisuallyHidden>
-      <AnimatedCheckoutStepper steps={steps} currentStep="fares" />
-      <FareComparison
-        fares={fareDetails}
-        selectedFareId={state.selectedFareId}
-        onSelect={(fareId) => dispatch({ type: "SET_FARE", payload: fareId })}
-      />
-      <VisuallyHidden as="p" aria-live="polite">
-        {state.selectedFareId ? `Tarifa seleccionada: ${selectedFare.name}` : ""}
-      </VisuallyHidden>
-      <StickySummaryBar
-        journey={journey}
-        returnJourney={isRoundTrip ? returnJourney : null}
-        fare={selectedFare}
-        extras={[]}
-        total={totalPrice}
-        breakdownItems={breakdownItems}
-        canContinue={canContinue}
-        onContinue={() => {
-          if (!canContinue) return;
-          navigate("/extras");
-        }}
-        onViewDetails={() => setPriceModalOpen(true)}
-        t={t}
-        priceTriggerRef={priceTriggerRef}
-        pendingFare={!state.selectedFareId}
-        pendingExtras={true}
-        helper={!canContinue ? t("summary.selectFareHelper") : null}
-        ariaLive={canContinue ? t("summary.priceUpdated") : t("summary.selectFareHelper")}
-      />
-      <PriceDetailsModal
-        isOpen={priceModalOpen}
-        onClose={() => setPriceModalOpen(false)}
-        triggerRef={priceTriggerRef}
-        items={breakdownItems}
-        total={formatPrice(totalPrice)}
-      />
+    <Container as="section">
+      <PageStack gap="10" align="stretch" textAlign="left">
+        <VisuallyHidden as="h1">{t("fares.title")}</VisuallyHidden>
+        <AnimatedCheckoutStepper steps={steps} currentStep="fares" />
+        <FareComparison
+          fares={fareDetails}
+          selectedFareId={state.selectedFareId}
+          onSelect={(fareId) => dispatch({ type: "SET_FARE", payload: fareId })}
+        />
+        <VisuallyHidden as="p" aria-live="polite">
+          {state.selectedFareId ? `Tarifa seleccionada: ${selectedFare.name}` : ""}
+        </VisuallyHidden>
+        <StickySummaryBar
+          journey={journey}
+          returnJourney={isRoundTrip ? returnJourney : null}
+          total={totalPrice}
+          breakdownItems={breakdownItems}
+          canContinue={canContinue}
+          onContinue={() => {
+            if (!canContinue) return;
+            navigate("/extras");
+          }}
+          onViewDetails={() => setPriceModalOpen(true)}
+          t={t}
+          priceTriggerRef={priceTriggerRef}
+          helper={!canContinue ? t("summary.selectFareHelper") : null}
+          ariaLive={canContinue ? t("summary.priceUpdated") : t("summary.selectFareHelper")}
+        />
+        <PriceDetailsModal
+          isOpen={priceModalOpen}
+          onClose={() => setPriceModalOpen(false)}
+          triggerRef={priceTriggerRef}
+          items={breakdownItems}
+          total={formatPrice(totalPrice)}
+        />
+      </PageStack>
     </Container>
   );
 }

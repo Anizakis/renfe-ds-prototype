@@ -1,0 +1,53 @@
+.results-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-05);
+  min-height: var(--spacing-12);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-04);
+  background: var(--color-neutral-25);
+  padding: var(--spacing-04);
+}
+
+.results-summary__main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.summary-left {
+  flex: 1;
+}
+
+.results-summary__route {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-02);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-l-size);
+  line-height: var(--type-text-l-line);
+  font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-900);
+}
+
+.results-summary__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-03);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  color: var(--color-neutral-700);
+}
+
+.summary-action {
+  min-height: var(--spacing-08);
+  padding: var(--spacing-03) var(--spacing-04);
+}
+
+.results-route__arrow {
+  font-family: "Material Symbols Outlined";
+  font-variation-settings: "wght" var(--icon-weight);
+  font-size: var(--icon-s-glyph);
+}

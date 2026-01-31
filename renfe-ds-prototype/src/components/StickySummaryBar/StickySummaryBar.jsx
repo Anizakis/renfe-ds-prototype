@@ -1,12 +1,12 @@
 import "./StickySummaryBar.css";
 import VisuallyHidden from "../VisuallyHidden/VisuallyHidden.jsx";
 import Button from "../Button/Button.jsx";
+import { useTravel } from "../../app/store.jsx";
+import { getSelectedExtras, getSelectedFare } from "../../app/pricing.js";
 
-export default function StickySummaryBar({
+function StickySummaryBar({
   journey,
   returnJourney,
-  fare,
-  extras = [],
   total,
   breakdownItems = [],
   canContinue = true,
@@ -17,16 +17,56 @@ export default function StickySummaryBar({
   detailsLabel = null,
   helper = null,
   priceTriggerRef = null,
-  pendingFare = false,
-  pendingExtras = false,
   showFare = true,
   showExtras = true,
   showDetailsButton = true,
   showHelper = true,
   ariaLive = null,
+  topSummary = false,
+  origin,
+  destination,
+  selectedDate,
+  returnDate,
+  tripType,
+  passengersLabel,
+  onModifySearch
 }) {
+  // Centralize extras logic here
+  const { state } = useTravel();
+  const selectedExtras = getSelectedExtras(state);
+  const pendingExtras = selectedExtras.length === 0;
+  // Centralize fare logic here
+  const selectedFare = getSelectedFare(state);
+  const pendingFare = !state.selectedFareId;
   return (
-    <div className="sticky-summary">
+    <div className={topSummary ? "sticky-summary sticky-summary--top" : "sticky-summary"}>
+      {topSummary && (
+        <>
+          <div className="sticky-summary__main">
+            <div className="sticky-summary__route">
+              {origin || "—"}
+              <span className="sticky-summary__arrow" aria-hidden="true">arrow_forward</span>
+              {destination || "—"}
+            </div>
+            <div className="sticky-summary__meta">
+              <span>{t("home.departDate")}: {selectedDate ? selectedDate : "—"}</span>
+              {tripType === "roundTrip" && (
+                <span>{t("home.returnDate")}: {returnDate ? returnDate : "—"}</span>
+              )}
+              <span>{passengersLabel}</span>
+            </div>
+          </div>
+          <Button
+            variant="secondary"
+            size="s"
+            className="sticky-summary__action"
+            aria-label={`${t("results.modifySearch")}: ${origin || "—"} ${destination || "—"}`}
+            onClick={onModifySearch}
+          >
+            {t("results.modifySearch")}
+          </Button>
+        </>
+      )}
       <div className="sticky-summary__inner">
         <div className="sticky-summary__details">
           <div className="sticky-summary__group">
@@ -63,13 +103,13 @@ export default function StickySummaryBar({
           {showFare && (
             <div className="sticky-summary__group">
               <span className="sticky-summary__label">{t("summary.fare")}</span>
-              <span className="sticky-summary__value">{pendingFare ? t("summary.pending") : fare ? fare.name : t("summary.noFare")}</span>
+              <span className="sticky-summary__value">{pendingFare ? t("summary.pending") : selectedFare ? selectedFare.name : t("summary.noFare")}</span>
             </div>
           )}
           {showExtras && (
             <div className="sticky-summary__group">
               <span className="sticky-summary__label">{t("summary.extras")}</span>
-              <span className="sticky-summary__value">{pendingExtras ? t("summary.pending") : extras.length > 0 ? extras.map(e => e.name).join(", ") : t("summary.noExtras")}</span>
+              <span className="sticky-summary__value">{pendingExtras ? t("summary.pending") : selectedExtras.length > 0 ? selectedExtras.map(e => e.name).join(", ") : t("summary.noExtras")}</span>
             </div>
           )}
         </div>
@@ -106,3 +146,5 @@ export default function StickySummaryBar({
     </div>
   );
 }
+
+export default StickySummaryBar;

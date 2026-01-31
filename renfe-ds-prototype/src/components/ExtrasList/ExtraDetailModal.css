@@ -1,0 +1,134 @@
+.extra-detail-modal {
+  /* Elimina fondo y borde para evitar doble fondo, usa solo el del modal principal */
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  max-width: 480px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+}
+
+.extra-detail-modal__title {
+  font-size: var(--type-text-l-size);
+  font-weight: var(--type-weight-semibold);
+  margin-bottom: var(--spacing-02);
+}
+
+.extra-detail-modal__desc {
+  color: var(--color-neutral-700);
+  font-size: var(--type-text-m-size);
+  margin-bottom: var(--spacing-03);
+}
+
+.extra-detail-modal__price {
+  color: var(--color-accent-700);
+  font-weight: var(--type-weight-bold);
+  font-size: var(--type-text-m-size);
+  margin-bottom: var(--spacing-03);
+}
+
+.extra-detail-modal__close {
+  align-self: flex-end;
+  background: var(--color-accent-25);
+  color: var(--color-accent-700);
+  border: none;
+  border-radius: var(--radius-02);
+  padding: var(--spacing-02) var(--spacing-04);
+  font-size: var(--type-text-m-size);
+  font-weight: var(--type-weight-semibold);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.extra-detail-modal__close:focus-visible {
+  outline: 2px solid var(--color-accent-500);
+  background: var(--color-accent-50);
+}
+
+.extra-detail-modal__close-btn {
+  position: absolute;
+  top: var(--spacing-04);
+  right: var(--spacing-04);
+  background: none;
+  border: none;
+  color: var(--color-neutral-700);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: var(--spacing-01);
+  border-radius: var(--radius-02);
+  z-index: 2;
+  transition: background 0.2s;
+}
+
+.extra-detail-modal__close-btn:focus-visible {
+  outline: 2px solid var(--color-accent-500);
+  background: var(--color-accent-25);
+}
+
+.extra-detail-modal__subheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-03);
+  gap: var(--spacing-03);
+}
+
+.extra-detail-modal__name {
+  font-size: var(--type-text-m-size);
+  font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-900);
+}
+
+.extra-detail-modal__per {
+  font-size: var(--type-text-xs-size);
+  color: var(--color-neutral-500);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  margin-right: var(--spacing-02);
+}
+
+.extra-detail-modal__divider {
+  height: 1px;
+  background: var(--color-neutral-200);
+  margin: var(--spacing-04) 0;
+  width: 100%;
+}
+
+.extra-detail-modal__section {
+  margin-bottom: var(--spacing-04);
+}
+
+.extra-detail-modal__section-title {
+  font-size: var(--type-text-s-size);
+  font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-700);
+  margin-bottom: var(--spacing-02);
+}
+
+.extra-detail-modal__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--spacing-04);
+  margin-top: var(--spacing-05);
+}
+
+.extra-detail-modal__total {
+  font-size: var(--type-text-m-size);
+  font-weight: var(--type-weight-bold);
+  color: var(--color-neutral-900);
+}
+
+.extra-detail-modal__passenger-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+  margin-top: var(--spacing-02);
+}
+
+.extra-detail-modal__passenger-checkbox {
+  margin-bottom: 0;
+}

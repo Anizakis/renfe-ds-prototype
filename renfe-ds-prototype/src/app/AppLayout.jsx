@@ -24,7 +24,7 @@ export default function AppLayout() {
         id="main"
         ref={mainRef}
         tabIndex={-1}
-        className={`app-main${location.pathname.startsWith("/results") ? " app-main--results" : ""}`}
+        className="app-main"
       >
         <Outlet />
       </main>
