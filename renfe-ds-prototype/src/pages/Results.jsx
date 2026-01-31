@@ -233,13 +233,6 @@ export default function Results() {
     return `${day}-${month}-${year}`;
   };
 
-  const steps = [
-    { id: "results", label: t("stepper.results") },
-    { id: "fares", label: t("stepper.fares") },
-    { id: "extras", label: t("stepper.extras") },
-    { id: "payment", label: t("stepper.payment") },
-  ];
-
   const rangeDays = useMemo(
     () => buildDayRange(rangeStart, rangeLength),
     [rangeStart, rangeLength]
@@ -325,7 +318,7 @@ export default function Results() {
       <PageStack gap="03" align="stretch" textAlign="left">
         <VisuallyHidden as="h1">{t("results.title")}</VisuallyHidden>
         <div className="results-stepper">
-          <AnimatedCheckoutStepper steps={steps} currentStep="results" />
+          <AnimatedCheckoutStepper currentStep="results" />
         </div>
 
         <ResultsSummary

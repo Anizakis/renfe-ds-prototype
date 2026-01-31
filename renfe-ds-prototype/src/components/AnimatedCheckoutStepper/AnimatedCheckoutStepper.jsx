@@ -2,8 +2,10 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useI18n } from "../../app/i18n.jsx";
 import "./AnimatedCheckoutStepper.css";
+import { checkoutSteps } from "./checkoutSteps.js";
 
-export default function AnimatedCheckoutStepper({ steps, currentStep }) {
+export default function AnimatedCheckoutStepper({ currentStep }) {
+  const steps = checkoutSteps;
   const navigate = useNavigate();
   const { t } = useI18n();
   const currentIndex = Math.max(

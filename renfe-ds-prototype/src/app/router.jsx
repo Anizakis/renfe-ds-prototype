@@ -4,6 +4,7 @@ import Home from "../pages/Home.jsx";
 import Login from "../pages/Login.jsx";
 import Results from "../pages/Results.jsx";
 import Fares from "../pages/Fares.jsx";
+import Travelers from "../pages/Travelers.jsx";
 import Extras from "../pages/Extras.jsx";
 import Payment from "../pages/Payment.jsx";
 
@@ -16,6 +17,7 @@ export const router = createBrowserRouter([
       { path: "login", element: <Login /> },
       { path: "results", element: <Results /> },
       { path: "fares", element: <Fares /> },
+      { path: "travelers", element: <Travelers /> },
       { path: "extras", element: <Extras /> },
       { path: "payment", element: <Payment /> },
     ],

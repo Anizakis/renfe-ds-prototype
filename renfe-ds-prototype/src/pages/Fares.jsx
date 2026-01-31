@@ -38,6 +38,7 @@ export default function Fares() {
   const steps = [
     { id: "results", label: t("stepper.results") },
     { id: "fares", label: t("stepper.fares") },
+    { id: "travelers", label: t("stepper.travelers", "Datos viajeros") },
     { id: "extras", label: t("stepper.extras") },
     { id: "payment", label: t("stepper.payment") },
   ];
@@ -53,7 +54,7 @@ export default function Fares() {
     <Container as="section">
       <PageStack gap="10" align="stretch" textAlign="left">
         <VisuallyHidden as="h1">{t("fares.title")}</VisuallyHidden>
-        <AnimatedCheckoutStepper steps={steps} currentStep="fares" />
+        <AnimatedCheckoutStepper currentStep="fares" />
         <FareComparison
           fares={fareDetails}
           selectedFareId={state.selectedFareId}
@@ -70,7 +71,7 @@ export default function Fares() {
           canContinue={canContinue}
           onContinue={() => {
             if (!canContinue) return;
-            navigate("/extras");
+            navigate("/travelers");
           }}
           onViewDetails={() => setPriceModalOpen(true)}
           t={t}
