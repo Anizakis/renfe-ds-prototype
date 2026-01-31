@@ -374,8 +374,15 @@ export default function HomeSearch({ onSubmit: onSubmitProp }) {
             ]}
           />
         </div>
-        <div className="home-search-dates">
-          <div className="home-search-date-grid">
+        <div
+          className={
+            "home-search-bottomRow" +
+            (tripType === "roundTrip"
+              ? " is-roundTrip"
+              : " is-oneWay")
+          }
+        >
+          <div className="home-search-dates">
             <DatePicker
               label={t("home.departDate")}
               inputId="depart-date"
@@ -384,11 +391,12 @@ export default function HomeSearch({ onSubmit: onSubmitProp }) {
               onChange={(date) => {
                 const nextDepart = toIsoDate(date);
                 setForm((prev) => {
-                  const nextReturn = prev.returnDate
-                    && nextDepart
-                    && prev.returnDate < nextDepart
-                    ? ""
-                    : prev.returnDate;
+                  const nextReturn =
+                    prev.returnDate &&
+                    nextDepart &&
+                    prev.returnDate < nextDepart
+                      ? ""
+                      : prev.returnDate;
                   return {
                     ...prev,
                     departDate: nextDepart,
@@ -400,7 +408,9 @@ export default function HomeSearch({ onSubmit: onSubmitProp }) {
               ariaLabel={t("home.departDate")}
               required
             />
-            {tripType === "roundTrip" && (
+          </div>
+          {tripType === "roundTrip" && (
+            <div className="home-search-return-date">
               <DatePicker
                 label={t("home.returnDate")}
                 inputId="return-date"
@@ -416,27 +426,29 @@ export default function HomeSearch({ onSubmit: onSubmitProp }) {
                 ariaLabel={t("home.returnDate")}
                 required
               />
-            )}
+            </div>
+          )}
+          <div className="home-search-passengers">
+            <PassengerSelector
+              value={normalizedPassengers}
+              onChange={(value) =>
+                setForm((prev) => ({ ...prev, passengers: value }))
+              }
+            />
           </div>
-        </div>
-        <div className="home-search-passengers">
-          <PassengerSelector
-            value={normalizedPassengers}
-            onChange={(value) => setForm((prev) => ({ ...prev, passengers: value }))}
-          />
-        </div>
-        <div className="home-search-actions">
-          <div className="home-search-action-field">
-            <span className="home-search-action-spacer" aria-hidden="true" />
-            <Button
-              type="submit"
-              variant="primary"
-              size="l"
-              disabled={!isReady}
-              className="home-search-button"
-            >
-              {t("home.search")}
-            </Button>
+          <div className="home-search-actions">
+            <div className="home-search-action-field">
+              <span className="home-search-action-spacer" aria-hidden="true" />
+              <Button
+                type="submit"
+                variant="primary"
+                size="l"
+                disabled={!isReady}
+                className="home-search-button"
+              >
+                {t("home.search")}
+              </Button>
+            </div>
           </div>
         </div>
       </div>

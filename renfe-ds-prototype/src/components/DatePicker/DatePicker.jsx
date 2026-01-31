@@ -393,7 +393,10 @@ export default function DatePicker({
           state={showError ? "error" : "default"}
           inputRef={inputRef}
           inputProps={{
-            onFocus: () => setIsOpen(true),
+            onFocus: () => {
+              // Solo abrir si la fecha es inválida o incompleta
+              if (showError) setIsOpen(true);
+            },
             onBlur: handleBlur,
             onKeyDown: handleKeyDown,
             onPaste: handlePaste,
@@ -427,6 +430,7 @@ export default function DatePicker({
           aria-label={t("home.dates")}
           onKeyDown={handleCalendarKeyDown}
           ref={panelRef}
+          style={{ left: '50%', transform: 'translateX(-50%)' }}
         >
           <div className="date-picker__panel-header">
             <button

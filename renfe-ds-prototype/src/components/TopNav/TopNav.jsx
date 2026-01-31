@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useRef, useState, useEffect } from "react";
 import Container from "../Container/Container.jsx";
 import InputText from "../InputText/InputText.jsx";
 import "./TopNav.css";
@@ -15,6 +15,13 @@ export default function TopNav() {
   const [searchValue, setSearchValue] = useState("");
   const menuButtonRef = useRef(null);
   const searchButtonRef = useRef(null);
+  const searchInputRef = useRef(null);
+    // Enfocar el input solo al abrir el modal
+    useEffect(() => {
+      if (isSearchOpen && searchInputRef.current) {
+        searchInputRef.current.focus();
+      }
+    }, [isSearchOpen]);
   const searchSuggestions = useMemo(() => {
     const value = t("navSearch.suggestions");
     return Array.isArray(value) ? value : [];
@@ -116,19 +123,20 @@ export default function TopNav() {
               <Icon name="close" size="md" decorative />
             </button>
           </div>
-          <div className="nav-search-modal__field">
-            <InputText
-              inputId="nav-search-modal-input"
-              label={t("navSearch.title")}
-              hideLabel={true}
-              value={searchValue}
-              onChange={(event) => setSearchValue(event.target.value)}
-              placeholder={t("navSearch.placeholder")}
-              leadingIcon={<Icon name="search" size="m" decorative />}
-              inputProps={{ type: "search", autoFocus: true }}
-              helperText={"\u00A0"}
-            />
-          </div>
+          <InputText
+            inputId="nav-search-modal-input"
+            label=""
+            hideLabel={true}
+            value={searchValue}
+            onChange={(event) => setSearchValue(event.target.value)}
+            placeholder={t("navSearch.placeholder")}
+            leadingIcon={<Icon name="search" size="m" decorative />}
+            inputProps={{ type: "search" }}
+            inputRef={searchInputRef}
+            helperText=""
+            hideHelper={true}
+            showCounter={false}
+          />
           <div className="nav-search-modal__section">
             <span className="nav-search-modal__label">{t("navSearch.suggestionsLabel")}</span>
             <ul className="nav-search-modal__list">

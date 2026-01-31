@@ -28,8 +28,8 @@ export default function useFocusTrap(containerRef, isOpen, onClose) {
       }
     }
 
+
     container.addEventListener("keydown", onKeyDown);
-    first?.focus();
 
     return () => {
       container.removeEventListener("keydown", onKeyDown);

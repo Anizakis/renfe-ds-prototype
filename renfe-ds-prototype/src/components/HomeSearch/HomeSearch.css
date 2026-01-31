@@ -7,7 +7,7 @@
   border: 1px solid var(--color-neutral-200);
   border-radius: var(--radius-04);
   box-shadow: var(--shadow-xs);
-  padding: var(--spacing-10);
+  padding: var(--spacing-06);
   overflow: visible;
 }
 .home-search {
@@ -24,26 +24,16 @@
   text-align: left;
 }
 
+/* FLEX LAYOUT for main grid */
 .home-search-grid {
-  display: grid;
-  grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
-  column-gap: var(--grid-gutter);
-  row-gap: var(--spacing-03);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
 }
 
 .home-search-origin,
 .home-search-destination {
   position: relative;
-}
-.home-search-origin,
-.home-search-destination,
-.home-search-swap,
-.home-search-actions,
-.home-search-dates,
-.home-search-passengers,
-.home-search-triptype {
-  grid-column: span 12;
 }
 
 .home-search-swap {
@@ -72,19 +62,6 @@
 .home-search-action-spacer {
   display: block;
   height: var(--type-text-m-line);
-}
-
-.home-search-dates,
-.home-search-passengers {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-03);
-}
-
-.home-search-date-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--spacing-03);
 }
 
 .home-search-triptype {
@@ -129,66 +106,87 @@
 }
 
 @media (min-width: 768px) {
-  .home-search-header,
-  .home-search-triptype {
-    grid-column: span 8;
+  .home-search-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: var(--grid-gutter);
+    row-gap: var(--spacing-03);
+    align-items: start;
   }
-  .home-search-origin {
-    grid-column: span 3;
-  }
+
+  /* fila 1: Origen | swap | Destino */
+  .home-search-origin,
   .home-search-destination {
-    grid-column: span 3;
+    flex: 1 1 0;
+    min-width: 0;
   }
+
   .home-search-swap {
-    grid-column: span 2;
-    justify-self: center;
+    flex: 0 0 auto;
+    justify-self: unset; /* por si quedó algo */
   }
-  .home-search-dates {
-    grid-column: span 4;
+
+  /* fila 2: tipo de viaje a ancho completo */
+  .home-search-triptype {
+    flex: 0 0 100%;
   }
-  .home-search-passengers {
-    grid-column: span 2;
+
+  /* fila 3: bottomRow a ancho completo */
+  .home-search-bottomRow {
+    flex: 0 0 100%;
   }
+
+  /* botón como estaba */
   .home-search-actions {
-    grid-column: span 2;
     justify-content: flex-end;
     align-self: start;
     padding-top: 0;
   }
+
   .home-search-button {
     width: auto;
   }
 }
 
-@media (min-width: 1024px) {
-  .home-search-origin {
-    grid-column: span 5;
-  }
-  .home-search-destination {
-    grid-column: span 5;
-  }
-  .home-search-swap {
-    grid-column: span 2;
-    justify-self: center;
-  }
-  .home-search-triptype {
-    grid-column: span 12;
-  }
-  .home-search-dates {
-    grid-column: span 7;
-  }
-  .home-search-passengers {
-    grid-column: span 2;
-  }
-  .home-search-actions {
-    grid-column: span 3;
-    align-self: start;
-    padding-top: 0;
-  }
-}
+
 
 @media (max-width: 768px) {
   .home-search-date-grid {
     grid-template-columns: 1fr;
   }
 }
+
+.home-search-bottomRow {
+  display: grid;
+  gap: var(--grid-gutter);
+  margin-top: var(--spacing-04);
+}
+
+@media (min-width: 768px) {
+  .home-search-bottomRow.is-roundTrip {
+    grid-template-columns: 2fr 2fr 1fr auto;
+    grid-template-areas: "depart return passengers actions";
+  }
+  .home-search-bottomRow.is-oneWay {
+    grid-template-columns: 2fr 1fr auto;
+    grid-template-areas: "depart passengers actions";
+  }
+
+  .home-search-dates {
+    grid-area: depart;
+    min-width: 0;
+  }
+  .home-search-return-date {
+    grid-area: return;
+    min-width: 0;
+  }
+  .home-search-passengers {
+    grid-area: passengers;
+    min-width: 0;
+  }
+  .home-search-actions {
+    grid-area: actions;
+    min-width: 0;
+  }
+}
+
