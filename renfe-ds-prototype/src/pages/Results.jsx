@@ -5,6 +5,7 @@ import PageStack from "../components/PageStack/PageStack.jsx";
 import Grid from "../components/Grid/Grid.jsx";
 import Stack from "../components/Stack/Stack.jsx";
 import DayPickerStrip from "../components/DayPickerStrip/DayPickerStrip.jsx";
+import OnlyAvailableDaysToggle from "../components/OnlyAvailableDaysToggle/OnlyAvailableDaysToggle.jsx";
 import JourneyCard from "../components/JourneyCard/JourneyCard.jsx";
 import Button from "../components/Button/Button.jsx";
 import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
@@ -126,6 +127,7 @@ export default function Results() {
   const [announcement, setAnnouncement] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [sortKey, setSortKey] = useState("price");
+  const [showAvailableOnly, setShowAvailableOnly] = useState(false);
   const [priceModalOpen, setPriceModalOpen] = useState(false);
   const priceTriggerRef = useRef(null);
   const loadingTimeout = useRef(null);
@@ -279,6 +281,12 @@ export default function Results() {
     }, {});
   }, [filteredJourneys, rangeDays]);
 
+  const visibleDays = useMemo(() => (
+    showAvailableOnly
+      ? rangeDays.filter((day) => dayAvailability[day])
+      : rangeDays
+  ), [rangeDays, showAvailableOnly, dayAvailability]);
+
   const handleDayChange = (id) => {
     if (id === selectedDate) return;
     setSelectedDate(id);
@@ -343,47 +351,59 @@ export default function Results() {
           <section className="results-content">
             <div className="results-panel results-panel--content">
               <div className="results-header">
-                <div className="results-header__titles">
-                  <h2 className="section-title">{t("results.journeys")}</h2>
+                <div className="results-header__row">
+                  <div className="results-header__titles">
+                    <h2 className="section-title">{t("results.journeys")}</h2>
+                  </div>
+                  <div className="results-header__actions">
+                    <Button
+                      variant="secondary"
+                      size="s"
+                      className="results-filters-toggle"
+                      onClick={() => setFiltersOpen(true)}
+                    >
+                      {t("results.filters")}
+                    </Button>
+                  </div>
                 </div>
-                <div className="results-header__actions">
-                  <Button
-                  variant="secondary"
-                  size="s"
-                  className="results-filters-toggle"
-                  onClick={() => setFiltersOpen(true)}
-                >
-                  {t("results.filters")}
-                </Button>
-                <Dropdown
-                  className="results-sort"
-                  label={t("results.sortBy")}
-                  value={sortKey}
-                  onChange={setSortKey}
-                  options={[
-                    { value: "price", label: t("results.sortPrice") },
-                    { value: "depart", label: t("results.sortDeparture") },
-                    { value: "duration", label: t("results.sortDuration") },
-                  ]}
-                />
-              </div>
-            </div>
 
-            {isRoundTrip && (
-              <Tabs
-                label={t("results.journeys")}
-                activeId={activeLeg}
-                onChange={setActiveLeg}
-                tabs={[
-                  { id: "outbound", label: t("home.departDate") },
-                  { id: "return", label: t("home.returnDate") },
+                {isRoundTrip && (
+                  <div className="results-header__tabs">
+                    <Tabs
+                      label={t("results.journeys")}
+                      activeId={activeLeg}
+                      onChange={setActiveLeg}
+                      tabs={[
+                        { id: "outbound", label: t("home.departDate") },
+                        { id: "return", label: t("home.returnDate") },
+                      ]}
+                    />
+                  </div>
+                )}
+              </div>
+
+
+            <div className="results-toolbar">
+              <OnlyAvailableDaysToggle
+                checked={showAvailableOnly}
+                onChange={setShowAvailableOnly}
+              />
+              <Dropdown
+                className="results-sort"
+                label={t("results.sortBy")}
+                value={sortKey}
+                onChange={setSortKey}
+                options={[
+                  { value: "price", label: t("results.sortPrice") },
+                  { value: "depart", label: t("results.sortDeparture") },
+                  { value: "duration", label: t("results.sortDuration") },
                 ]}
               />
-            )}
+            </div>
 
             <div className="results-daypicker">
               <DayPickerStrip
-                days={rangeDays}
+                days={visibleDays}
                 activeDay={selectedDate}
                 prices={dayPrices}
                 availability={dayAvailability}

@@ -68,72 +68,72 @@ export default function DayPickerStrip({
 
   return (
     <div className="day-picker">
-      <button
-        type="button"
-        className="day-picker__nav"
-        onClick={() => (onPrevRange ? onPrevRange() : handleScroll("prev"))}
-        aria-label={t("results.prevDays")}
-      >
-        <Icon name="chevron_left" size="md" decorative />
-      </button>
+        <button
+          type="button"
+          className="day-picker__nav"
+          onClick={() => (onPrevRange ? onPrevRange() : handleScroll("prev"))}
+          aria-label={t("results.prevDays")}
+        >
+          <Icon name="chevron_left" size="md" decorative />
+        </button>
 
-      <div
-        className="day-picker__list"
-        role="tablist"
-        aria-label={t("results.dayPickerLabel")}
-        ref={listRef}
-        onKeyDown={handleKeyDown}
-      >
-        {days.map((day) => {
-          const date = new Date(day);
-          const label = formatDayLabel(date, locale);
-          const price = prices[day];
-          const isAvailable = availability[day];
-          const isSelected = day === activeDay;
-          const isToday = isSameDay(date, today);
-          return (
-            <button
-              key={day}
-              type="button"
-              role="tab"
-              className={[
-                "day-tile",
-                isSelected ? "is-selected" : "",
-                !isAvailable ? "is-disabled" : "",
-                isLoading && isSelected ? "is-loading" : "",
-              ].filter(Boolean).join(" ")}
-              aria-selected={isSelected ? "true" : "false"}
-              aria-disabled={!isAvailable ? "true" : undefined}
-              disabled={!isAvailable}
-              tabIndex={isSelected ? 0 : -1}
-              onClick={() => onChange?.(day)}
-            >
-              <span className="day-tile__label">{label}</span>
-              <span className="day-tile__price">
-                {isAvailable
-                  ? price != null
-                    ? `${t("results.priceFrom")} ${formatPrice(price, locale)}`
-                    : "—"
-                  : t("results.noAvailability")}
-              </span>
-              {isToday && <span className="day-tile__today">{t("results.today")}</span>}
-              {isSelected && <span className="day-tile__indicator" aria-hidden="true" />}
-              {isSelected && isLoading && (
-                <VisuallyHidden>{t("results.loadingDay")}</VisuallyHidden>
-              )}
-            </button>
-          );
-        })}
+        <div
+          className="day-picker__list"
+          role="tablist"
+          aria-label={t("results.dayPickerLabel")}
+          ref={listRef}
+          onKeyDown={handleKeyDown}
+        >
+            {days.map((day) => {
+            const date = new Date(day);
+            const label = formatDayLabel(date, locale);
+            const price = prices[day];
+            const isAvailable = availability[day];
+            const isSelected = day === activeDay;
+            const isToday = isSameDay(date, today);
+            return (
+              <button
+                key={day}
+                type="button"
+                role="tab"
+                className={[
+                  "day-tile",
+                  isSelected ? "is-selected" : "",
+                  !isAvailable ? "is-disabled" : "",
+                  isLoading && isSelected ? "is-loading" : "",
+                ].filter(Boolean).join(" ")}
+                aria-selected={isSelected ? "true" : "false"}
+                aria-disabled={!isAvailable ? "true" : undefined}
+                disabled={!isAvailable}
+                tabIndex={isSelected ? 0 : -1}
+                onClick={() => onChange?.(day)}
+              >
+                <span className="day-tile__label">{label}</span>
+                <span className="day-tile__price">
+                  {isAvailable
+                    ? price != null
+                      ? `${t("results.priceFrom")} ${formatPrice(price, locale)}`
+                      : "—"
+                    : t("results.noAvailability")}
+                </span>
+                {isToday && <span className="day-tile__today">{t("results.today")}</span>}
+                {isSelected && <span className="day-tile__indicator" aria-hidden="true" />}
+                {isSelected && isLoading && (
+                  <VisuallyHidden>{t("results.loadingDay")}</VisuallyHidden>
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        <button
+          type="button"
+          className="day-picker__nav"
+          onClick={() => (onNextRange ? onNextRange() : handleScroll("next"))}
+          aria-label={t("results.nextDays")}
+        >
+          <Icon name="chevron_right" size="md" decorative />
+        </button>
       </div>
-
-      <button
-        type="button"
-        className="day-picker__nav"
-        onClick={() => (onNextRange ? onNextRange() : handleScroll("next"))}
-        aria-label={t("results.nextDays")}
-      >
-        <Icon name="chevron_right" size="md" decorative />
-      </button>
-    </div>
   );
 }

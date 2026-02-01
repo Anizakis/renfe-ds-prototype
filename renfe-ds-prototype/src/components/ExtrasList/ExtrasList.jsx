@@ -88,6 +88,7 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
         extra={modalExtra}
         tripType={state.search?.tripType}
         passengers={state.search?.passengers || { adults: 1, children: 0, infants: 0 }}
+        travelers={state.travelers || []}
         onAdd={handleModalAdd}
       />
     </>

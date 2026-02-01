@@ -21,6 +21,7 @@ const initialState = {
   selectedReturnJourney: null,
   selectedFareId: null,
   extrasByJourney: {},
+  travelers: [],
   paymentError: null,
 };
 
@@ -80,6 +81,12 @@ function reducer(state, action) {
       return { ...state, paymentError: action.payload };
     case "CLEAR_PAYMENT_ERROR":
       return { ...state, paymentError: null };
+    case "SET_TRAVELER": {
+      const { index, fields, type } = action.payload;
+      const next = [...(state.travelers || [])];
+      next[index] = { type, fields };
+      return { ...state, travelers: next };
+    }
     default:
       return state;
   }

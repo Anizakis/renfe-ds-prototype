@@ -90,6 +90,16 @@
   color: var(--itf-placeholder);
 }
 
+.input-textfield__input:-webkit-autofill,
+.input-textfield__input:-webkit-autofill:hover,
+.input-textfield__input:-webkit-autofill:focus,
+.input-textfield__input:-webkit-autofill:active {
+  -webkit-text-fill-color: var(--itf-text);
+  caret-color: var(--itf-text);
+  box-shadow: 0 0 0 1000px var(--itf-bg) inset;
+  transition: background-color 9999s ease-out 0s;
+}
+
 .input-textfield__helper {
   font-family: var(--font-family-primary);
   font-size: var(--type-text-xs-size);

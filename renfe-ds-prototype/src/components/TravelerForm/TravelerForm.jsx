@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import InputText from "../InputText/InputText.jsx";
+import Dropdown from "../Dropdown/Dropdown.jsx";
+import { useTravel } from "../../app/store.jsx";
 import "./TravelerForm.css";
 
 // Centralized validation function
@@ -36,7 +38,7 @@ function validate(fields, touched) {
     if (!fields.docNumber.trim()) {
       errors.docNumber = "El número de documento es obligatorio";
     } else if (!/^\d{8}\s?[A-Za-z]$/.test(fields.docNumber)) {
-      errors.docNumber = "Formato: 00000000 X";
+      errors.docNumber = "Ejemplo: 12345678Z";
     }
   }
 
@@ -79,8 +81,9 @@ function RequiredAsterisk() {
   );
 }
 
-export default function TravelerForm({ travelerIndex = 1 }) {
-  const [fields, setFields] = useState({
+export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto" }) {
+  const { state, dispatch } = useTravel();
+  const defaultFields = useMemo(() => ({
     nombre: "",
     apellido1: "",
     apellido2: "",
@@ -90,23 +93,45 @@ export default function TravelerForm({ travelerIndex = 1 }) {
     phonePrefix: "+34",
     phone: "",
     familiaNumerosa: false,
-  });
+  }), []);
+  const storedTraveler = state.travelers?.[travelerIndex - 1];
+  const [fields, setFields] = useState(() => storedTraveler?.fields ?? defaultFields);
   const [touched, setTouched] = useState({});
 
   // Validate on every render (live validation after blur)
   const errors = validate(fields, touched);
 
   // Handlers
+  const persist = (nextFields) => {
+    dispatch({
+      type: "SET_TRAVELER",
+      payload: {
+        index: travelerIndex - 1,
+        type: travelerType,
+        fields: nextFields,
+      },
+    });
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFields((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
-    // Optionally: live validation after blur (keep touched as is)
+    const nextFields = { ...fields, [name]: type === "checkbox" ? checked : value };
+    setFields(nextFields);
+    persist(nextFields);
   };
 
   const handleBlur = (e) => {
     const { name } = e.target;
     setTouched((prev) => ({ ...prev, [name]: true }));
   };
+
+  useEffect(() => {
+    if (storedTraveler?.fields) {
+      setFields({ ...defaultFields, ...storedTraveler.fields });
+      return;
+    }
+    persist(defaultFields);
+  }, [travelerIndex, storedTraveler, defaultFields]);
 
   // Helper for state/props per field
   function getInputProps(field, isOptional = false) {
@@ -174,6 +199,12 @@ export default function TravelerForm({ travelerIndex = 1 }) {
         label = "";
     }
 
+    const maxLength = field === "docNumber"
+      ? 9
+      : field === "phone"
+      ? 9
+      : undefined;
+
     return {
       value: fields[field],
       state,
@@ -200,6 +231,8 @@ export default function TravelerForm({ travelerIndex = 1 }) {
         name: field,
         onBlur: handleBlur,
         autoComplete: "off",
+        maxLength,
+        inputMode: field === "phone" ? "numeric" : undefined,
       },
       onChange: handleChange,
     };
@@ -212,46 +245,62 @@ export default function TravelerForm({ travelerIndex = 1 }) {
           <fieldset className="traveler-form__fieldset">
             <legend className="traveler-form__legend">Datos Personales</legend>
             <div className="traveler-form__row">
-              <div style={{ flex: 1 }}>
+              <div className="traveler-form__col traveler-form__col--lg">
                 <InputText {...getInputProps("nombre")} />
               </div>
-              <div style={{ flex: 1 }}>
+              <div className="traveler-form__col traveler-form__col--lg">
                 <InputText {...getInputProps("apellido1")} />
               </div>
             </div>
             <div className="traveler-form__row">
-              <div style={{ flex: 1 }}>
+              <div className="traveler-form__col traveler-form__col--lg">
                 <InputText {...getInputProps("apellido2", true)} />
               </div>
-              <select
-                className="traveler-form__input traveler-form__select"
-                name="docType"
-                value={fields.docType}
-                onChange={handleChange}
-              >
-                <option>DNI</option>
-                <option>NIE</option>
-                <option>Pasaporte</option>
-              </select>
-              <div style={{ flex: 1 }}>
+              <div className="traveler-form__col traveler-form__col--sm">
+                <Dropdown
+                  className="traveler-form__select"
+                  layout="stacked"
+                  label="Tipo de documento"
+                  name="docType"
+                  value={fields.docType}
+                  onChange={(value) => handleChange({
+                    target: { name: "docType", value, type: "select-one" },
+                  })}
+                  onBlur={handleBlur}
+                  options={[
+                    { value: "DNI", label: "DNI" },
+                    { value: "NIE", label: "NIE" },
+                    { value: "Pasaporte", label: "Pasaporte" },
+                  ]}
+                />
+              </div>
+              <div className="traveler-form__col traveler-form__col--lg">
                 <InputText {...getInputProps("docNumber")} />
               </div>
             </div>
             <div className="traveler-form__row">
-              <div style={{ flex: 1 }}>
+              <div className="traveler-form__col traveler-form__col--lg">
                 <InputText {...getInputProps("email")} />
               </div>
-              <select
-                className="traveler-form__input traveler-form__select"
-                name="phonePrefix"
-                value={fields.phonePrefix}
-                onChange={handleChange}
-              >
-                <option>+34</option>
-                <option>+33</option>
-                <option>+44</option>
-              </select>
-              <div style={{ flex: 1 }}>
+              <div className="traveler-form__col traveler-form__col--sm">
+                <Dropdown
+                  className="traveler-form__select"
+                  layout="stacked"
+                  label="Prefijo"
+                  name="phonePrefix"
+                  value={fields.phonePrefix}
+                  onChange={(value) => handleChange({
+                    target: { name: "phonePrefix", value, type: "select-one" },
+                  })}
+                  onBlur={handleBlur}
+                  options={[
+                    { value: "+34", label: "+34" },
+                    { value: "+33", label: "+33" },
+                    { value: "+44", label: "+44" },
+                  ]}
+                />
+              </div>
+              <div className="traveler-form__col traveler-form__col--lg">
                 <InputText {...getInputProps("phone")} />
               </div>
             </div>

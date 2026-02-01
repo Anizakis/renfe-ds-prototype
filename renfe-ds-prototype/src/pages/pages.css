@@ -97,23 +97,67 @@
 .results-panel--content {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-03);
+  gap: var(--spacing-04);
 }
 
 .results-header {
   display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--spacing-03);
+  padding-top: var(--spacing-04);
+  padding-bottom: var(--spacing-03);
+}
+
+.results-header__row {
+  display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--spacing-04);
-  padding-top: var(--spacing-04);
-  padding-bottom: var(--spacing-03);
-  border-bottom: 1px solid var(--color-neutral-100);
 }
 
 .results-header__actions {
   display: flex;
   align-items: center;
   gap: var(--spacing-03);
+}
+
+.results-header__tabs {
+  width: 100%;
+}
+
+.results-header__tabs .tabs {
+  width: 100%;
+}
+
+.results-header__tabs .tabs__list {
+  width: 100%;
+  display: flex;
+  gap: var(--spacing-02);
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.results-header__tabs .tabs__tab.is-active {
+  border-bottom-width: 3px;
+}
+
+.results-header__tabs .tabs__panel {
+  display: none;
+  padding-top: 0;
+}
+
+.results-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-03);
+  flex-wrap: wrap;
+}
+
+@media (max-width: 1023px) {
+  .results-toolbar {
+    justify-content: flex-start;
+  }
 }
 
 .results-sort {
@@ -147,7 +191,7 @@
   border: 1px solid var(--color-neutral-200);
   border-radius: var(--radius-04);
   background: var(--color-neutral-0);
-  margin-bottom: var(--spacing-01);
+  margin: 0;
 }
 
 .results-daypicker .day-picker {
@@ -161,6 +205,32 @@
 
 .results-filters-toggle {
   display: none;
+}
+
+.payment-grid {
+  row-gap: var(--spacing-05);
+}
+
+.payment-form {
+  grid-column: 1 / span 8;
+}
+
+.payment-summary {
+  grid-column: 9 / -1;
+  position: sticky;
+  top: var(--results-sticky-top);
+  height: fit-content;
+}
+
+@media (max-width: 1023px) {
+  .payment-form {
+    grid-column: 1 / -1;
+  }
+
+  .payment-summary {
+    grid-column: 1 / -1;
+    position: static;
+  }
 }
 
 .results-empty {
@@ -288,6 +358,10 @@
   font-family: "Material Symbols Outlined";
   font-variation-settings: "wght" var(--icon-weight);
   font-size: var(--icon-s-glyph);
+}
+
+.travelers-stack {
+  padding-bottom: var(--spacing-12);
 }
 
 .fares-header {

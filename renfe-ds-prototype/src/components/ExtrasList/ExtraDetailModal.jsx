@@ -19,6 +19,7 @@ export default function ExtraDetailModal({
   extra,
   tripType,
   passengers = { adults: 1, children: 0, infants: 0 },
+  travelers = [],
   onAdd,
 }) {
   if (!extra) return null;
@@ -27,11 +28,45 @@ export default function ExtraDetailModal({
   const titleId = "extra-detail-title";
   const descId = "extra-detail-desc";
 
+  const buildLabel = (traveler, fallback) => {
+    const fields = traveler?.fields;
+    const name = [fields?.nombre, fields?.apellido1, fields?.apellido2]
+      .filter(Boolean)
+      .join(" ")
+      .trim();
+    return name || fallback;
+  };
+
   // Construir lista de pasajeros
   const passengerList = [];
-  for (let i = 0; i < passengers.adults; i++) passengerList.push({ type: "adult", label: `Adulto ${i + 1}` });
-  for (let i = 0; i < passengers.children; i++) passengerList.push({ type: "child", label: `Niño ${i + 1}` });
-  for (let i = 0; i < passengers.infants; i++) passengerList.push({ type: "infant", label: `Bebé ${i + 1}` });
+  let travelerIndex = 0;
+  for (let i = 0; i < passengers.adults; i++) {
+    const fallback = `Adulto ${i + 1}`;
+    const traveler = travelers[travelerIndex];
+    passengerList.push({
+      type: "adult",
+      label: buildLabel(traveler, fallback),
+    });
+    travelerIndex += 1;
+  }
+  for (let i = 0; i < passengers.children; i++) {
+    const fallback = `Niño ${i + 1}`;
+    const traveler = travelers[travelerIndex];
+    passengerList.push({
+      type: "child",
+      label: buildLabel(traveler, fallback),
+    });
+    travelerIndex += 1;
+  }
+  for (let i = 0; i < passengers.infants; i++) {
+    const fallback = `Bebé ${i + 1}`;
+    const traveler = travelers[travelerIndex];
+    passengerList.push({
+      type: "infant",
+      label: buildLabel(traveler, fallback),
+    });
+    travelerIndex += 1;
+  }
 
   // Estado de selección de checkboxes
   const [selectedIda, setSelectedIda] = useState([]);

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import Button from "../Button/Button.jsx";
 import Icon from "../../ui/Icon/Icon.jsx";
 import { useI18n } from "../../app/i18n.jsx";
@@ -26,6 +26,21 @@ export default function PassengerSelector({ value, onChange, label }) {
   const summaryLabel = totalPassengers === 1
     ? `${passengers.adults} ${t("home.adults")}`
     : `${totalPassengers} ${t("home.passengers")}`;
+
+  // Ref para el panel
+  const panelRef = useRef(null);
+
+  // Cerrar modal al hacer click fuera
+  useEffect(() => {
+    if (!isOpen) return;
+    function handleClick(e) {
+      if (panelRef.current && !panelRef.current.contains(e.target)) {
+        setIsOpen(false);
+      }
+    }
+    window.addEventListener("mousedown", handleClick);
+    return () => window.removeEventListener("mousedown", handleClick);
+  }, [isOpen]);
 
   const updateDraft = (key, delta, min = 0) => {
     setDraft((prev) => {
@@ -62,6 +77,7 @@ export default function PassengerSelector({ value, onChange, label }) {
           className={`passenger-selector__panel ${isOpen ? "is-open" : ""}`}
           role="dialog"
           aria-label={t("home.passengers")}
+          ref={panelRef}
         >
           <div className="passenger-selector__row">
             <div className="passenger-selector__row-label">

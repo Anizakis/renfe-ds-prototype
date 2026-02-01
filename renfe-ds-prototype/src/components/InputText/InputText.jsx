@@ -7,7 +7,7 @@ export default function InputText({
   showOptional = false,
   optionalText = "(optional)",
   helperText = "Helper text",
-  showCounter = true,
+  showCounter,
   hideLabel = false,
   hideHelper = false,
   state = "default", // default | hovered | focused | disabled | readOnly | error | success
@@ -30,6 +30,11 @@ export default function InputText({
   const fallbackId = inputId ?? "input-textfield";
   const showHelper = Boolean(helperText) || hideHelper;
   const describedBy = helperText ? (helperId ?? `${fallbackId}-helper`) : undefined;
+  const maxLength = inputProps?.maxLength;
+  const shouldShowCounter = typeof showCounter === "boolean"
+    ? showCounter
+    : Number.isFinite(maxLength);
+  const currentLength = String(value ?? "").length;
 
   return (
     <div
@@ -47,7 +52,11 @@ export default function InputText({
           <span>{label}</span>
           {showOptional && <span className="input-textfield__optional">{optionalText}</span>}
         </label>
-        {showCounter && <div className="input-textfield__counter">0/0</div>}
+        {shouldShowCounter && (
+          <div className="input-textfield__counter">
+            {currentLength}/{maxLength}
+          </div>
+        )}
       </div>
 
       <div className="input-textfield__control">

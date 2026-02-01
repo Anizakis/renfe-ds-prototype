@@ -113,6 +113,7 @@ const STRINGS = {
       noAvailability: "Sin plazas",
       today: "Hoy",
       loadingDay: "Actualizando resultados",
+      onlyShowAvailable: "Solo mostrar días con trenes disponibles",
     },
     filtersPanel: {
       title: "Filtros",
@@ -416,6 +417,7 @@ const STRINGS = {
       noAvailability: "No seats",
       today: "Today",
       loadingDay: "Updating results",
+      onlyShowAvailable: "Show only days with available trains",
     },
     filtersPanel: {
       title: "Filters",

@@ -18,7 +18,7 @@ export default function TravelerAccordion({ index = 1, type = "Adulto", defaultO
       </div>
       {open && (
         <div className="traveler-accordion__content">
-          <TravelerForm travelerIndex={index} />
+          <TravelerForm travelerIndex={index} travelerType={type} />
         </div>
       )}
     </div>
