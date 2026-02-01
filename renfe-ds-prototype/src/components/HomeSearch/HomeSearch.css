@@ -65,13 +65,13 @@
 .home-search-action-field {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-02);
+  gap: var(--spacing-03);
   width: 100%;
 }
 
 .home-search-action-spacer {
   display: block;
-  height: var(--type-text-s-line);
+  height: var(--type-text-m-line);
 }
 
 .home-search-triptype {

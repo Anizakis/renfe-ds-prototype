@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "./JourneyCard.css";
-import Button from "../../components/Button/Button.jsx";
-import { useI18n } from "../../app/i18n.jsx";
+import Button from "../../atoms/Button/Button.jsx";
+import { useI18n } from "../../../app/i18n.jsx";
 
 function buildPills(journey, activeFilters, t) {
   const priority = [];

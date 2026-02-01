@@ -1,5 +1,4 @@
-
-import Icon from "../../ui/Icon/Icon.jsx";
+import Icon from "../../Icon/Icon.jsx";
 import "./InputText.css";
 
 export default function InputText({

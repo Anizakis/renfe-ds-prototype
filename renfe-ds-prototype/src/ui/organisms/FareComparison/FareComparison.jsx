@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import "./FareComparison.css";
-import Button from "../../../components/Button/Button.jsx";
+import Button from "../../atoms/Button/Button.jsx";
 import Modal from "../../../components/Modal/Modal.jsx";
 import VisuallyHidden from "../../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import { useI18n } from "../../../app/i18n.jsx";

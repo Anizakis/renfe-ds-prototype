@@ -1,4 +1,4 @@
-import Checkbox from "../Checkbox/Checkbox.jsx";
+import { Checkbox } from "../../ui/atoms";
 import { useI18n } from "../../app/i18n.jsx";
 import "./OnlyAvailableDaysToggle.css";
 

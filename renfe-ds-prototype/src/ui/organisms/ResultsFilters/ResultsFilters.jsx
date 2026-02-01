@@ -1,13 +1,11 @@
 /* eslint-disable react-refresh/only-export-components */
 import { useEffect, useMemo, useState } from "react";
-import Checkbox from "../../components/Checkbox/Checkbox.jsx";
-import Switch from "../../components/Switch/Switch.jsx";
-import Slider from "../../components/Slider/Slider.jsx";
-import RadioGroup from "../../components/RadioGroup/RadioGroup.jsx";
-import FilterSection from "../../components/FilterSection/FilterSection.jsx";
-import Button from "../../components/Button/Button.jsx";
-import Link from "../../components/Link/Link.jsx";
-import { useI18n } from "../../app/i18n.jsx";
+import { Checkbox, Slider, Switch } from "../../atoms";
+import RadioGroup from "../../atoms/RadioGroup/RadioGroup.jsx";
+import FilterSection from "../../../components/FilterSection/FilterSection.jsx";
+import Button from "../../atoms/Button/Button.jsx";
+import Link from "../../atoms/Link/Link.jsx";
+import { useI18n } from "../../../app/i18n.jsx";
 import "./ResultsFilters.css";
 
 export const createDefaultFilters = () => ({

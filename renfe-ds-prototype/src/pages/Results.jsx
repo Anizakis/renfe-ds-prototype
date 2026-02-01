@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DayPickerStrip from "../components/DayPickerStrip/DayPickerStrip.jsx";
+import { DayPickerStrip } from "../ui/molecules";
 import JourneyCard from "../ui/organisms/JourneyCard/JourneyCard.jsx";
 import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import SkeletonList from "../components/SkeletonList/SkeletonList.jsx";

@@ -1,5 +1,5 @@
 import Modal from "../Modal/Modal.jsx";
-import Button from "../Button/Button.jsx";
+import Button from "../../ui/atoms/Button/Button.jsx";
 import { useI18n } from "../../app/i18n.jsx";
 import "./PriceDetailsModal.css";
 

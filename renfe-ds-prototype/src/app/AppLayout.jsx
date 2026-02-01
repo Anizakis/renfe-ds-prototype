@@ -1,7 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import TopNav from "../components/TopNav/TopNav.jsx";
-import Link from "../components/Link/Link.jsx";
+import Link from "../ui/atoms/Link/Link.jsx";
 import { useI18n } from "./i18n.jsx";
 import "./app.css";
 

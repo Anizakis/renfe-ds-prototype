@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import InputText from "../InputText/InputText.jsx";
-import Icon from "../../ui/Icon/Icon.jsx";
-import { useI18n } from "../../app/i18n.jsx";
+import { InputText } from "../../atoms";
+import Icon from "../../Icon/Icon.jsx";
+import { useI18n } from "../../../app/i18n.jsx";
 import "./DatePicker.css";
 
 const MIN_YEAR = 1900;
@@ -455,8 +455,14 @@ export default function DatePicker({
           </div>
           <div className="date-picker__months">
             {[
-              { date: monthA, days: monthDaysA },
-              { date: monthB, days: monthDaysB },
+              {
+                date: monthA,
+                days: monthDaysA,
+              },
+              {
+                date: monthB,
+                days: monthDaysB,
+              },
             ].map((month) => {
               const monthLabel = formatMonthTitle(month.date, locale, language);
               return (

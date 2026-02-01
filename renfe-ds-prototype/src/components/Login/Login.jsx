@@ -2,10 +2,10 @@ import { useState } from "react";
 import Container from "../../ui/atoms/Container/Container.jsx";
 import PageStack from "../../ui/atoms/PageStack/PageStack.jsx";
 import Stack from "../../ui/atoms/Stack/Stack.jsx";
-import InputText from "../InputText/InputText.jsx";
-import Checkbox from "../Checkbox/Checkbox.jsx";
-import Button from "../Button/Button.jsx";
-import Link from "../Link/Link.jsx";
+import InputText from "../../ui/atoms/InputText/InputText.jsx";
+import { Checkbox } from "../../ui/atoms";
+import Button from "../../ui/atoms/Button/Button.jsx";
+import Link from "../../ui/atoms/Link/Link.jsx";
 import { useI18n } from "../../app/i18n.jsx";
 import "./Login.css";
 

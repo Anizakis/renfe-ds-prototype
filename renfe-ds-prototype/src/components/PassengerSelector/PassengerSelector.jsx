@@ -1,5 +1,5 @@
 import { useMemo, useState, useRef, useEffect } from "react";
-import Button from "../Button/Button.jsx";
+import Button from "../../ui/atoms/Button/Button.jsx";
 import Icon from "../../ui/Icon/Icon.jsx";
 import { useI18n } from "../../app/i18n.jsx";
 import "./PassengerSelector.css";

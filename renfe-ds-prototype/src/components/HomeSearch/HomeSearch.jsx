@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import InputText from "../InputText/InputText.jsx";
-import Button from "../Button/Button.jsx";
-import RadioGroup from "../RadioGroup/RadioGroup.jsx";
-import DatePicker from "../DatePicker/DatePicker.jsx";
+import InputText from "../../ui/atoms/InputText/InputText.jsx";
+import Button from "../../ui/atoms/Button/Button.jsx";
+import RadioGroup from "../../ui/atoms/RadioGroup/RadioGroup.jsx";
+import { DatePicker } from "../../ui/molecules";
 import PassengerSelector from "../PassengerSelector/PassengerSelector.jsx";
 import { useTravel } from "../../app/store.jsx";
 import { useI18n } from "../../app/i18n.jsx";

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import InputText from "../InputText/InputText.jsx";
+import InputText from "../../ui/atoms/InputText/InputText.jsx";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import { useTravel } from "../../app/store.jsx";
 import { useI18n } from "../../app/i18n.jsx";

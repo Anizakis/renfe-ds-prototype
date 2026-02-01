@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import Button from "../../../components/Button/Button.jsx";
+import Button from "../../atoms/Button/Button.jsx";
 
 function getFocusableElements(container) {
   if (!container) return [];

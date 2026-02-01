@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import Link from "../../Link/Link.jsx";
-import InputText from "../../InputText/InputText.jsx";
+import Link from "../../../ui/atoms/Link/Link.jsx";
+import InputText from "../../../ui/atoms/InputText/InputText.jsx";
 import Modal from "../../Modal/Modal.jsx";
 import VisuallyHidden from "../../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import useFocusTrap from "../../a11y/useFocusTrap.js";
-import Button from "../../Button/Button.jsx";
+import Button from "../../../ui/atoms/Button/Button.jsx";
 import Icon from "../../../ui/Icon/Icon.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import { useTheme } from "../../../app/theme.jsx";

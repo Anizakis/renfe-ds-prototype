@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
 import { useMemo, useRef, useState, useEffect } from "react";
 import Container from "../../ui/atoms/Container/Container.jsx";
-import InputText from "../InputText/InputText.jsx";
-import Link from "../Link/Link.jsx";
+import InputText from "../../ui/atoms/InputText/InputText.jsx";
+import Link from "../../ui/atoms/Link/Link.jsx";
 import "./TopNav.css";
 import { useI18n } from "../../app/i18n.jsx";
 import DrawerMenu from "../navigation/DrawerMenu/DrawerMenu.jsx";

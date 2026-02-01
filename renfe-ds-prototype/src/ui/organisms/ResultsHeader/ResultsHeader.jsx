@@ -1,5 +1,5 @@
-import Button from "../../../components/Button/Button.jsx";
-import Tabs from "../../../components/Tabs/Tabs.jsx";
+import Button from "../../atoms/Button/Button.jsx";
+import { Tabs } from "../../atoms";
 
 export default function ResultsHeader({
   title,
