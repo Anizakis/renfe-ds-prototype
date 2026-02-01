@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useMemo, useRef, useState, useEffect } from "react";
 import Container from "../Container/Container.jsx";
 import InputText from "../InputText/InputText.jsx";
+import Link from "../Link/Link.jsx";
 import "./TopNav.css";
 import { useI18n } from "../../app/i18n.jsx";
 import DrawerMenu from "../navigation/DrawerMenu/DrawerMenu.jsx";
@@ -32,7 +33,7 @@ export default function TopNav() {
       <Container className="topnav__inner" as="div">
         <div className="topnav__row">
           <div className="topnav__left">
-            <a className="topnav__brand" href="/" aria-label={t("appName")}>
+            <Link className="topnav__brand" to="/" aria-label={t("appName")}>
               <span className="topnav__logo-box" aria-hidden="true">
                 <img
                   src="/renfe-seeklogo.svg"
@@ -40,10 +41,10 @@ export default function TopNav() {
                   className="topnav__logo"
                 />
               </span>
-            </a>
+            </Link>
           </div>
 
-          <nav className="topnav__center" aria-label="Navegación principal">
+          <nav className="topnav__center" aria-label={t("nav.mainLabel")}>
             <ul className="topnav__list">
               <li>
                 <button
@@ -59,10 +60,10 @@ export default function TopNav() {
                 </button>
               </li>
               <li>
-                <a className="topnav__link" href="#help">
+                <Link className="topnav__link" href="#help">
                   <Icon name="help" size="md" decorative />
                   <span className="topnav__link-text">{t("nav.help")}</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <NavLink
@@ -80,7 +81,7 @@ export default function TopNav() {
             <button
               type="button"
               className="topnav__menu-btn"
-              aria-label={isMenuOpen ? "Cerrar menú" : "Abrir menú"}
+              aria-label={isMenuOpen ? t("nav.menuClose") : t("nav.menuOpen")}
               aria-expanded={isMenuOpen ? "true" : "false"}
               aria-controls="drawer-menu"
               onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -142,9 +143,9 @@ export default function TopNav() {
             <ul className="nav-search-modal__list">
               {searchSuggestions.map((item) => (
                 <li key={item}>
-                  <a href="#" className="nav-search-modal__link">
+                  <Link href="#" className="nav-search-modal__link">
                     {item}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

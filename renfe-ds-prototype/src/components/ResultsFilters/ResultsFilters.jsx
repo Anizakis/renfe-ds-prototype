@@ -5,6 +5,7 @@ import Slider from "../Slider/Slider.jsx";
 import RadioGroup from "../RadioGroup/RadioGroup.jsx";
 import FilterSection from "../FilterSection/FilterSection.jsx";
 import Button from "../Button/Button.jsx";
+import Link from "../Link/Link.jsx";
 import { useI18n } from "../../app/i18n.jsx";
 import "./ResultsFilters.css";
 
@@ -121,7 +122,8 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
         </div>
       )}
 
-      <FilterSection title={t("filtersPanel.sections.connections.title")}
+      <FilterSection
+        title={t("filtersPanel.sections.connections.title")}
         description={t("filtersPanel.sections.connections.note")}
       >
         <Switch
@@ -365,7 +367,7 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
               checked={resolvedFilters.petOnlyAllowed}
               onChange={(value) => updateFilters((prev) => ({ ...prev, petOnlyAllowed: value }))}
             />
-            <a className="results-filters__link" href="#rules">{t("filtersPanel.sections.pets.rulesLink")}</a>
+            <Link className="results-filters__link" href="#rules">{t("filtersPanel.sections.pets.rulesLink")}</Link>
           </div>
         )}
       </FilterSection>

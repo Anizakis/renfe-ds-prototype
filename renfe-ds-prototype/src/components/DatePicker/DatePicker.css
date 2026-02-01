@@ -129,7 +129,7 @@
 
 .date-picker__cell.is-selected {
   background: var(--color-brand-600);
-  color: var(--color-base-white);
+  color: var(--color-neutral-0);
 }
 
 .date-picker__cell.is-today {

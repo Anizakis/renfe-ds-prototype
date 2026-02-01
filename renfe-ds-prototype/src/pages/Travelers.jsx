@@ -16,9 +16,9 @@ export default function Travelers() {
   const navigate = useNavigate();
   const passengersObj = state.search?.passengers || { adults: 1, children: 0, infants: 0 };
   const passengerList = [
-    ...Array(passengersObj.adults).fill("Adulto"),
-    ...Array(passengersObj.children).fill("Niño"),
-    ...Array(passengersObj.infants).fill("Bebé"),
+    ...Array(passengersObj.adults).fill(t("travelers.passengerAdult")),
+    ...Array(passengersObj.children).fill(t("travelers.passengerChild")),
+    ...Array(passengersObj.infants).fill(t("travelers.passengerInfant")),
   ];
 
   const isTravelerValid = (traveler) => {
@@ -58,7 +58,7 @@ export default function Travelers() {
     <Container as="section">
       <PageStack gap="10" align="stretch" textAlign="left" className="travelers-stack">
         <AnimatedCheckoutStepper currentStep="travelers" />
-        <VisuallyHidden as="h1">{t("travelers.title", "Introduce tus datos")}</VisuallyHidden>
+        <VisuallyHidden as="h1">{t("travelers.title")}</VisuallyHidden>
         {passengerList.map((type, i) => (
           <TravelerAccordion key={i} index={i + 1} type={type} defaultOpen={i === 0} />
         ))}

@@ -38,6 +38,8 @@ function StickySummaryBar({
   // Centralize fare logic here
   const selectedFare = getSelectedFare(state);
   const pendingFare = !state.selectedFareId;
+  const fareName = selectedFare?.nameKey ? t(selectedFare.nameKey) : selectedFare?.name;
+  const extrasNames = selectedExtras.map((extra) => (extra.nameKey ? t(extra.nameKey) : extra.name));
   return (
     <div className={topSummary ? "sticky-summary sticky-summary--top" : "sticky-summary"}>
       {topSummary && (
@@ -103,13 +105,13 @@ function StickySummaryBar({
           {showFare && (
             <div className="sticky-summary__group">
               <span className="sticky-summary__label">{t("summary.fare")}</span>
-              <span className="sticky-summary__value">{pendingFare ? t("summary.pending") : selectedFare ? selectedFare.name : t("summary.noFare")}</span>
+              <span className="sticky-summary__value">{pendingFare ? t("summary.pending") : selectedFare ? fareName : t("summary.noFare")}</span>
             </div>
           )}
           {showExtras && (
             <div className="sticky-summary__group">
               <span className="sticky-summary__label">{t("summary.extras")}</span>
-              <span className="sticky-summary__value">{pendingExtras ? t("summary.pending") : selectedExtras.length > 0 ? selectedExtras.map(e => e.name).join(", ") : t("summary.noExtras")}</span>
+              <span className="sticky-summary__value">{pendingExtras ? t("summary.pending") : selectedExtras.length > 0 ? extrasNames.join(", ") : t("summary.noExtras")}</span>
             </div>
           )}
         </div>

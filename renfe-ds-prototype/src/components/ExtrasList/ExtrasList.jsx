@@ -4,8 +4,10 @@ import { useState } from "react";
 import ExtraDetailModal from "./ExtraDetailModal.jsx";
 import { useTravel } from "../../app/store.jsx";
 import { formatPrice } from "../../app/utils.js";
+import { useI18n } from "../../app/i18n.jsx";
 
 export default function ExtrasList({ extras, selectedExtras, onToggle }) {
+  const { t } = useI18n();
   const [modalExtra, setModalExtra] = useState(null);
   const [modalSelection, setModalSelection] = useState(null); // { ida: [...], vuelta: [...] }
   const MODAL_IDS = ["restauracion", "mascotas"];
@@ -31,6 +33,10 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
       <div className="extras-grid">
         {extras.map((extra) => {
           const checked = !!selectedExtras[extra.id];
+          const extraName = extra.nameKey ? t(extra.nameKey) : extra.name;
+          const extraDescription = extra.descriptionKey ? t(extra.descriptionKey) : extra.description;
+          const extraPriceLabel = extra.priceLabelKey ? t(extra.priceLabelKey) : extra.priceLabel;
+          const priceText = extraPriceLabel || formatPrice(extra.price);
           return (
             <div
               key={extra.id}
@@ -42,26 +48,26 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
               <div className="extras-card__header">
                 <div className="extras-card__icon-title">
                   <Icon name={extra.iconName} className="extras-card__icon" aria-hidden="true" />
-                  <span className="extras-card__title">{extra.name}</span>
+                  <span className="extras-card__title">{extraName}</span>
                 </div>
                 <div className="extras-card__meta">
-                  <span className="extras-card__per">Por viajero</span>
+                  <span className="extras-card__per">{t("extras.perTraveler")}</span>
                   <span className={"extras-card__price" + (extra.price === 0 ? " extras-card__price--free" : "")}>
-                    {formatPrice(extra.price)}
+                    {priceText}
                   </span>
                 </div>
               </div>
-              <div className="extras-card__desc" title={extra.description}>
-                {extra.description}
+              <div className="extras-card__desc" title={extraDescription}>
+                {extraDescription}
               </div>
               <div className="extras-card__action">
                 {checked ? (
                   <span className="extras-card__added" aria-live="polite">
-                    Añadido
+                    {t("extras.added")}
                     <button
                       type="button"
                       className="extras-card__remove-btn"
-                      aria-label={`Eliminar ${extra.name}`}
+                      aria-label={`${t("extras.remove")} ${extraName}`}
                       onClick={() => handleRemove(extra)}
                     >
                       <Icon name="close" />
@@ -74,7 +80,7 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
                     onClick={() => handleAddClick(extra)}
                     tabIndex={0}
                   >
-                    +Añadir
+                    +{t("extras.add")}
                   </button>
                 )}
               </div>

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Link } from "react-router-dom";
+import Link from "../../Link/Link.jsx";
 import InputText from "../../InputText/InputText.jsx";
 import Modal from "../../Modal/Modal.jsx";
 import VisuallyHidden from "../../VisuallyHidden/VisuallyHidden.jsx";
@@ -80,10 +80,10 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
               </Link>
             </li>
             <li>
-              <a className="drawer__row" href="#help" onClick={onClose}>
+              <Link className="drawer__row" href="#help" onClick={onClose}>
                 <Icon name="support_agent" size="md" decorative />
                 <span className="drawer__row-text">{t("drawer.help")}</span>
-              </a>
+              </Link>
             </li>
             <li>
               <Link className="drawer__row" to="/login" onClick={onClose}>

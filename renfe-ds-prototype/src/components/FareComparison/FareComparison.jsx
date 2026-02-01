@@ -3,97 +3,92 @@ import "./FareComparison.css";
 import Button from "../Button/Button.jsx";
 import Modal from "../Modal/Modal.jsx";
 import VisuallyHidden from "../VisuallyHidden/VisuallyHidden.jsx";
+import { useI18n } from "../../app/i18n.jsx";
 
-const COLUMN_ORDER = [
-  { id: "basic", label: "Básico", key: "basic", className: "col-basic" },
-  { id: "choose", label: "Elige", key: "elige", className: "col-elige" },
-  { id: "choose-comfort", label: "Elige Confort", key: "comfort", className: "col-comfort" },
-  { id: "premium", label: "Premium", key: "premium", className: "col-premium" },
+const getColumnOrder = (t) => [
+  { id: "basic", label: t("fares.comparison.columns.basic"), key: "basic", className: "col-basic" },
+  { id: "choose", label: t("fares.comparison.columns.choose"), key: "elige", className: "col-elige" },
+  { id: "choose-comfort", label: t("fares.comparison.columns.comfort"), key: "comfort", className: "col-comfort" },
+  { id: "premium", label: t("fares.comparison.columns.premium"), key: "premium", className: "col-premium" },
 ];
 
-const rows = [
+const getRows = (t) => [
   {
     id: "seatType",
-    labelTitle: "Tipo de asiento",
-    labelHelper: "Comodidad",
+    labelTitle: t("fares.comparison.rows.seatType.title"),
+    labelHelper: t("fares.comparison.rows.seatType.helper"),
     values: {
-      basic: { text: "Estándar", icon: "seat-standard" },
-      elige: { text: "Estándar", icon: "seat-standard" },
-      comfort: { text: "XL Confort", icon: "seat-xl" },
-      premium: { text: "XL Confort", icon: "seat-xl" },
+      basic: { text: t("fares.comparison.values.standard"), icon: "seat-standard" },
+      elige: { text: t("fares.comparison.values.standard"), icon: "seat-standard" },
+      comfort: { text: t("fares.comparison.values.xlComfort"), icon: "seat-xl" },
+      premium: { text: t("fares.comparison.values.xlComfort"), icon: "seat-xl" },
     },
   },
   {
     id: "changes",
-    labelTitle: "Cambios",
-    labelHelper: "Se abonará la diferencia de precio",
+    labelTitle: t("fares.comparison.rows.changes.title"),
+    labelHelper: t("fares.comparison.rows.changes.helper"),
     values: {
-      basic: { text: "Extra: 10 €", icon: "check" },
-      elige: { text: "1º cambio gratis", icon: "check" },
-      comfort: { text: "1º cambio gratis", icon: "check" },
-      premium: { text: "Cambios ilimitados", icon: "check" },
+      basic: { text: t("fares.comparison.values.extra10"), icon: "check" },
+      elige: { text: t("fares.comparison.values.firstChangeFree"), icon: "check" },
+      comfort: { text: t("fares.comparison.values.firstChangeFree"), icon: "check" },
+      premium: { text: t("fares.comparison.values.unlimitedChanges"), icon: "check" },
     },
   },
   {
     id: "refund",
-    labelTitle: "Anulación",
-    labelHelper: "",
+    labelTitle: t("fares.comparison.rows.refund.title"),
+    labelHelper: t("fares.comparison.rows.refund.helper"),
     values: {
-      basic: { text: "No incluido", icon: "close" },
-      elige: { text: "Reembolso 70%", icon: "check" },
-      comfort: { text: "Reembolso 70%", icon: "check" },
-      premium: { text: "Reembolso 100%", icon: "check" },
+      basic: { text: t("fares.comparison.values.noIncluded"), icon: "close" },
+      elige: { text: t("fares.comparison.values.refund70"), icon: "check" },
+      comfort: { text: t("fares.comparison.values.refund70"), icon: "check" },
+      premium: { text: t("fares.comparison.values.refund100"), icon: "check" },
     },
   },
   {
     id: "seatSelection",
-    labelTitle: "Selección de asiento",
-    labelHelper: "Escoge el asiento en el que quieras viajar",
+    labelTitle: t("fares.comparison.rows.seatSelection.title"),
+    labelHelper: t("fares.comparison.rows.seatSelection.helper"),
     values: {
-      basic: { text: "Extra: 5 €", icon: "check" },
-      elige: { text: "Extra: 5 €", icon: "check" },
-      comfort: { text: "Extra: 5 €", icon: "check" },
-      premium: { text: "Incluido", icon: "check" },
+      basic: { text: t("fares.comparison.values.extra5"), icon: "check" },
+      elige: { text: t("fares.comparison.values.extra5"), icon: "check" },
+      comfort: { text: t("fares.comparison.values.extra5"), icon: "check" },
+      premium: { text: t("fares.comparison.values.included"), icon: "check" },
     },
   },
-    {
+  {
     id: "lounge",
-    labelTitle: "Acceso a Salas Club",
-    labelHelper: "",
+    labelTitle: t("fares.comparison.rows.lounge.title"),
+    labelHelper: t("fares.comparison.rows.lounge.helper"),
     values: {
-      basic: { text: "No incluido", icon: "close" },
-      elige: { text: "No incluido", icon: "close" },
-      comfort: { text: "No incluido", icon: "close" },
-      premium: { text: "Incluido", icon: "check" },
+      basic: { text: t("fares.comparison.values.noIncluded"), icon: "close" },
+      elige: { text: t("fares.comparison.values.noIncluded"), icon: "close" },
+      comfort: { text: t("fares.comparison.values.noIncluded"), icon: "close" },
+      premium: { text: t("fares.comparison.values.included"), icon: "check" },
     },
   },
 ];
 
-const iconByType = {
-  included: { name: "check_circle", label: "Incluido", tone: "included" },
-  excluded: { name: "cancel", label: "No incluido", tone: "excluded" },
-  extra: { name: "add_circle", label: "Extra", tone: "extra" },
-};
-
-function buildConditionGroups(items) {
+function buildConditionGroups(items, t) {
   const groups = {
-    changes: { title: "Cambios y gestión", items: [] },
-    refunds: { title: "Reembolsos y anulaciones", items: [] },
-    pets: { title: "Mascotas", items: [] },
-    services: { title: "Servicios", items: [] },
+    changes: { title: t("fares.comparison.groups.changes"), items: [] },
+    refunds: { title: t("fares.comparison.groups.refunds"), items: [] },
+    pets: { title: t("fares.comparison.groups.pets"), items: [] },
+    services: { title: t("fares.comparison.groups.services"), items: [] },
   };
 
   items.forEach((item) => {
     const lower = item.toLowerCase();
-    if (lower.includes("cambio") || lower.includes("titular") || lower.includes("puente") || lower.includes("pack")) {
+    if (lower.includes("cambio") || lower.includes("change") || lower.includes("titular") || lower.includes("name") || lower.includes("puente") || lower.includes("pack")) {
       groups.changes.items.push(item);
       return;
     }
-    if (lower.includes("reembolso") || lower.includes("anulación") || lower.includes("reembolsable")) {
+    if (lower.includes("reembolso") || lower.includes("anulación") || lower.includes("reembolsable") || lower.includes("refund") || lower.includes("cancel")) {
       groups.refunds.items.push(item);
       return;
     }
-    if (lower.includes("mascota") || lower.includes("perro")) {
+    if (lower.includes("mascota") || lower.includes("pet") || lower.includes("perro") || lower.includes("dog")) {
       groups.pets.items.push(item);
       return;
     }
@@ -104,6 +99,9 @@ function buildConditionGroups(items) {
 }
 
 export default function FareComparison({ fares, selectedFareId, onSelect }) {
+  const { t } = useI18n();
+  const COLUMN_ORDER = getColumnOrder(t);
+  const rows = getRows(t);
   const [conditionsOpen, setConditionsOpen] = useState(false);
   const [activeFareId, setActiveFareId] = useState(null);
   const triggerRef = useRef(null);
@@ -115,21 +113,23 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
   };
 
   const activeFare = fares.find((fare) => fare.id === activeFareId) ?? fares[0];
+  const getFareName = (fare) => (fare?.nameKey ? t(fare.nameKey) : fare?.name ?? "");
+  const getFareFeatures = (fare) => (fare?.featureKeys ? fare.featureKeys.map((key) => t(key)) : fare?.features ?? []);
   const headlineItems = rows.map((row) => {
     const column = COLUMN_ORDER.find((item) => item.id === activeFare.id);
     const value = column ? row.values[column.key]?.text : "—";
     return `${row.labelTitle}: ${value}`;
   });
-  const fullItems = activeFare?.features?.length ? activeFare.features : [];
+  const fullItems = getFareFeatures(activeFare);
   const groupedConditions = useMemo(
-    () => buildConditionGroups([...headlineItems, ...fullItems]),
-    [activeFare, headlineItems]
+    () => buildConditionGroups([...headlineItems, ...fullItems], t),
+    [activeFare, headlineItems, t]
   );
 
   return (
     <section className="fareComparisonSection">
       <div className="fareComparisonCard">
-        <div className="fareComparisonGrid" role="table" aria-label="Comparativa de tarifas">
+        <div className="fareComparisonGrid" role="table" aria-label={t("fares.comparison.tableLabel")}>
           <div className="fareComparisonCell fareComparisonCell--corner" />
         {COLUMN_ORDER.map((column) => {
           const fare = fares.find((item) => item.id === column.id);
@@ -141,9 +141,9 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
               className={`fareComparisonCell fareComparisonCell--header fareComparisonCell--column-top ${column.className}${isSelected ? " is-selected" : ""}`}
             >
               <div className="fareComparisonHeaderStack">
-                <span className={`fareComparisonName fareComparisonName--${column.className.replace('col-','')}`}>{fare.name}</span>
+                <span className={`fareComparisonName fareComparisonName--${column.className.replace('col-','')}`}>{getFareName(fare)}</span>
                 <span className="fareComparisonPrice">+{fare.price.toFixed(2)} €</span>
-                <span className="fareComparisonMicrocopy">Sobre el precio base</span>
+                <span className="fareComparisonMicrocopy">{t("fares.comparison.basePriceNote")}</span>
               </div>
             </div>
           );
@@ -171,19 +171,19 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
                   {showTick && (
                     <span className="fareComparisonIcon fareComparisonIcon--included" aria-hidden="true">check</span>
                   )}
-                  {showTick && <VisuallyHidden>Incluido</VisuallyHidden>}
+                  {showTick && <VisuallyHidden>{t("fares.comparison.included")}</VisuallyHidden>}
                   {showCross && (
                     <span className="fareComparisonIcon fareComparisonIcon--excluded" aria-hidden="true">close</span>
                   )}
-                  {showCross && <VisuallyHidden>No incluido</VisuallyHidden>}
+                  {showCross && <VisuallyHidden>{t("fares.comparison.excluded")}</VisuallyHidden>}
                   {showSeatStandard && (
                     <span className="fareComparisonIcon fareComparisonIcon--seat" aria-hidden="true">event_seat</span>
                   )}
-                  {showSeatStandard && <VisuallyHidden>Asiento estándar</VisuallyHidden>}
+                  {showSeatStandard && <VisuallyHidden>{t("fares.comparison.seatStandard")}</VisuallyHidden>}
                   {showSeatXL && (
                     <span className="fareComparisonIcon fareComparisonIcon--seat" aria-hidden="true">weekend</span>
                   )}
-                  {showSeatXL && <VisuallyHidden>Asiento XL Confort</VisuallyHidden>}
+                  {showSeatXL && <VisuallyHidden>{t("fares.comparison.seatComfort")}</VisuallyHidden>}
                   <span>{value?.text ?? "—"}</span>
                 </div>
               );
@@ -207,14 +207,14 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
                 aria-pressed={isSelected ? "true" : "false"}
                 onClick={() => onSelect(fare.id)}
               >
-                {isSelected ? "Seleccionada" : "Elegir tarifa"}
+                {isSelected ? t("fares.comparison.selected") : t("fares.comparison.select")}
               </Button>
               <button
                 type="button"
                 className="fareComparisonLink"
                 onClick={(event) => handleOpenConditions(fare.id, event)}
               >
-                Ver condiciones
+                {t("fares.comparison.viewConditions")}
               </button>
             </div>
           );
@@ -228,10 +228,10 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
           triggerRef={triggerRef}
         >
           <h2 id="fare-conditions-title" className="fareComparisonModalTitle">
-            {activeFare?.name} · +{activeFare?.price?.toFixed(2) ?? "0.00"} €
+            {getFareName(activeFare)} · +{activeFare?.price?.toFixed(2) ?? "0.00"} €
           </h2>
           <p id="fare-conditions-description" className="fareComparisonModalSubtitle">
-            Condiciones completas de la tarifa seleccionada.
+            {t("fares.comparison.modalSubtitle")}
           </p>
           <div className="fareComparisonModalGroups">
             {groupedConditions.map((group) => (
@@ -247,7 +247,7 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
           </div>
           <div className="fareComparisonModalActions">
             <Button variant="primary" onClick={() => setConditionsOpen(false)}>
-              Cerrar
+              {t("fares.comparison.close")}
             </Button>
           </div>
         </Modal>

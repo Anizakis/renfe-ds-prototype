@@ -2,61 +2,62 @@ import React, { useEffect, useMemo, useState } from "react";
 import InputText from "../InputText/InputText.jsx";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import { useTravel } from "../../app/store.jsx";
+import { useI18n } from "../../app/i18n.jsx";
 import "./TravelerForm.css";
 
 // Centralized validation function
-function validate(fields, touched) {
+function validate(fields, touched, t) {
   const errors = {};
 
   // Nombre: obligatorio, solo letras
   if (touched.nombre) {
     if (!fields.nombre.trim()) {
-      errors.nombre = "El nombre es obligatorio";
+      errors.nombre = t("travelers.form.errors.firstNameRequired");
     } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/.test(fields.nombre)) {
-      errors.nombre = "Solo letras";
+      errors.nombre = t("travelers.form.errors.lettersOnly");
     }
   }
 
   // Primer apellido: obligatorio, solo letras
   if (touched.apellido1) {
     if (!fields.apellido1.trim()) {
-      errors.apellido1 = "El primer apellido es obligatorio";
+      errors.apellido1 = t("travelers.form.errors.lastName1Required");
     } else if (!/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/.test(fields.apellido1)) {
-      errors.apellido1 = "Solo letras";
+      errors.apellido1 = t("travelers.form.errors.lettersOnly");
     }
   }
 
   // Segundo apellido: opcional, solo letras si tiene valor
   if (touched.apellido2 && fields.apellido2.trim()) {
     if (!/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/.test(fields.apellido2)) {
-      errors.apellido2 = "Solo letras";
+      errors.apellido2 = t("travelers.form.errors.lettersOnly");
     }
   }
 
   // Número de documento: obligatorio si DNI, formato
   if (fields.docType === "DNI" && touched.docNumber) {
     if (!fields.docNumber.trim()) {
-      errors.docNumber = "El número de documento es obligatorio";
+      errors.docNumber = t("travelers.form.errors.docRequired");
     } else if (!/^\d{8}\s?[A-Za-z]$/.test(fields.docNumber)) {
-      errors.docNumber = "Ejemplo: 12345678Z";
+      errors.docNumber = t("travelers.form.errors.docFormat");
     }
   }
 
   // Email: obligatorio, formato email
   if (touched.email) {
     if (!fields.email.trim()) {
-      errors.email = "El correo es obligatorio";
+      errors.email = t("travelers.form.errors.emailRequired");
     } else if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(fields.email)) {
-      errors.email = "Correo no válido";
+      errors.email = t("travelers.form.errors.emailInvalid");
     }
   }
 
   // Teléfono: obligatorio, 9 dígitos
   if (touched.phone) {
     if (!fields.phone.trim()) {
-      errors.phone = "El teléfono es obligatorio";
+      errors.phone = t("travelers.form.errors.phoneRequired");
     } else if (!/^\d{9}$/.test(fields.phone)) {
-      errors.phone = "Formato: 000000000";
+      errors.phone = t("travelers.form.errors.phoneFormat");
     }
   }
 
@@ -81,7 +82,9 @@ function RequiredAsterisk() {
   );
 }
 
-export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto" }) {
+export default function TravelerForm({ travelerIndex = 1, travelerType }) {
+  const { t } = useI18n();
+  const resolvedTravelerType = travelerType ?? t("travelers.passengerAdult");
   const { state, dispatch } = useTravel();
   const defaultFields = useMemo(() => ({
     nombre: "",
@@ -99,7 +102,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
   const [touched, setTouched] = useState({});
 
   // Validate on every render (live validation after blur)
-  const errors = validate(fields, touched);
+  const errors = validate(fields, touched, t);
 
   // Handlers
   const persist = (nextFields) => {
@@ -107,7 +110,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
       type: "SET_TRAVELER",
       payload: {
         index: travelerIndex - 1,
-        type: travelerType,
+        type: resolvedTravelerType,
         fields: nextFields,
       },
     });
@@ -153,7 +156,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
       case "nombre":
         label = (
           <>
-            Nombre
+            {t("travelers.form.firstName")}
             <RequiredAsterisk />
           </>
         );
@@ -161,7 +164,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
       case "apellido1":
         label = (
           <>
-            Primer apellido
+            {t("travelers.form.lastName1")}
             <RequiredAsterisk />
           </>
         );
@@ -169,17 +172,17 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
       case "docNumber":
         label = fields.docType === "DNI" ? (
           <>
-            Número de documento
+            {t("travelers.form.docNumber")}
             <RequiredAsterisk />
           </>
         ) : (
-          "Número de documento"
+          t("travelers.form.docNumber")
         );
         break;
       case "email":
         label = (
           <>
-            Correo electrónico
+            {t("travelers.form.email")}
             <RequiredAsterisk />
           </>
         );
@@ -187,13 +190,13 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
       case "phone":
         label = (
           <>
-            Teléfono
+            {t("travelers.form.phone")}
             <RequiredAsterisk />
           </>
         );
         break;
       case "apellido2":
-        label = "Segundo apellido";
+        label = t("travelers.form.lastName2");
         break;
       default:
         label = "";
@@ -214,17 +217,17 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
       label,
       placeholder:
         field === "nombre"
-          ? "Nombre"
+          ? t("travelers.form.placeholders.firstName")
           : field === "apellido1"
-          ? "Primer apellido"
+          ? t("travelers.form.placeholders.lastName1")
           : field === "apellido2"
-          ? "Segundo apellido"
+          ? t("travelers.form.placeholders.lastName2")
           : field === "docNumber"
-          ? "Número de documento"
+          ? t("travelers.form.placeholders.docNumber")
           : field === "email"
-          ? "Correo electrónico"
+          ? t("travelers.form.placeholders.email")
           : field === "phone"
-          ? "Teléfono"
+          ? t("travelers.form.placeholders.phone")
           : "",
       size: "m",
       inputProps: {
@@ -243,7 +246,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
       <div className="traveler-card__section">
         <form className="traveler-form" autoComplete="off">
           <fieldset className="traveler-form__fieldset">
-            <legend className="traveler-form__legend">Datos Personales</legend>
+            <legend className="traveler-form__legend">{t("travelers.form.personalData")}</legend>
             <div className="traveler-form__row">
               <div className="traveler-form__col traveler-form__col--lg">
                 <InputText {...getInputProps("nombre")} />
@@ -260,7 +263,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
                 <Dropdown
                   className="traveler-form__select"
                   layout="stacked"
-                  label="Tipo de documento"
+                  label={t("travelers.form.docType")}
                   name="docType"
                   value={fields.docType}
                   onChange={(value) => handleChange({
@@ -268,9 +271,9 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
                   })}
                   onBlur={handleBlur}
                   options={[
-                    { value: "DNI", label: "DNI" },
-                    { value: "NIE", label: "NIE" },
-                    { value: "Pasaporte", label: "Pasaporte" },
+                    { value: "DNI", label: t("travelers.form.docOptions.dni") },
+                    { value: "NIE", label: t("travelers.form.docOptions.nie") },
+                    { value: "Pasaporte", label: t("travelers.form.docOptions.passport") },
                   ]}
                 />
               </div>
@@ -286,7 +289,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
                 <Dropdown
                   className="traveler-form__select"
                   layout="stacked"
-                  label="Prefijo"
+                  label={t("travelers.form.phonePrefix")}
                   name="phonePrefix"
                   value={fields.phonePrefix}
                   onChange={(value) => handleChange({
@@ -313,7 +316,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
                   checked={fields.familiaNumerosa}
                   onChange={handleChange}
                 />{" "}
-                Familia numerosa
+                {t("travelers.form.largeFamily")}
               </label>
             </div>
           </fieldset>
@@ -321,13 +324,13 @@ export default function TravelerForm({ travelerIndex = 1, travelerType = "Adulto
       </div>
       <div className="traveler-card__accordion">
         <details>
-          <summary>Tarjeta Más Renfe</summary>
+          <summary>{t("travelers.form.accordions.renfeCard")}</summary>
         </details>
         <details>
-          <summary>Descuentos, códigos promocionales / vales descuento</summary>
+          <summary>{t("travelers.form.accordions.discounts")}</summary>
         </details>
         <details>
-          <summary>Accesibilidad</summary>
+          <summary>{t("travelers.form.accordions.accessibility")}</summary>
         </details>
       </div>
     </div>

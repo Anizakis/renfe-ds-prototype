@@ -5,7 +5,6 @@ import PageStack from "../components/PageStack/PageStack.jsx";
 import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import StickySummaryBar from "../components/StickySummaryBar/StickySummaryBar.jsx";
 import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
-import Button from "../components/Button/Button.jsx";
 import PriceDetailsModal from "../components/PriceDetailsModal/PriceDetailsModal.jsx";
 import FareComparison from "../components/FareComparison/FareComparison.jsx";
 import { useTravel } from "../app/store.jsx";
@@ -35,17 +34,9 @@ export default function Fares() {
   const extrasTotal = selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
   const perPassengerTotal = baseTotal + farePrice + extrasTotal;
   const totalPrice = perPassengerTotal * passengersTotal;
-  const formatPrice = (value) => `${value.toFixed(2)} €`;
-
-  const steps = [
-    { id: "results", label: t("stepper.results") },
-    { id: "fares", label: t("stepper.fares") },
-    { id: "travelers", label: t("stepper.travelers", "Datos viajeros") },
-    { id: "extras", label: t("stepper.extras") },
-    { id: "payment", label: t("stepper.payment") },
-  ];
 
   const breakdownItems = getBreakdownItems({ t, baseTotal, farePrice, extrasTotal, passengersTotal });
+  const fareName = selectedFare?.nameKey ? t(selectedFare.nameKey) : selectedFare?.name;
 
   return (
     <Container as="section">
@@ -58,7 +49,7 @@ export default function Fares() {
           onSelect={(fareId) => dispatch({ type: "SET_FARE", payload: fareId })}
         />
         <VisuallyHidden as="p" aria-live="polite">
-          {state.selectedFareId ? `Tarifa seleccionada: ${selectedFare.name}` : ""}
+          {state.selectedFareId ? `${t("fares.selectedFareAnnounce")}: ${fareName}` : ""}
         </VisuallyHidden>
         <StickySummaryBar
           journey={journey}

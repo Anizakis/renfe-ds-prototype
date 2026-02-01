@@ -1,9 +1,6 @@
 /* AUTO-GENERATED from colors.figmasync.json — do not edit by hand */
 :root {
-  --color-base-white: #FFFFFF;
-  --color-base-white-rgb: 255 255 255;
-  --color-base-black: #000000;
-  --color-base-black-rgb: 0 0 0;
+  
   --color-base-transparent: #FFFFFF;
   --color-base-transparent-rgb: 255 255 255;
   --color-brand-25: #F9F6F8;
@@ -70,6 +67,8 @@
   --color-accent-secondary-accent-500-rgb: 138 132 103;
   --color-accent-secondary-accent-600: #6A6650;
   --color-accent-secondary-accent-600-rgb: 106 102 80;
+  --color-neutral-0: #FFFFFF;
+  --color-neutral-0-rgb: 255 255 255;
   --color-neutral-25: #FAFAFA;
   --color-neutral-25-rgb: 250 250 250;
   --color-neutral-50: #F5F5F5;
@@ -171,10 +170,6 @@
 .dark,
 html.dark,
 body.dark {
-  --color-base-white: #FFFFFF;
-  --color-base-white-rgb: 255 255 255;
-  --color-base-black: #000000;
-  --color-base-black-rgb: 0 0 0;
   --color-base-transparent: #FFFFFF;
   --color-base-transparent-rgb: 255 255 255;
   --color-brand-25: #1A0F17;
@@ -237,6 +232,8 @@ body.dark {
   --color-accent-secondayaccent-600-rgb: 242 239 226;
   --color-accent-secondayaccent-700: #F9F7F1;
   --color-accent-secondayaccent-700-rgb: 249 247 241;
+  --color-neutral-0: #000000;
+  --color-neutral-0-rgb: 0 0 0;
   --color-neutral-25: #141414;
   --color-neutral-25-rgb: 20 20 20;
   --color-neutral-50: #1C1C1C;

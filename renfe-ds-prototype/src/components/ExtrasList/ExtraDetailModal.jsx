@@ -1,17 +1,11 @@
 import Modal from "../Modal/Modal.jsx";
 import Button from "../Button/Button.jsx";
 import Checkbox from "../Checkbox/Checkbox.jsx";
-import VisuallyHidden from "../VisuallyHidden/VisuallyHidden.jsx";
 import Icon from "../../ui/Icon/Icon.jsx";
 import "./ExtraDetailModal.css";
 import { useState } from "react";
-
-const DESCRIPTIONS = {
-  restauracion:
-    "Selecciona el menú para tu viaje ahora o hasta 12 horas antes de la salida del tren. Podrás cancelar esta compra únicamente anulando tu billete y se te reembolsará el importe siempre que anules hasta 12 horas antes de la salida del tren. Servicio ofrecido por Serveo.",
-  mascotas:
-    "En trenes AVE, Avlo, Larga Distancia, Media Distancia y AVANT están admitidos los animales cuyo peso máximo no exceda de 10 Kg., siempre dentro de una jaula, transportín u otro tipo de contenedor cerrado cuyas medidas máximas sean 60x35x35 cm. con dispositivo para contener y retirar los residuos. Consulta resto de condiciones en https://www.renfe.com/es/es/viajar/informacion-util/mascotas."
-};
+import { useI18n } from "../../app/i18n.jsx";
+import { formatPrice } from "../../app/utils.js";
 
 export default function ExtraDetailModal({
   isOpen,
@@ -23,10 +17,17 @@ export default function ExtraDetailModal({
   onAdd,
 }) {
   if (!extra) return null;
+  const { t } = useI18n();
   const isRestauracion = extra.id === "restauracion";
   const isMascotas = extra.id === "mascotas";
   const titleId = "extra-detail-title";
   const descId = "extra-detail-desc";
+  const extraName = extra.nameKey ? t(extra.nameKey) : extra.name;
+  const extraDetailsKey = `extrasDetails.${extra.id}`;
+  const translatedDetails = t(extraDetailsKey);
+  const extraDescription = translatedDetails === extraDetailsKey
+    ? (extra.descriptionKey ? t(extra.descriptionKey) : extra.description)
+    : translatedDetails;
 
   const buildLabel = (traveler, fallback) => {
     const fields = traveler?.fields;
@@ -41,7 +42,7 @@ export default function ExtraDetailModal({
   const passengerList = [];
   let travelerIndex = 0;
   for (let i = 0; i < passengers.adults; i++) {
-    const fallback = `Adulto ${i + 1}`;
+    const fallback = `${t("travelers.passengerAdult")} ${i + 1}`;
     const traveler = travelers[travelerIndex];
     passengerList.push({
       type: "adult",
@@ -50,7 +51,7 @@ export default function ExtraDetailModal({
     travelerIndex += 1;
   }
   for (let i = 0; i < passengers.children; i++) {
-    const fallback = `Niño ${i + 1}`;
+    const fallback = `${t("travelers.passengerChild")} ${i + 1}`;
     const traveler = travelers[travelerIndex];
     passengerList.push({
       type: "child",
@@ -59,7 +60,7 @@ export default function ExtraDetailModal({
     travelerIndex += 1;
   }
   for (let i = 0; i < passengers.infants; i++) {
-    const fallback = `Bebé ${i + 1}`;
+    const fallback = `${t("travelers.passengerInfant")} ${i + 1}`;
     const traveler = travelers[travelerIndex];
     passengerList.push({
       type: "infant",
@@ -72,7 +73,7 @@ export default function ExtraDetailModal({
   const [selectedIda, setSelectedIda] = useState([]);
   const [selectedVuelta, setSelectedVuelta] = useState([]);
   const price = isRestauracion ? 7.5 : isMascotas ? 10 : 0;
-  const total = ((selectedIda.length + selectedVuelta.length) * price).toFixed(2);
+  const total = (selectedIda.length + selectedVuelta.length) * price;
   const canAdd = selectedIda.length > 0 || selectedVuelta.length > 0;
 
   const handleCheck = (type, idx, checked, isVuelta = false) => {
@@ -93,23 +94,28 @@ export default function ExtraDetailModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} titleId={titleId} descriptionId={descId}>
       <div className="extra-detail-modal">
-        <button className="extra-detail-modal__close-btn" onClick={onClose} aria-label="Cerrar">
+        <button className="extra-detail-modal__close-btn" onClick={onClose} aria-label={t("extras.close")}>
           <Icon name="close" />
         </button>
-        <h2 id={titleId} className="extra-detail-modal__title">Personaliza tu viaje</h2>
+        <h2 id={titleId} className="extra-detail-modal__title">{t("extras.personalizeTitle")}</h2>
         <div className="extra-detail-modal__subheader">
-          <span className="extra-detail-modal__name">{extra.name}</span>
+          <span className="extra-detail-modal__name">{extraName}</span>
           <span className="extra-detail-modal__price">
-            {isRestauracion && <><span className="extra-detail-modal__per">Por viajero</span> <span>7,50 €</span></>}
-            {isMascotas && <span>10,00 €</span>}
+            {isRestauracion && (
+              <>
+                <span className="extra-detail-modal__per">{t("extras.perTraveler")}</span>
+                <span>{formatPrice(price)}</span>
+              </>
+            )}
+            {isMascotas && <span>{formatPrice(price)}</span>}
           </span>
         </div>
         <div id={descId} className="extra-detail-modal__desc">
-          {DESCRIPTIONS[extra.id]}
+          {extraDescription}
         </div>
         <div className="extra-detail-modal__divider" aria-hidden="true" />
         <div className="extra-detail-modal__section">
-          <span className="extra-detail-modal__section-title">Viaje de ida</span>
+          <span className="extra-detail-modal__section-title">{t("extras.outbound")}</span>
           <div className="extra-detail-modal__passenger-list">
             {passengerList.map((p, idx) => (
               <Checkbox
@@ -125,7 +131,7 @@ export default function ExtraDetailModal({
         </div>
         {tripType === "roundTrip" && (
           <div className="extra-detail-modal__section">
-            <span className="extra-detail-modal__section-title">Viaje de vuelta</span>
+            <span className="extra-detail-modal__section-title">{t("extras.return")}</span>
             <div className="extra-detail-modal__passenger-list">
               {passengerList.map((p, idx) => (
                 <Checkbox
@@ -141,8 +147,8 @@ export default function ExtraDetailModal({
           </div>
         )}
         <div className="extra-detail-modal__footer">
-          <span className="extra-detail-modal__total">Total: {total}€</span>
-          <Button variant="primary" size="l" disabled={!canAdd} onClick={handleAdd}>Añadir</Button>
+          <span className="extra-detail-modal__total">{t("extras.total")}: {formatPrice(total)}</span>
+          <Button variant="primary" size="l" disabled={!canAdd} onClick={handleAdd}>{t("extras.add")}</Button>
         </div>
       </div>
     </Modal>

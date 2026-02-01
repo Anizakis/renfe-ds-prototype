@@ -2,12 +2,12 @@ import { useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { useI18n } from "../../app/i18n.jsx";
 import "./AnimatedCheckoutStepper.css";
-import { checkoutSteps } from "./checkoutSteps.js";
+import { getCheckoutSteps } from "./checkoutSteps.js";
 
 export default function AnimatedCheckoutStepper({ currentStep }) {
-  const steps = checkoutSteps;
   const navigate = useNavigate();
   const { t } = useI18n();
+  const steps = getCheckoutSteps(t);
   const currentIndex = Math.max(
     0,
     steps.findIndex((step) => step.id === currentStep)
@@ -26,7 +26,7 @@ export default function AnimatedCheckoutStepper({ currentStep }) {
           <span className="animated-stepper__mobile-fill" />
         </span>
       </div>
-      <div className="animated-stepper__row" role="navigation" aria-label="Progress">
+      <div className="animated-stepper__row" role="navigation" aria-label={t("stepper.progress")}>
         {steps.flatMap((step, index) => {
           const isCurrent = step.id === currentStep;
           const isComplete = index < currentIndex;

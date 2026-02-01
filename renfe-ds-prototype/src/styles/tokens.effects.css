@@ -102,7 +102,7 @@
   --blur-l-alpha: 0.80;
 
   /* Fill modo claro = base.white */
-  --blur-fill-rgb: var(--color-base-white-rgb);
+  --blur-fill-rgb: var(--color-neutral-0-rgb);
 }
 
 /* Fill modo oscuro = dark.neutral.25*/

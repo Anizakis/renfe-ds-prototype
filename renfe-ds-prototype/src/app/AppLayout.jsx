@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import TopNav from "../components/TopNav/TopNav.jsx";
+import Link from "../components/Link/Link.jsx";
 import { useI18n } from "./i18n.jsx";
 import "./app.css";
 
@@ -18,7 +19,7 @@ export default function AppLayout() {
 
   return (
     <div className="app-root">
-      <a href="#main" className="skip-link">{t("common.skipToContent")}</a>
+      <Link href="#main" className="skip-link">{t("common.skipToContent")}</Link>
       <TopNav />
       <main
         id="main"
