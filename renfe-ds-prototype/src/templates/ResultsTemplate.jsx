@@ -1,8 +1,8 @@
-import Container from "../components/Container/Container.jsx";
-import PageStack from "../components/PageStack/PageStack.jsx";
-import Grid from "../components/Grid/Grid.jsx";
-import Stack from "../components/Stack/Stack.jsx";
-import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
+import Container from "../ui/atoms/Container/Container.jsx";
+import PageStack from "../ui/atoms/PageStack/PageStack.jsx";
+import Grid from "../ui/atoms/Grid/Grid.jsx";
+import Stack from "../ui/atoms/Stack/Stack.jsx";
+import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 
 export default function ResultsTemplate({
   title,

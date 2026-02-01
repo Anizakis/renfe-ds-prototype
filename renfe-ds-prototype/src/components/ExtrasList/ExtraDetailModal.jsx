@@ -16,8 +16,10 @@ export default function ExtraDetailModal({
   travelers = [],
   onAdd,
 }) {
-  if (!extra) return null;
   const { t } = useI18n();
+  const [selectedIda, setSelectedIda] = useState([]);
+  const [selectedVuelta, setSelectedVuelta] = useState([]);
+  if (!extra) return null;
   const isRestauracion = extra.id === "restauracion";
   const isMascotas = extra.id === "mascotas";
   const titleId = "extra-detail-title";
@@ -69,9 +71,6 @@ export default function ExtraDetailModal({
     travelerIndex += 1;
   }
 
-  // Estado de selección de checkboxes
-  const [selectedIda, setSelectedIda] = useState([]);
-  const [selectedVuelta, setSelectedVuelta] = useState([]);
   const price = isRestauracion ? 7.5 : isMascotas ? 10 : 0;
   const total = (selectedIda.length + selectedVuelta.length) * price;
   const canAdd = selectedIda.length > 0 || selectedVuelta.length > 0;

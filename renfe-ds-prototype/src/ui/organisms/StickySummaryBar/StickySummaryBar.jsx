@@ -1,5 +1,5 @@
 import "./StickySummaryBar.css";
-import VisuallyHidden from "../../../components/VisuallyHidden/VisuallyHidden.jsx";
+import VisuallyHidden from "../../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import Button from "../../../components/Button/Button.jsx";
 import { useTravel } from "../../../app/store.jsx";
 import { getSelectedExtras, getSelectedFare } from "../../../app/pricing.js";
@@ -8,7 +8,6 @@ function StickySummaryBar({
   journey,
   returnJourney,
   total,
-  breakdownItems = [],
   canContinue = true,
   onContinue,
   onViewDetails,

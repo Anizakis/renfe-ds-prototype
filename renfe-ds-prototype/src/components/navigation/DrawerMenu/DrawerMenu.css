@@ -1,6 +1,8 @@
 .drawer {
   position: fixed;
   inset: 0;
+  top: var(--spacing-11);
+  height: calc(100% - var(--spacing-11));
   z-index: 60;
   display: flex;
   justify-content: flex-end;
@@ -112,6 +114,22 @@
   background: transparent;
   text-align: left;
   cursor: pointer;
+}
+
+
+.drawer__row.ds-link {
+  text-decoration: none !important;
+}
+
+.drawer__row.ds-link:hover,
+.drawer__row.ds-link:focus-visible {
+  text-decoration: none !important;
+}
+
+.drawer__row:hover .drawer__row-text {
+  text-decoration: underline;
+  text-underline-offset: var(--type-underline-offset);
+  text-decoration-thickness: var(--type-underline-thickness);
 }
 
 .drawer__row:hover {

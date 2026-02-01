@@ -90,6 +90,10 @@
   gap: var(--spacing-02);
 }
 
+.topnav__link.ds-link {
+  text-decoration: none;
+}
+
 .topnav__link-button {
   background: transparent;
   border: none;

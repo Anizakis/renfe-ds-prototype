@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
-import Container from "../components/Container/Container.jsx";
+import Container from "../ui/atoms/Container/Container.jsx";
 import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import ExtrasList from "../components/ExtrasList/ExtrasList.jsx";
 import PriceBreakdown from "../components/PriceBreakdown/PriceBreakdown.jsx";
 import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
-import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
+import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import Button from "../components/Button/Button.jsx";
 import PriceDetailsModal from "../components/PriceDetailsModal/PriceDetailsModal.jsx";
 import { useTravel } from "../app/store.jsx";
@@ -12,7 +12,7 @@ import { extras } from "../data/mockData.js";
 import { getTotalPrice, getSelectedJourney, getSelectedFare, getSelectedExtras, getPassengersTotal } from "../app/pricing.js";
 import { useI18n } from "../app/i18n.jsx";
 import { useNavigate } from "react-router-dom";
-import PageStack from "../components/PageStack/PageStack.jsx";
+import PageStack from "../ui/atoms/PageStack/PageStack.jsx";
 import { formatPrice } from "../app/utils.js";
 import { getBreakdownItems } from "../app/breakdown.js";
 
@@ -43,13 +43,6 @@ export default function Extras() {
   const baseTotal = outboundPrice + returnPrice;
   const farePrice = fare?.price ?? 0;
   const extrasTotal = selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
-
-  const steps = [
-    { id: "results", label: t("stepper.results") },
-    { id: "fares", label: t("stepper.fares") },
-    { id: "extras", label: t("stepper.extras") },
-    { id: "payment", label: t("stepper.payment") },
-  ];
 
   const breakdownItems = getBreakdownItems({ t, baseTotal, farePrice, extrasTotal, passengersTotal });
 

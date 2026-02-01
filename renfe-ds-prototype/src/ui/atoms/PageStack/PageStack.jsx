@@ -1,7 +1,7 @@
 import "./PageStack.css";
 
 export default function PageStack({
-  as: Component = "div",
+  as: As = "div",
   align = "stretch",
   textAlign = "left",
   className = "",
@@ -16,8 +16,8 @@ export default function PageStack({
     width: "100%",
   };
   return (
-    <Component className={`page-stack ${className}`} style={style} {...props}>
+    <As className={`page-stack ${className}`} style={style} {...props}>
       {children}
-    </Component>
+    </As>
   );
 }

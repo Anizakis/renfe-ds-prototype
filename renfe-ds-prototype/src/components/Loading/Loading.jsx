@@ -1,5 +1,5 @@
 import "./Loading.css";
-import VisuallyHidden from "../VisuallyHidden/VisuallyHidden.jsx";
+import VisuallyHidden from "../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 
 export default function Loading({ label }) {
   return (

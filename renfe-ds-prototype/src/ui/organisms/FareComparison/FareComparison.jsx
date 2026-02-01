@@ -1,8 +1,8 @@
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./FareComparison.css";
 import Button from "../../../components/Button/Button.jsx";
 import Modal from "../../../components/Modal/Modal.jsx";
-import VisuallyHidden from "../../../components/VisuallyHidden/VisuallyHidden.jsx";
+import VisuallyHidden from "../../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 
 const getColumnOrder = (t) => [
@@ -121,10 +121,7 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
     return `${row.labelTitle}: ${value}`;
   });
   const fullItems = getFareFeatures(activeFare);
-  const groupedConditions = useMemo(
-    () => buildConditionGroups([...headlineItems, ...fullItems], t),
-    [activeFare, headlineItems, t]
-  );
+  const groupedConditions = buildConditionGroups([...headlineItems, ...fullItems], t);
 
   return (
     <section className="fareComparisonSection">

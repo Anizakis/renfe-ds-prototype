@@ -2,7 +2,7 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-03);
+  gap: var(--spacing-02);
 }
 
 .passenger-selector__header {
@@ -28,8 +28,8 @@
 }
 
 .passenger-selector__label {
-  font-size: var(--type-text-m-size);
-  line-height: var(--type-text-m-line);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
   color: var(--color-neutral-900);
 }
 

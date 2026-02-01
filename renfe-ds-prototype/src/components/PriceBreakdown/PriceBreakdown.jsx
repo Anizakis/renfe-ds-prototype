@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import VisuallyHidden from "../VisuallyHidden/VisuallyHidden.jsx";
+import VisuallyHidden from "../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import "./PriceBreakdown.css";
 
 export default function PriceBreakdown({ title, items, total, totalLabel = "Total" }) {

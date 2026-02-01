@@ -129,3 +129,14 @@ When implementing a change:
    - `FILE: path/to/file.css`
 3) Regression checklist (what to click / what to tab through / what SR should announce).
 4) Stop. Do not expand scope.
+
+- When moving components from src/components to src/ui/*:
+  - Update all imports to the new location.
+  - **Do NOT create re-export/compatibility wrapper files** in the old location.
+  - Delete the old folder once references are updated.
+
+- Do NOT output or run shell/PowerShell commands (Remove-Item, rm, Set-Location, etc.).
+  - If verification is requested, only **suggest** the commands I should run manually.
+- When fixing no-unused-vars in pages:
+  - Do NOT remove formatting helpers (e.g., formatPrice, formatDate) if they are referenced in JSX or may be re-used after refactors.
+  - Prefer removing only obviously dead destructured variables or parameters.

@@ -1,7 +1,7 @@
 import "./Stack.css";
 
 export default function Stack({
-  as: Component = "div",
+  as: As = "div",
   direction = "column",
   gap = "04",
   align = "stretch",
@@ -18,8 +18,8 @@ export default function Stack({
   };
 
   return (
-    <Component className={`ds-stack ${className}`} style={style} {...props}>
+    <As className={`ds-stack ${className}`} style={style} {...props}>
       {children}
-    </Component>
+    </As>
   );
 }

@@ -1,20 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import DayPickerStrip from "../components/DayPickerStrip/DayPickerStrip.jsx";
-import JourneyCard from "../components/JourneyCard/JourneyCard.jsx";
+import JourneyCard from "../ui/organisms/JourneyCard/JourneyCard.jsx";
 import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import SkeletonList from "../components/SkeletonList/SkeletonList.jsx";
 import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
-import ResultsSummary from "../components/ResultsSummary/ResultsSummary.jsx";
-import ResultsFilters from "../components/ResultsFilters/ResultsFilters.jsx";
+import ResultsSummary from "../ui/molecules/ResultsSummary/ResultsSummary.jsx";
+import ResultsFilters from "../ui/organisms/ResultsFilters/ResultsFilters.jsx";
 import PriceDetailsModal from "../components/PriceDetailsModal/PriceDetailsModal.jsx";
 import { useTravel } from "../app/store.jsx";
 import { buildDayRange, generateJourneys } from "../data/mockData.js";
 import { getSelectedExtras, getSelectedJourney, getSelectedReturnJourney, getTotalPrice, getSelectedFare, getPassengersTotal } from "../app/pricing.js";
 import { useI18n } from "../app/i18n.jsx";
-import { createDefaultFilters } from "../components/ResultsFilters/ResultsFilters.jsx";
+import { createDefaultFilters } from "../ui/organisms/ResultsFilters/ResultsFilters.jsx";
 import "./results.css";
-import { formatPrice } from "../app/utils.js";
 import { getBreakdownItems } from "../app/breakdown.js";
 import ResultsTemplate from "../templates/ResultsTemplate.jsx";
 import ResultsHeader from "../ui/organisms/ResultsHeader/ResultsHeader.jsx";
@@ -22,6 +21,7 @@ import ResultsToolbar from "../ui/organisms/ResultsToolbar/ResultsToolbar.jsx";
 import ResultsFiltersDrawer from "../ui/organisms/ResultsFiltersDrawer/ResultsFiltersDrawer.jsx";
 import JourneyList from "../ui/organisms/JourneyList/JourneyList.jsx";
 import ResultsEmpty from "../ui/molecules/ResultsEmpty/ResultsEmpty.jsx";
+import { formatPrice } from "../app/utils.js";
 
 const RANGE_LENGTH = 5;
 
@@ -134,7 +134,6 @@ export default function Results() {
   const tripType = state.search?.tripType ?? "oneWay";
   const departDate = state.search?.departDate;
   const returnDate = state.search?.returnDate;
-  const passengers = state.search?.passengers;
   const selectedJourney = getSelectedJourney(state);
   const selectedReturnJourney = getSelectedReturnJourney(state);
   const selectedExtras = getSelectedExtras(state);
@@ -158,8 +157,6 @@ export default function Results() {
   const baseTotal = outboundPrice + (isRoundTrip ? returnPrice : 0);
   const fareTotal = selectedFare?.price ?? 0;
   const extrasTotal = selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
-  const perPassengerTotal = baseTotal + fareTotal + extrasTotal;
-  const formatPrice = (value) => `${value.toFixed(2)} €`;
   const breakdownItems = getBreakdownItems({ t, baseTotal, farePrice: fareTotal, extrasTotal, passengersTotal });
 
   const baseOrigin = origin || "Madrid-Príncipe Pío";
@@ -184,12 +181,12 @@ export default function Results() {
   useEffect(() => {
     if (activeLeg === "return") {
       if (state.search?.returnDate && state.search.returnDate !== selectedDate) {
-        setSelectedDate(state.search.returnDate);
+        queueMicrotask(() => setSelectedDate(state.search.returnDate));
       }
       return;
     }
     if (state.search?.departDate && state.search.departDate !== selectedDate) {
-      setSelectedDate(state.search.departDate);
+      queueMicrotask(() => setSelectedDate(state.search.departDate));
     }
   }, [state.search, selectedDate, activeLeg]);
 
@@ -209,15 +206,15 @@ export default function Results() {
     if (!stillAvailable) {
       dispatch({ type: "SET_RETURN_JOURNEY", payload: null });
     }
-  }, [filteredJourneys, selectedJourney, selectedReturnJourney, dispatch, activeLeg]);
+  }, [filteredJourneys, selectedJourney, selectedReturnJourney, dispatch, activeLeg, selectedDate]);
 
   useEffect(() => {
     if (!isRoundTrip) return;
     if (activeLeg === "outbound" && departDate && departDate !== selectedDate) {
-      setSelectedDate(departDate);
+      queueMicrotask(() => setSelectedDate(departDate));
     }
     if (activeLeg === "return" && returnDate && returnDate !== selectedDate) {
-      setSelectedDate(returnDate);
+      queueMicrotask(() => setSelectedDate(returnDate));
     }
   }, [activeLeg, isRoundTrip, departDate, returnDate, selectedDate]);
 
@@ -236,11 +233,11 @@ export default function Results() {
   );
 
   useEffect(() => {
-    setLoading(true);
+    queueMicrotask(() => setLoading(true));
     if (loadingTimeout.current) {
       clearTimeout(loadingTimeout.current);
     }
-    loadingTimeout.current = setTimeout(() => setLoading(false), 600);
+    loadingTimeout.current = setTimeout(() => queueMicrotask(() => setLoading(false)), 600);
     return () => {
       if (loadingTimeout.current) {
         clearTimeout(loadingTimeout.current);
@@ -250,7 +247,7 @@ export default function Results() {
 
   useEffect(() => {
     if (loading) {
-      setAnnouncement(t("results.loadingDay"));
+      queueMicrotask(() => setAnnouncement(t("results.loadingDay")));
       return;
     }
     const locale = language === "en" ? "en-US" : "es-ES";
@@ -259,7 +256,7 @@ export default function Results() {
       day: "numeric",
       month: "long",
     }).format(new Date(selectedDate));
-    setAnnouncement(`${t("results.updatedFor")} ${label}`);
+    queueMicrotask(() => setAnnouncement(`${t("results.updatedFor")} ${label}`));
   }, [selectedDate, loading, t, language]);
 
   const dayPrices = useMemo(() => {
@@ -343,7 +340,7 @@ export default function Results() {
               selected={activeLeg === "return"
                 ? state.selectedReturnJourneyId === journey.id
                 : state.selectedJourneyId === journey.id}
-              onSelect={(id) => {
+              onSelect={() => {
                 if (activeLeg === "return") {
                   dispatch({ type: "SET_RETURN_JOURNEY", payload: journey });
                   dispatch({ type: "SET_SEARCH", payload: { returnDate: journey.date } });

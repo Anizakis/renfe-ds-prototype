@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import InputText from "../InputText/InputText.jsx";
 import Dropdown from "../Dropdown/Dropdown.jsx";
 import { useTravel } from "../../app/store.jsx";
@@ -105,7 +105,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType }) {
   const errors = validate(fields, touched, t);
 
   // Handlers
-  const persist = (nextFields) => {
+  const persist = useCallback((nextFields) => {
     dispatch({
       type: "SET_TRAVELER",
       payload: {
@@ -114,7 +114,7 @@ export default function TravelerForm({ travelerIndex = 1, travelerType }) {
         fields: nextFields,
       },
     });
-  };
+  }, [dispatch, travelerIndex, resolvedTravelerType]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -130,11 +130,11 @@ export default function TravelerForm({ travelerIndex = 1, travelerType }) {
 
   useEffect(() => {
     if (storedTraveler?.fields) {
-      setFields({ ...defaultFields, ...storedTraveler.fields });
+      queueMicrotask(() => setFields({ ...defaultFields, ...storedTraveler.fields }));
       return;
     }
     persist(defaultFields);
-  }, [travelerIndex, storedTraveler, defaultFields]);
+  }, [travelerIndex, storedTraveler, defaultFields, persist]);
 
   // Helper for state/props per field
   function getInputProps(field, isOptional = false) {

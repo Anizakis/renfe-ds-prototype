@@ -1,7 +1,7 @@
 import { useState } from "react";
-import Container from "../Container/Container.jsx";
-import PageStack from "../PageStack/PageStack.jsx";
-import Stack from "../Stack/Stack.jsx";
+import Container from "../../ui/atoms/Container/Container.jsx";
+import PageStack from "../../ui/atoms/PageStack/PageStack.jsx";
+import Stack from "../../ui/atoms/Stack/Stack.jsx";
 import InputText from "../InputText/InputText.jsx";
 import Checkbox from "../Checkbox/Checkbox.jsx";
 import Button from "../Button/Button.jsx";

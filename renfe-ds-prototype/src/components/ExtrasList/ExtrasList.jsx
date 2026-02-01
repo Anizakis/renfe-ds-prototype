@@ -9,12 +9,10 @@ import { useI18n } from "../../app/i18n.jsx";
 export default function ExtrasList({ extras, selectedExtras, onToggle }) {
   const { t } = useI18n();
   const [modalExtra, setModalExtra] = useState(null);
-  const [modalSelection, setModalSelection] = useState(null); // { ida: [...], vuelta: [...] }
   const MODAL_IDS = ["restauracion", "mascotas"];
   const handleAddClick = (extra) => {
     if (MODAL_IDS.includes(extra.id)) {
       setModalExtra(extra);
-      setModalSelection(null); // reset selección al abrir
     } else {
       onToggle(extra.id);
     }
@@ -22,10 +20,9 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
   const handleRemove = (extra) => {
     onToggle(extra.id);
   };
-  const handleModalAdd = (extra, ida, vuelta) => {
+  const handleModalAdd = (extra) => {
     onToggle(extra.id);
     setModalExtra(null);
-    setModalSelection(null);
   };
   const { state } = useTravel();
   return (
@@ -90,7 +87,7 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
       </div>
       <ExtraDetailModal
         isOpen={!!modalExtra}
-        onClose={() => { setModalExtra(null); setModalSelection(null); }}
+        onClose={() => { setModalExtra(null); }}
         extra={modalExtra}
         tripType={state.search?.tripType}
         passengers={state.search?.passengers || { adults: 1, children: 0, infants: 0 }}

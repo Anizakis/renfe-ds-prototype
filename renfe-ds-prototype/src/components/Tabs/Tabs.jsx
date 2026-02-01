@@ -8,7 +8,7 @@ export default function Tabs({ tabs, activeId, onChange, label }) {
 
   useEffect(() => {
     if (activeId) return;
-    setInternalId(defaultId);
+    queueMicrotask(() => setInternalId(defaultId));
   }, [activeId, defaultId]);
 
   const activeIndex = useMemo(

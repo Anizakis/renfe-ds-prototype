@@ -1,8 +1,8 @@
-import Container from "../components/Container/Container.jsx";
-import PageStack from "../components/PageStack/PageStack.jsx";
+import Container from "../ui/atoms/Container/Container.jsx";
+import PageStack from "../ui/atoms/PageStack/PageStack.jsx";
 import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
-import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
+import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import { useI18n } from "../app/i18n.jsx";
 import { useTravel } from "../app/store.jsx";
 import TravelerAccordion from "../components/TravelerForm/TravelerAccordion.jsx";

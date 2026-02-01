@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useEffect, useMemo, useReducer } from "react";
 
 const STORAGE_KEY = "renfe-ds-state";

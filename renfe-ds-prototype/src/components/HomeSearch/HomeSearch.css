@@ -10,6 +10,16 @@
   padding: var(--spacing-06);
   overflow: visible;
 }
+/* Guard: evita que reglas genéricas de `input` vuelvan a pintar borde/radius y se vea “doble caja” */
+.input-textfield__control > .input-textfield__input {
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+}
 .home-search {
   display: flex;
   flex-direction: column;
@@ -55,13 +65,13 @@
 .home-search-action-field {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-03);
+  gap: var(--spacing-02);
   width: 100%;
 }
 
 .home-search-action-spacer {
   display: block;
-  height: var(--type-text-m-line);
+  height: var(--type-text-s-line);
 }
 
 .home-search-triptype {

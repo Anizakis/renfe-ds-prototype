@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./JourneyCard.css";
-import Button from "../Button/Button.jsx";
+import Button from "../../components/Button/Button.jsx";
 import { useI18n } from "../../app/i18n.jsx";
 
 function buildPills(journey, activeFilters, t) {
@@ -84,7 +84,7 @@ export default function JourneyCard({
 
   useEffect(() => {
     if (overflowPills.length === 0 && overflowOpen) {
-      setOverflowOpen(false);
+      queueMicrotask(() => setOverflowOpen(false));
     }
   }, [overflowPills.length, overflowOpen]);
 

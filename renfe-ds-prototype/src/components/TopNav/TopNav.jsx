@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { useMemo, useRef, useState, useEffect } from "react";
-import Container from "../Container/Container.jsx";
+import Container from "../../ui/atoms/Container/Container.jsx";
 import InputText from "../InputText/InputText.jsx";
 import Link from "../Link/Link.jsx";
 import "./TopNav.css";
@@ -60,10 +60,16 @@ export default function TopNav() {
                 </button>
               </li>
               <li>
-                <Link className="topnav__link" href="#help">
+                <button
+                  type="button"
+                  className="topnav__link topnav__link-button"
+                  onClick={() => {
+                    window.location.hash = "help";
+                  }}
+                >
                   <Icon name="help" size="md" decorative />
                   <span className="topnav__link-text">{t("nav.help")}</span>
-                </Link>
+                </button>
               </li>
               <li>
                 <NavLink

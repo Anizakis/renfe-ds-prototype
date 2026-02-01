@@ -152,10 +152,12 @@ export default function DatePicker({
 
   useEffect(() => {
     const nextValue = value ? new Date(value) : null;
-    setInputValue(nextValue ? formatDate(nextValue) : "");
     const monthStart = startOfMonth(nextValue ?? new Date());
-    setVisibleMonthStart(monthStart);
-    setFocusedDate(nextValue ?? new Date());
+    queueMicrotask(() => {
+      setInputValue(nextValue ? formatDate(nextValue) : "");
+      setVisibleMonthStart(monthStart);
+      setFocusedDate(nextValue ?? new Date());
+    });
   }, [value]);
 
   useEffect(() => {

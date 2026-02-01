@@ -1,4 +1,4 @@
-import Button from "../Button/Button.jsx";
+import Button from "../../components/Button/Button.jsx";
 import "./ResultsSummary.css";
 
 export default function ResultsSummary({
