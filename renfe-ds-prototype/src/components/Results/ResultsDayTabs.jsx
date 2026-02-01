@@ -1,4 +1,5 @@
 import DayPickerStrip from "../../DayPickerStrip/DayPickerStrip.jsx";
+import "./ResultsDayTabs.css";
 
 export default function ResultsDayTabs({
   days,

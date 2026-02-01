@@ -1,0 +1,19 @@
+.home-grid {
+  width: 100%;
+}
+
+.home-grid__search {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 768px) {
+  .home-grid__search {
+    grid-column: 2 / -2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .home-grid__search {
+    grid-column: 3 / -3;
+  }
+}

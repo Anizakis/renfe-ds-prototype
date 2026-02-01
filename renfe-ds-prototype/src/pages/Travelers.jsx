@@ -1,7 +1,7 @@
 import Container from "../components/Container/Container.jsx";
 import PageStack from "../components/PageStack/PageStack.jsx";
-import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
-import StickySummaryBar from "../components/StickySummaryBar/StickySummaryBar.jsx";
+import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
+import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
 import VisuallyHidden from "../components/VisuallyHidden/VisuallyHidden.jsx";
 import { useI18n } from "../app/i18n.jsx";
 import { useTravel } from "../app/store.jsx";
@@ -9,6 +9,7 @@ import TravelerAccordion from "../components/TravelerForm/TravelerAccordion.jsx"
 import { useNavigate } from "react-router-dom";
 import { getSelectedExtras, getSelectedFare, getSelectedJourney, getSelectedReturnJourney, getTotalPrice, getPassengersTotal } from "../app/pricing.js";
 import { getBreakdownItems } from "../app/breakdown.js";
+import "./pages.css";
 
 export default function Travelers() {
   const { t } = useI18n();

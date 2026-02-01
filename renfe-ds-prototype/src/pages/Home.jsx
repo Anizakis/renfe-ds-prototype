@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Container from "../components/Container/Container.jsx";
 import PageStack from "../components/PageStack/PageStack.jsx";
 import HomeSearch from "../components/HomeSearch/HomeSearch.jsx";
+import "../templates/HomeTemplate.css";
 
 export default function Home() {
   const navigate = useNavigate();

@@ -2,7 +2,7 @@ import { useRef, useState } from "react";
 import Container from "../components/Container/Container.jsx";
 import Grid from "../components/Grid/Grid.jsx";
 import Stack from "../components/Stack/Stack.jsx";
-import AnimatedCheckoutStepper from "../components/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
+import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import InputText from "../components/InputText/InputText.jsx";
 import Button from "../components/Button/Button.jsx";
 import PriceBreakdown from "../components/PriceBreakdown/PriceBreakdown.jsx";
@@ -14,7 +14,7 @@ import PageStack from "../components/PageStack/PageStack.jsx";
 import { useTravel } from "../app/store.jsx";
 import { getTotalPrice } from "../app/pricing.js";
 import { useI18n } from "../app/i18n.jsx";
-import "./pages.css";
+import "../templates/PaymentTemplate.css";
 
 export default function Payment() {
   const { state, dispatch } = useTravel();

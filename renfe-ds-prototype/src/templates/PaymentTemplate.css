@@ -1,0 +1,26 @@
+.payment-grid {
+  --results-sticky-top: var(--spacing-08);
+  row-gap: var(--spacing-05);
+}
+
+.payment-form {
+  grid-column: 1 / span 8;
+}
+
+.payment-summary {
+  grid-column: 9 / -1;
+  position: sticky;
+  top: var(--results-sticky-top);
+  height: fit-content;
+}
+
+@media (max-width: 1023px) {
+  .payment-form {
+    grid-column: 1 / -1;
+  }
+
+  .payment-summary {
+    grid-column: 1 / -1;
+    position: static;
+  }
+}

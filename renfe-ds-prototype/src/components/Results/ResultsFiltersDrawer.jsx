@@ -1,3 +1,5 @@
+import "./ResultsFiltersDrawer.css";
+
 export default function ResultsFiltersDrawer({ open, onClose, filters, setFilters, t, defaultFilters, children }) {
   if (!open) return null;
   return (
