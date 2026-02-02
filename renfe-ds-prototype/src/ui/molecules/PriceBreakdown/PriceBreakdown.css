@@ -1,0 +1,46 @@
+.price-breakdown {
+  background: var(--color-neutral-25);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-03);
+  padding: var(--spacing-04);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.price-breakdown__title {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-heading-h4-size);
+  line-height: var(--type-heading-h4-line);
+}
+
+.price-breakdown__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+}
+
+.price-breakdown__row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-neutral-700);
+}
+
+.price-breakdown__total {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  font-weight: var(--type-weight-bold);
+  color: var(--color-neutral-900);
+  border-top: 1px solid var(--color-neutral-200);
+  padding-top: var(--spacing-02);
+}

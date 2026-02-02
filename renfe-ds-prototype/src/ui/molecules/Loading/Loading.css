@@ -1,0 +1,17 @@
+.loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-02);
+  color: var(--color-neutral-700);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+}
+
+.loading__icon {
+  font-family: "Material Symbols Outlined";
+  font-variation-settings: "wght" var(--icon-weight);
+  font-size: var(--icon-m-glyph);
+  line-height: 1;
+}

@@ -7,7 +7,7 @@ import SkeletonList from "../components/SkeletonList/SkeletonList.jsx";
 import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
 import ResultsSummary from "../ui/molecules/ResultsSummary/ResultsSummary.jsx";
 import ResultsFilters from "../ui/organisms/ResultsFilters/ResultsFilters.jsx";
-import PriceDetailsModal from "../components/PriceDetailsModal/PriceDetailsModal.jsx";
+import PriceDetailsModal from "../ui/organisms/PriceDetailsModal/PriceDetailsModal.jsx";
 import { useTravel } from "../app/store.jsx";
 import { buildDayRange, generateJourneys } from "../data/mockData.js";
 import { getSelectedExtras, getSelectedJourney, getSelectedReturnJourney, getTotalPrice, getSelectedFare, getPassengersTotal } from "../app/pricing.js";

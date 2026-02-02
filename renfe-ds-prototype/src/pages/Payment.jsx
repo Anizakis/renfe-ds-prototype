@@ -7,7 +7,7 @@ import InputText from "../ui/atoms/InputText/InputText.jsx";
 import Button from "../ui/atoms/Button/Button.jsx";
 import PriceBreakdown from "../components/PriceBreakdown/PriceBreakdown.jsx";
 import { Alert } from "../ui/atoms";
-import Modal from "../components/Modal/Modal.jsx";
+import Modal from "../ui/organisms/Modal/Modal.jsx";
 import Loading from "../components/Loading/Loading.jsx";
 import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import PageStack from "../ui/atoms/PageStack/PageStack.jsx";

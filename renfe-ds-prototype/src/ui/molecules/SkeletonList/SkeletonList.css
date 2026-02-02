@@ -1,0 +1,38 @@
+.skeleton-list {
+  display: block;
+}
+
+.skeleton-list__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.skeleton-card {
+  background: var(--color-neutral-25);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-04);
+  padding: var(--spacing-05);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.skeleton-card__row {
+  height: var(--spacing-04);
+  background: var(--color-neutral-100);
+  border-radius: var(--radius-02);
+}
+
+.skeleton-card__row--title {
+  height: var(--spacing-05);
+  width: 70%;
+}
+
+.skeleton-card__row--short {
+  width: 45%;
+}
