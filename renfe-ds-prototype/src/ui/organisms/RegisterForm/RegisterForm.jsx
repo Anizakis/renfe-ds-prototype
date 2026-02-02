@@ -11,6 +11,9 @@ import { useI18n } from "../../../app/i18n.jsx";
 import "./RegisterForm.css";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
+const DNI_REGEX = /^\d{8}\s?[A-Za-z]$/;
+const PHONE_REGEX = /^\d{9}$/;
 
 export default function RegisterForm() {
   const { t } = useI18n();
@@ -78,28 +81,39 @@ export default function RegisterForm() {
     }));
   };
 
-  const getFieldStatus = (name, value, { optional = false, validator } = {}) => {
-    if (!touched[name]) {
+  const getFieldStatus = (name, rawValue) => {
+    const isTouched = touched[name] || submitAttempted;
+    if (!isTouched) {
       return { helperText: "", state: "default" };
     }
 
+    const value = typeof rawValue === "string" ? rawValue.trim() : rawValue;
+
     if (!value) {
-      if (optional) {
-        return { helperText: "", state: "default" };
-      }
       return { helperText: t("auth.input.required"), state: "error" };
     }
 
-    if (validator && !validator(value)) {
+    if (name === "email" && !EMAIL_REGEX.test(value)) {
       return { helperText: t("auth.input.email"), state: "error" };
+    }
+
+    if ((name === "firstName" || name === "lastName1" || name === "lastName2")
+      && !LETTERS_REGEX.test(value)) {
+      return { helperText: t("auth.register.errors.lettersOnly"), state: "error" };
+    }
+
+    if (name === "docNumber" && form.docType === "dni" && !DNI_REGEX.test(value)) {
+      return { helperText: t("auth.register.errors.docFormat"), state: "error" };
+    }
+
+    if (name === "phone" && !PHONE_REGEX.test(value)) {
+      return { helperText: t("auth.register.errors.phoneFormat"), state: "error" };
     }
 
     return { helperText: t("auth.input.success"), state: "success" };
   };
 
-  const emailStatus = getFieldStatus("email", form.email, {
-    validator: (value) => EMAIL_REGEX.test(value),
-  });
+  const emailStatus = getFieldStatus("email", form.email);
   const docNumberStatus = getFieldStatus("docNumber", form.docNumber);
   const phoneStatus = getFieldStatus("phone", form.phone);
   const firstNameStatus = getFieldStatus("firstName", form.firstName);
@@ -119,7 +133,7 @@ export default function RegisterForm() {
               <p className="register__subtitle">{t("auth.register.subtitle")}</p>
             </Stack>
 
-            <form className="register__form" onSubmit={handleSubmit} autoComplete="off">
+            <form className="register__form" onSubmit={handleSubmit} autoComplete="off" noValidate>
               <div className="register__section">
                 <h2 className="register__section-title">{t("auth.register.sections.basic")}</h2>
                 <div className="register__fields">
@@ -184,6 +198,7 @@ export default function RegisterForm() {
                       inputProps={{
                         name: "docNumber",
                         type: "text",
+                        maxLength: 9,
                         required: true,
                         onBlur: handleBlur("docNumber"),
                       }}
@@ -217,6 +232,8 @@ export default function RegisterForm() {
                         name: "phone",
                         type: "tel",
                         autoComplete: "tel",
+                        maxLength: 9,
+                        inputMode: "numeric",
                         required: true,
                         onBlur: handleBlur("phone"),
                       }}
@@ -363,35 +380,38 @@ export default function RegisterForm() {
                   <p className="register__details-text">
                     {t("auth.register.dataTreatment.body")}
                   </p>
-                  <label className="checkbox" htmlFor="register-accept-terms">
-                    <input
-                      id="register-accept-terms"
-                      type="checkbox"
-                      checked={form.acceptTerms}
-                      onChange={(event) => handleCheckbox("acceptTerms")(event.target.checked)}
-                      required
-                    />
-                    <span className="checkbox__content">
-                      <span className="checkbox__label">{t("auth.register.acceptTerms")}</span>
-                    </span>
-                  </label>
-                  {showTermsError && (
-                    <div className="register__checkbox-error" role="alert">
-                      {t("auth.register.errors.acceptTerms")}
-                    </div>
-                  )}
-                  <Checkbox
-                    label={t("auth.register.marketingConsent")}
-                    checked={form.marketingConsent}
-                    onChange={handleCheckbox("marketingConsent")}
-                  />
-                  <Checkbox
-                    label={t("auth.register.dataShareConsent")}
-                    checked={form.dataShareConsent}
-                    onChange={handleCheckbox("dataShareConsent")}
-                  />
                 </div>
               </details>
+
+              <div className="register__checkboxes">
+                <label className="checkbox" htmlFor="register-accept-terms">
+                  <input
+                    id="register-accept-terms"
+                    type="checkbox"
+                    checked={form.acceptTerms}
+                    onChange={(event) => handleCheckbox("acceptTerms")(event.target.checked)}
+                    required
+                  />
+                  <span className="checkbox__content">
+                    <span className="checkbox__label">{t("auth.register.acceptTerms")}</span>
+                  </span>
+                </label>
+                {showTermsError && (
+                  <div className="register__checkbox-error" role="alert">
+                    {t("auth.register.errors.acceptTerms")}
+                  </div>
+                )}
+                <Checkbox
+                  label={t("auth.register.marketingConsent")}
+                  checked={form.marketingConsent}
+                  onChange={handleCheckbox("marketingConsent")}
+                />
+                <Checkbox
+                  label={t("auth.register.dataShareConsent")}
+                  checked={form.dataShareConsent}
+                  onChange={handleCheckbox("dataShareConsent")}
+                />
+              </div>
 
               <div className="register__actions">
                 <Button type="submit" variant="primary" size="l">

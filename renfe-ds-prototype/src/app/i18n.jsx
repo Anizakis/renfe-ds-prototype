@@ -224,7 +224,10 @@ const STRINGS = {
         dataShareConsent: "Consiento la cesión de datos a colaboradores del programa.",
         submit: "Registrarme",
         errors: {
-          acceptTerms: "Es necesario aceptar las condiciones que son checkbox por debajo del acordeon",
+          acceptTerms: "Es necesario aceptar los terminos y condiciones.",
+          lettersOnly: "Usa solo letras",
+          docFormat: "Formato de DNI incorrecto",
+          phoneFormat: "Introduce 9 dígitos",
         },
         docOptions: {
           dni: "DNI",
@@ -1001,7 +1004,10 @@ const STRINGS = {
         dataShareConsent: "I agree to share data with program partners.",
         submit: "Register",
         errors: {
-          acceptTerms: "You must accept the terms by checking the box below the accordion.",
+          acceptTerms: "You must accept the terms and conditions.",
+          lettersOnly: "Use letters only",
+          docFormat: "Invalid DNI format",
+          phoneFormat: "Enter 9 digits",
         },
         docOptions: {
           dni: "National ID",
