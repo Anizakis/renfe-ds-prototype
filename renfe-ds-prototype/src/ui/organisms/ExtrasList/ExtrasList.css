@@ -193,6 +193,7 @@
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
   display: -webkit-box;
+  line-clamp: 2;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;

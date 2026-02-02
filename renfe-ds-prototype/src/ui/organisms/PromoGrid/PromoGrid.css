@@ -18,51 +18,6 @@
   grid-template-columns: 1fr;
 }
 
-.promo-card {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid var(--color-neutral-200);
-  border-radius: var(--radius-04);
-  background: var(--color-neutral-0);
-  box-shadow: var(--shadow-xs);
-  overflow: hidden;
-}
-
-.promo-card__media {
-  height: 140px;
-  background: linear-gradient(135deg, var(--color-neutral-25), var(--color-neutral-0));
-  border-bottom: 1px solid var(--color-neutral-200);
-}
-
-.promo-card__body {
-  padding: var(--spacing-04);
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-02);
-}
-
-.promo-card__title {
-  margin: 0;
-  font-family: var(--font-family-primary);
-  font-size: var(--type-text-m-size);
-  line-height: var(--type-text-m-line);
-  color: var(--color-neutral-900);
-}
-
-.promo-card__description {
-  margin: 0;
-  font-family: var(--font-family-primary);
-  font-size: var(--type-text-s-size);
-  line-height: var(--type-text-s-line);
-  color: var(--color-neutral-700);
-}
-
-.promo-card__link {
-  font-family: var(--font-family-primary);
-  font-size: var(--type-text-s-size);
-  line-height: var(--type-text-s-line);
-}
-
 @media (min-width: 1024px) {
   .promo-grid__items {
     grid-template-columns: repeat(3, minmax(0, 1fr));

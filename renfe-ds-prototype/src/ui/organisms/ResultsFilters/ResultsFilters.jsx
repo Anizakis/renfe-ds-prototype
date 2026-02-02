@@ -199,7 +199,7 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
           onChange={(value) => updateFilters((prev) => ({ ...prev, petFriendly: value }))}
         />
         <div className="results-filters__group">
-          <span className="results-filters__label">{t("filtersPanel.sections.pets.allowed")}</span>
+          <span className="results-filters__label">{t("filtersPanel.sections.pets.typesLabel")}</span>
           <div className="results-filters__grid">
             <Checkbox
               label={t("filtersPanel.sections.pets.typeDog")}
@@ -226,7 +226,7 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
               }))}
             />
           </div>
-          <span className="results-filters__label">{t("filtersPanel.sections.pets.sizes")}</span>
+          <span className="results-filters__label">{t("filtersPanel.sections.pets.sizesLabel")}</span>
           <div className="results-filters__grid">
             <Checkbox
               label={t("filtersPanel.sections.pets.sizeSmall")}
@@ -256,27 +256,27 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
         </div>
       </FilterSection>
 
-      <FilterSection title={t("filtersPanel.sections.trains.title")}
-        description={t("filtersPanel.sections.trains.note")}
+      <FilterSection title={t("filtersPanel.sections.train.title")}
+        description={t("filtersPanel.sections.train.note")}
       >
         <div className="results-filters__grid">
           <Checkbox
-            label={t("filtersPanel.sections.trains.ave")}
+            label={t("filtersPanel.sections.train.ave")}
             checked={resolvedFilters.trainAve}
             onChange={(value) => updateFilters((prev) => ({ ...prev, trainAve: value }))}
           />
           <Checkbox
-            label={t("filtersPanel.sections.trains.avlo")}
+            label={t("filtersPanel.sections.train.avlo")}
             checked={resolvedFilters.trainAvlo}
             onChange={(value) => updateFilters((prev) => ({ ...prev, trainAvlo: value }))}
           />
           <Checkbox
-            label={t("filtersPanel.sections.trains.alvia")}
+            label={t("filtersPanel.sections.train.alvia")}
             checked={resolvedFilters.trainAlvia}
             onChange={(value) => updateFilters((prev) => ({ ...prev, trainAlvia: value }))}
           />
           <Checkbox
-            label={t("filtersPanel.sections.trains.md")}
+            label={t("filtersPanel.sections.train.md")}
             checked={resolvedFilters.trainMd}
             onChange={(value) => updateFilters((prev) => ({ ...prev, trainMd: value }))}
           />

@@ -1,48 +1,50 @@
 import Alert from "../../atoms/Alert/Alert.jsx";
 import Button from "../../atoms/Button/Button.jsx";
 import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
-import Icon from "../../Icon/Icon.jsx";
+import { useI18n } from "../../../app/i18n.jsx";
 import "./HomeInfoSection.css";
 
 export default function HomeInfoSection() {
+  const { t } = useI18n();
+
   return (
     <section className="home-info" aria-labelledby="home-info-title">
-      <Alert type="warning" title="Aviso">
-        <div className="home-info__alert-body">
-          <span className="home-info__alert-icon" aria-hidden="true">
-            <Icon name="warning" size="md" decorative />
-          </span>
-          <p className="home-info__alert-text">
-            Por limitaciones temporales de velocidad indicadas por el gestor de infraestructuras (Adif) en varios puntos de la red, algunos servicios pueden sufrir retrasos ajenos a Renfe. Los billetes comprados a partir del 31 de enero no generan derecho a indemnización cuando el retraso se deba a estas limitaciones. Lamentamos las molestias y agradecemos tu comprensión.
-          </p>
-        </div>
+      <Alert type="warning" title={t("home.notice.title")} iconName="warning">
+        <p>{t("home.notice.body")}</p>
       </Alert>
 
       <div className="home-info__incident">
         <div className="home-info__incident-content">
-          <h2 id="home-info-title" className="home-info__incident-title">Accidente ferroviario</h2>
+          <h2 id="home-info-title" className="home-info__incident-title">{t("home.incident.title")}</h2>
           <p className="home-info__incident-text">
-            Renfe lamenta el siniestro ocurrido en Adamuz (Córdoba) y traslada sus condolencias a las familias. Deseamos una pronta recuperación a las personas heridas.
+            {t("home.incident.body")}
           </p>
           <ul className="home-info__incident-list">
-            <li>La circulación de Alta Velocidad entre Madrid y Andalucía permanece suspendida hasta nuevo aviso.</li>
-            <li>Los servicios comerciales entre Madrid, Toledo, Ciudad Real y Puertollano operan con normalidad.</li>
-            <li>Se han habilitado cambios y anulaciones sin coste para personas afectadas (taquillas, agencias, web o teléfono 91 232 03 20).</li>
+            <li>{t("home.incident.list1")}</li>
+            <li>{t("home.incident.list2")}</li>
+            <li>{t("home.incident.list3")}</li>
           </ul>
           <div className="home-info__incident-footer">
             <div>
-              <p className="home-info__incident-text">Para familiares, Renfe pone a disposición el teléfono:</p>
+              <p className="home-info__incident-text">{t("home.incident.phoneIntro")}</p>
               <div className="home-info__phone">
-                <VisuallyHidden>Teléfono</VisuallyHidden>
-                900 10 10 20
+                <VisuallyHidden>{t("home.incident.phoneLabel")}</VisuallyHidden>
+                {t("home.incident.phoneNumber")}
               </div>
             </div>
             <Button variant="primary" size="l">
-              Información del plan alternativo
+              {t("home.incident.cta")}
             </Button>
           </div>
         </div>
-        <div className="home-info__incident-visual" aria-hidden="true" />
+        <div className="home-info__incident-visual" aria-hidden="true">
+        <img src="/mapatransportealternativo-accidente-30.jpeg"
+    alt=""
+    className="home-info__incident-image"
+    loading="lazy"
+    decoding="async"
+  />
+</div>
       </div>
     </section>
   );

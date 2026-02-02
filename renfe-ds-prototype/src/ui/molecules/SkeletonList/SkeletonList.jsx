@@ -1,19 +1,24 @@
-import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
 import "./SkeletonList.css";
+import Icon from "../../Icon/Icon.jsx";
 
-export default function SkeletonList({ statusText, isBusy = false }) {
+export default function SkeletonList({ isBusy = false, busyLabel = "" }) {
   const items = Array.from({ length: 6 }, (_, index) => index);
-  const isAnnouncing = Boolean(statusText && isBusy);
 
   return (
-    <div className="skeleton-list" aria-busy={isBusy} aria-live="polite">
-      <div className="skeleton-list__status" role="status">
-        {isAnnouncing ? (
-          statusText
-        ) : (
-          <VisuallyHidden>Cargando resultados…</VisuallyHidden>
-        )}
+    <div className="skeleton-list" aria-busy={isBusy ? "true" : undefined}>
+      <div className="skeleton-list__srStatus" role="status" aria-live="polite">
+        {isBusy ? busyLabel : ""}
       </div>
+      {isBusy && (
+        <div className="skeleton-list__overlay" aria-hidden="true">
+          <div className="skeleton-list__banner">
+            <span className="skeleton-list__busyIcon">
+              <Icon name="autorenew" size="sm" />
+            </span>
+            <span className="skeleton-list__bannerText">{busyLabel}</span>
+          </div>
+        </div>
+      )}
       <ul className="skeleton-list__items" aria-hidden="true">
         {items.map((item) => (
           <li key={item} className="skeleton-card">

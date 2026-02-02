@@ -35,6 +35,4 @@
   line-height: var(--type-text-xs-line);
 }
 
-.results-applied-bar__chipsPlaceholder {
-  min-height: calc(var(--type-text-xs-line) + var(--spacing-01));
-}
+

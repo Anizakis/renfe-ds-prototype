@@ -1,16 +1,53 @@
 .skeleton-list {
   display: block;
+  position: relative;
 }
 
-.skeleton-list__status {
-  min-height: var(--spacing-05);
+.skeleton-list__overlay {
+  position: absolute;
+  inset: 0;
   display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-inline: var(--spacing-04); 
+  padding-top: var(--spacing-07);
+  pointer-events: none;
+  z-index: 2;
+}
+.skeleton-list__banner {
+  display: inline-flex;
   align-items: center;
+  gap: var(--icon-s-gap);
+  padding: var(--spacing-02) var(--spacing-03);
+  border: 1px solid var(--color-neutral-200);
+  background: var(--color-neutral-200);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-m);
   font-family: var(--font-family-primary);
-  font-size: var(--type-text-xs-size);
-  line-height: var(--type-text-xs-line);
-  color: var(--color-neutral-600);
-  margin-bottom: var(--spacing-03);
+  font-size: var(--type-text-l-size);
+  line-height: var(--type-text-l-line);
+  color: var(--color-neutral-700);
+}
+
+.skeleton-list__busyIcon {
+  display: inline-flex;
+  animation: skeletonSpin 0.9s linear infinite;
+  transform-origin: center;
+}
+
+.skeleton-list__srStatus {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+@keyframes skeletonSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .skeleton-list__items {

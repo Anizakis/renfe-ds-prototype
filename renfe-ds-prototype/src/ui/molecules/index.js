@@ -8,3 +8,4 @@ export { default as PassengerSelector } from "./PassengerSelector/PassengerSelec
 export { default as OnlyAvailableDaysToggle } from "./OnlyAvailableDaysToggle/OnlyAvailableDaysToggle.jsx";
 export { default as FilterSection } from "./FilterSection/FilterSection.jsx";
 export { default as ResultsAppliedFiltersBar } from "./ResultsAppliedFiltersBar/ResultsAppliedFiltersBar.jsx";
+export { default as PromoCard } from "./PromoCard/PromoCard.jsx";

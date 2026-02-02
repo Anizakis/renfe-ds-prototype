@@ -32,6 +32,10 @@ const STRINGS = {
       optional: "(opcional)",
       skipToContent: "Saltar al contenido",
       language: "Idioma",
+      languages: {
+        es: "ES",
+        en: "EN",
+      },
     },
     home: {
       title: "Buscar viaje",
@@ -69,6 +73,74 @@ const STRINGS = {
         originRequired: "Indica un origen",
         destinationRequired: "Indica un destino",
         stationInvalid: "Selecciona una estación válida de la lista.",
+      },
+      notice: {
+        title: "Aviso",
+        body: "Por limitaciones temporales de velocidad indicadas por el gestor de infraestructuras (Adif) en varios puntos de la red, algunos servicios pueden sufrir retrasos ajenos a Renfe. Los billetes comprados a partir del 31 de enero no generan derecho a indemnización cuando el retraso se deba a estas limitaciones. Lamentamos las molestias y agradecemos tu comprensión.",
+      },
+      incident: {
+        title: "Accidente ferroviario",
+        body: "Renfe lamenta el siniestro ocurrido en Adamuz (Córdoba) y traslada sus condolencias a las familias. Deseamos una pronta recuperación a las personas heridas.",
+        list1: "La circulación de Alta Velocidad entre Madrid y Andalucía permanece suspendida hasta nuevo aviso.",
+        list2: "Los servicios comerciales entre Madrid, Toledo, Ciudad Real y Puertollano operan con normalidad.",
+        list3: "Se han habilitado cambios y anulaciones sin coste para personas afectadas (taquillas, agencias, web o teléfono 91 232 03 20).",
+        phoneIntro: "Para familiares, Renfe pone a disposición el teléfono:",
+        phoneLabel: "Teléfono",
+        phoneNumber: "900 10 10 20",
+        cta: "Información del plan alternativo",
+      },
+      promos: {
+        title: "Promociones y novedades",
+        items: [
+          {
+            title: "¡Nuevo! Abonos 2026",
+            description:
+              "Consulta las novedades de abonos bonificados para Cercanías y Media Distancia y conoce las opciones disponibles para 2026.",
+            ctaText: "Más información",
+            imageSrc: "/c-abonos-2026.jpeg",
+            imageAlt: "Abonos 2026",
+          },
+          {
+            title: "Viaja más barato con Más Renfe",
+            description:
+              "Canjea tus puntos por vales descuento y ahorra en tus próximos viajes en tren.",
+            ctaText: "Cuéntame más",
+            imageSrc: "/c-mas-renfe-2025.jpeg",
+            imageAlt: "Más Renfe",
+          },
+          {
+            title: "Oferta Renfe Viajes",
+            description:
+              "Reserva tren + hotel para cualquier destino y fecha, y aprovecha descuentos en escapadas seleccionadas.",
+            ctaText: "Ver oferta",
+            imageSrc: "/c-tren-mas-hotel-2025.jpeg",
+            imageAlt: "Oferta tren + hotel",
+          },
+          {
+            title: "Viaja en febrero",
+            description:
+              "Ideas para una escapada: planes románticos, carnavales o un viaje improvisado. Motivos para moverte este mes.",
+            ctaText: "Descubrir planes",
+            imageSrc: "/c-viajar-en-febrero.jpeg",
+            imageAlt: "Viajar en febrero",
+          },
+          {
+            title: "Viaja en tren con descuento",
+            description:
+              "Descuentos para familias, mayores, jóvenes, niños y grupos. Encuentra la tarifa que mejor encaja contigo.",
+            ctaText: "Ver descuentos",
+            imageSrc: "/c-descuentos-2024-a.jpeg",
+            imageAlt: "Descuentos para viajar en tren",
+          },
+          {
+            title: "Planes para esquiar",
+            description:
+              "Te contamos propuestas para una escapada a la nieve, en España o Francia, con inspiración para tu próximo viaje.",
+            ctaText: "Ver planes",
+            imageSrc: "/c-esquiar-2026.jpeg",
+            imageAlt: "Planes para esquiar",
+          },
+        ],
       },
     },
     login: {
@@ -127,13 +199,19 @@ const STRINGS = {
       noAvailability: "Sin plazas",
       today: "Hoy",
       loadingDay: "Actualizando resultados",
+      noPrice: "—",
       onlyShowAvailable: "Solo mostrar días con trenes disponibles",
+      defaultOrigin: "Madrid-Príncipe Pío",
+      defaultDestination: "Valencia",
     },
     filtersPanel: {
       title: "Filtros",
       clearAll: "Limpiar todo",
       applied: "Aplicados",
       updating: "Actualizando resultados…",
+      chips: {
+        maxPrice: "{value} €",
+      },
       sections: {
         flexibleDates: {
           title: "Fechas flexibles",
@@ -561,6 +639,10 @@ const STRINGS = {
       optional: "(optional)",
       skipToContent: "Skip to content",
       language: "Language",
+      languages: {
+        es: "ES",
+        en: "EN",
+      },
     },
     home: {
       title: "Search trip",
@@ -599,6 +681,75 @@ const STRINGS = {
         destinationRequired: "Enter a destination",
         stationInvalid: "Select a valid station from the list.",
       },
+      notice: {
+        title: "Notice",
+        body: "Due to temporary speed restrictions indicated by the infrastructure manager (Adif) across several parts of the network, some services may face delays beyond Renfe’s control. Tickets purchased from January 31 do not grant compensation when delays are caused by these restrictions. We apologize for the inconvenience and appreciate your understanding.",
+      },
+      incident: {
+        title: "Railway accident",
+        body: "Renfe regrets the accident in Adamuz (Córdoba) and extends its condolences to the families. We wish a speedy recovery to the injured.",
+        list1: "High-speed traffic between Madrid and Andalusia remains suspended until further notice.",
+        list2: "Commercial services between Madrid, Toledo, Ciudad Real and Puertollano are operating normally.",
+        list3: "Changes and cancellations at no cost are available for affected passengers (ticket offices, agencies, web or phone 91 232 03 20).",
+        phoneIntro: "For families, Renfe provides the phone number:",
+        phoneLabel: "Phone",
+        phoneNumber: "900 10 10 20",
+        cta: "Alternative plan information",
+      },
+      promos: {
+        title: "Promotions and updates",
+        items: [
+          {
+            title: "New! 2026 passes",
+            description:
+              "See the latest subsidized passes for commuter and regional services and the options available for 2026.",
+            ctaText: "Learn more",
+            imageSrc: "/c-abonos-2026.jpeg",
+            imageAlt: "2026 passes",
+          },
+          {
+            title: "Travel cheaper with Más Renfe",
+            description:
+              "Redeem your points for discount vouchers and save on upcoming train trips.",
+            ctaText: "Tell me more",
+            imageSrc: "/c-mas-renfe-2025.jpeg",
+            imageAlt: "Más Renfe",
+          },
+          {
+            title: "Renfe Viajes offer",
+            description:
+              "Book train + hotel for any destination and date, and enjoy discounts on selected getaways.",
+            ctaText: "View offer",
+            imageSrc: "/c-tren-mas-hotel-2025.jpeg",
+            imageAlt: "Train + hotel offer",
+          },
+          {
+            title: "Travel in February",
+            description:
+              "Ideas for a getaway: romantic plans, carnivals, or a spontaneous trip. Reasons to travel this month.",
+            ctaText: "Discover plans",
+            imageSrc: "/c-viajar-en-febrero.jpeg",
+            imageAlt: "Travel in February",
+          },
+          {
+            title: "Train discounts",
+            description:
+              "Discounts for families, seniors, youth, children, and groups. Find the fare that fits you best.",
+            ctaText: "See discounts",
+            imageSrc: "/c-descuentos-2024-a.jpeg",
+            imageAlt: "Train discounts",
+          },
+          {
+            title: "Ski trip ideas",
+            description:
+              "We share ideas for a snow getaway in Spain or France, with inspiration for your next trip.",
+            ctaText: "See ideas",
+            imageSrc: "/c-esquiar-2026.jpeg",
+            imageAlt: "Ski trip ideas",
+          },
+        ],
+      },
+
     },
     login: {
       title: "Sign in or create account",
@@ -656,13 +807,19 @@ const STRINGS = {
       noAvailability: "No seats",
       today: "Today",
       loadingDay: "Updating results",
+      noPrice: "—",
       onlyShowAvailable: "Show only days with available trains",
+      defaultOrigin: "Madrid-Príncipe Pío",
+      defaultDestination: "Valencia",
     },
     filtersPanel: {
       title: "Filters",
       clearAll: "Clear all",
       applied: "Applied",
       updating: "Updating results…",
+      chips: {
+        maxPrice: "€{value}",
+      },
       sections: {
         flexibleDates: {
           title: "Flexible dates",
@@ -1058,13 +1215,17 @@ export function I18nProvider({ children }) {
   }, []);
 
   const t = useCallback(
-    (key) => {
+    (key, vars) => {
       const parts = key.split(".");
       let current = STRINGS[language];
       for (const part of parts) {
         current = current?.[part];
       }
-      return current ?? key;
+      const resolved = current ?? key;
+      if (typeof resolved !== "string" || !vars) return resolved;
+      return resolved.replace(/\{(\w+)\}/g, (match, token) => (
+        token in vars ? String(vars[token]) : match
+      ));
     },
     [language]
   );

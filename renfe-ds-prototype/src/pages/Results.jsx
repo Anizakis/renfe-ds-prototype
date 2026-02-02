@@ -165,14 +165,14 @@ export default function Results() {
     if (filters.petFriendly) chips.push(t("filtersPanel.sections.pets.toggle"));
     if (filters.directOnly) chips.push(t("filtersPanel.sections.connections.directOnly"));
     if (filters.maxPrice !== base.maxPrice) {
-      chips.push(`${t("filtersPanel.sections.price.maxPrice")} €${filters.maxPrice}`);
+      chips.push(t("filtersPanel.chips.maxPrice", { value: filters.maxPrice }));
     }
     if (filters.accessibilityAssistance) chips.push(t("filtersPanel.sections.accessibility.assistance"));
     return chips;
   }, [filters, t]);
 
-  const baseOrigin = origin || "Madrid-Príncipe Pío";
-  const baseDestination = destination || "Valencia";
+  const baseOrigin = origin || t("results.defaultOrigin");
+  const baseDestination = destination || t("results.defaultDestination");
   const legOrigin = activeLeg === "return" ? baseDestination : baseOrigin;
   const legDestination = activeLeg === "return" ? baseOrigin : baseDestination;
   const dataStart = addDays(rangeStart, -7);
@@ -338,8 +338,8 @@ export default function Results() {
   const listContent = isListBusy
     ? (
       <SkeletonList
-        statusText={isUpdating ? t("filtersPanel.updating") : ""}
-        isBusy={isListBusy}
+        isBusy={isUpdating}
+        busyLabel={t("filtersPanel.updating")}
       />
     )
     : sortedJourneysForSelectedDate.length === 0

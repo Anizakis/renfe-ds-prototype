@@ -165,6 +165,18 @@
   --color-danger-900-rgb: 68 13 11;
   --color-danger-950: #2C0706;
   --color-danger-950-rgb: 44 7 6;
+  --color-alert-25: var(--color-warning-25);
+  --color-alert-300: var(--color-warning-300);
+  --color-alert-700: var(--color-warning-700);
+  --color-info-25: var(--color-accent-primaryaccent-25);
+  --color-info-300: var(--color-accent-primaryaccent-300);
+  --color-info-700: var(--color-accent-primaryaccent-700);
+  --color-alert-25: var(--color-warning-25);
+  --color-alert-300: var(--color-warning-300);
+  --color-alert-700: var(--color-warning-700);
+  --color-info-25: var(--color-accent-primaryaccent-25);
+  --color-info-300: var(--color-accent-primaryaccent-300);
+  --color-info-700: var(--color-accent-primaryaccent-700);
 }
 
 .dark,

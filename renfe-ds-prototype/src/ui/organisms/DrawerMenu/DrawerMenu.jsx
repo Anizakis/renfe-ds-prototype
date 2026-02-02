@@ -109,8 +109,8 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
               value={language}
               onChange={(event) => setLanguage(event.target.value)}
             >
-              <option value="es">ES</option>
-              <option value="en">EN</option>
+              <option value="es">{t("common.languages.es")}</option>
+              <option value="en">{t("common.languages.en")}</option>
             </select>
           </div>
 

@@ -113,7 +113,7 @@ export default function DayPickerStrip({
                   {isAvailable
                     ? price != null
                       ? `${t("results.priceFrom")} ${formatPrice(price, locale)}`
-                      : "—"
+                      : t("results.noPrice")
                     : t("results.noAvailability")}
                 </span>
                 {isToday && <span className="day-tile__today">{t("results.today")}</span>}

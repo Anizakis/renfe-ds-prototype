@@ -4,19 +4,7 @@
   gap: var(--spacing-06);
 }
 
-.home-info__alert-body {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--spacing-03);
-}
-
-.home-info__alert-icon {
-  color: var(--color-warning-700);
-  font-size: var(--icon-m-glyph);
-  line-height: 1;
-}
-
-.home-info__alert-text {
+.home-info .alert p {
   margin: 0;
   font-family: var(--font-family-primary);
   font-size: var(--type-text-s-size);
@@ -26,19 +14,22 @@
 
 .home-info__incident {
   display: grid;
-  grid-template-columns: 1.4fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
   gap: var(--spacing-06);
   padding: var(--spacing-06);
   border: 1px solid var(--color-neutral-200);
   border-radius: var(--radius-04);
   background: var(--color-neutral-0);
   box-shadow: var(--shadow-sm);
+  align-items: stretch; /* importante para que ambos lados “crezcan” igual */
 }
 
 .home-info__incident-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-03);
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-03);
+    min-height: 0; /* evita estiramientos raros en grid */
 }
 
 .home-info__incident-title {
@@ -68,31 +59,77 @@
   color: var(--color-neutral-700);
 }
 
+/* ✅ Footer estable (no salta por idioma) */
 .home-info__incident-footer {
+  margin-top: auto;              /* se queda abajo del bloque de texto */
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-direction: column;        /* ✅ botón siempre debajo del teléfono */
+  align-items: flex-start;
   gap: var(--spacing-04);
-  margin-top: var(--spacing-02);
+}
+
+/* Bloque izquierdo (intro + teléfono) */
+.home-info__incident-footer > div {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+/* El intro del teléfono dentro del footer: más compacto para que no “rompa” layout */
+.home-info__incident-footer .home-info__incident-text {
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+}
+
+/* Botón siempre abajo a la derecha */
+.home-info__incident-footer > button,
+.home-info__incident-footer .button {
+  justify-self: end;
 }
 
 .home-info__phone {
   font-family: var(--font-family-primary);
-  font-size: var(--type-heading-h3-size);
-  line-height: var(--type-heading-h3-line);
+  font-size: var(--type-heading-h2-size);
+  line-height: var(--type-heading-h2-line);
   font-weight: var(--type-weight-bold);
   color: var(--color-neutral-900);
 }
 
 .home-info__incident-visual {
-  min-height: 220px;
+  width: 100%;
+  height: 100%;
+  min-height: clamp(220px, 22vw, 300px);
   border-radius: var(--radius-04);
-  border: 1px dashed var(--color-neutral-300);
-  background: linear-gradient(135deg, var(--color-neutral-25), var(--color-neutral-0));
+  overflow: hidden;
+  display: block;
 }
 
+.home-info__incident-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;        /* rellena la columna */
+  object-position: center;
+  border-radius: inherit;
+}
+
+/* responsive */
 @media (max-width: 1023px) {
   .home-info__incident {
     grid-template-columns: 1fr;
+  }
+
+  .home-info__incident-visual {
+    height: 100%;
+  }
+
+  .home-info__incident-footer {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .home-info__incident-footer > button,
+  .home-info__incident-footer .button {
+    justify-self: start; /* o stretch si quieres full width */
   }
 }
