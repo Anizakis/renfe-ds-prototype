@@ -307,6 +307,72 @@ const STRINGS = {
         },
       },
     },
+    footer: {
+      about: {
+        title: "Conócenos",
+        links: [
+          "Sobre Renfe",
+          "Sostenibilidad",
+          "Sala de prensa",
+          "Trabaja con nosotros",
+        ],
+      },
+      commuter: {
+        title: "Cercanías",
+        links: [
+          "Mapas y líneas",
+          "Horarios",
+          "Tarifas y abonos",
+          "Estado de la red",
+        ],
+      },
+      help: {
+        title: "Ayuda",
+        links: [
+          "Centro de ayuda",
+          "Gestión de billetes",
+          "Cambios y anulaciones",
+          "Atención al cliente",
+        ],
+      },
+      apps: {
+        title: "Apps y Webs",
+        links: [
+          "App Renfe",
+          "Renfe Viajes",
+          "Cercanías",
+          "Media Distancia",
+        ],
+      },
+      routes: {
+        title: "Rutas en Tren",
+        links: [
+          "AVE y Larga Distancia",
+          "Media Distancia",
+          "Cercanías",
+          "Internacional",
+        ],
+      },
+      more: "Ver más",
+      notices: "Avisos",
+      social: {
+        title: "Redes sociales",
+        facebook: "Facebook",
+        instagram: "Instagram",
+        x: "X",
+        youtube: "YouTube",
+        linkedin: "LinkedIn",
+        tiktok: "TikTok",
+      },
+      legal: {
+        info: "Información legal",
+        privacy: "Privacidad y Cookies",
+        accessibility: "Accesibilidad web y Apps",
+        cyber: "Certificaciones de Ciberseguridad",
+      },
+      copyright: "© Renfe - Todos los derechos reservados",
+      ministryAlt: "Ministerio de Transportes",
+    },
     fares: {
       title: "Tarifas",
       compare: "Comparar tarifas",
@@ -914,6 +980,72 @@ const STRINGS = {
           altStations: "Nearby alternative stations",
         },
       },
+    },
+    footer: {
+      about: {
+        title: "About us",
+        links: [
+          "About Renfe",
+          "Sustainability",
+          "Press room",
+          "Careers",
+        ],
+      },
+      commuter: {
+        title: "Commuter",
+        links: [
+          "Maps and lines",
+          "Timetables",
+          "Fares and passes",
+          "Network status",
+        ],
+      },
+      help: {
+        title: "Help",
+        links: [
+          "Help center",
+          "Ticket management",
+          "Changes and cancellations",
+          "Customer service",
+        ],
+      },
+      apps: {
+        title: "Apps and websites",
+        links: [
+          "Renfe app",
+          "Renfe Viajes",
+          "Commuter",
+          "Regional",
+        ],
+      },
+      routes: {
+        title: "Train routes",
+        links: [
+          "AVE and long distance",
+          "Regional",
+          "Commuter",
+          "International",
+        ],
+      },
+      more: "See more",
+      notices: "Notices",
+      social: {
+        title: "Social media",
+        facebook: "Facebook",
+        instagram: "Instagram",
+        x: "X",
+        youtube: "YouTube",
+        linkedin: "LinkedIn",
+        tiktok: "TikTok",
+      },
+      legal: {
+        info: "Legal information",
+        privacy: "Privacy and Cookies",
+        accessibility: "Web and apps accessibility",
+        cyber: "Cybersecurity certifications",
+      },
+      copyright: "© Renfe - All rights reserved",
+      ministryAlt: "Ministry of Transport",
     },
     fares: {
       title: "Fares",

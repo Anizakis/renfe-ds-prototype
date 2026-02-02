@@ -1,6 +1,7 @@
 import { Outlet, useLocation } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import TopNav from "../ui/organisms/TopNav/TopNav.jsx";
+import Footer from "../ui/organisms/Footer/Footer.jsx";
 import Link from "../ui/atoms/Link/Link.jsx";
 import { useI18n } from "./i18n.jsx";
 import "./app.css";
@@ -29,6 +30,7 @@ export default function AppLayout() {
       >
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }

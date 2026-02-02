@@ -1,6 +1,5 @@
 .ds-link {
   color: var(--color-brand-600);
-  text-decoration: underline;
   text-decoration-thickness: var(--type-underline-thickness);
   text-underline-offset: var(--type-underline-offset);
   font-family: var(--font-family-primary);
@@ -11,6 +10,7 @@
 
 .ds-link:hover {
   color: var(--color-brand-700);
+  text-decoration: underline;
 }
 
 .ds-link:focus-visible {
