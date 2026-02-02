@@ -1,15 +1,18 @@
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Link, InputText, VisuallyHidden, Button } from "../../atoms";
-import { LanguageSwitcher, Modal } from "../../molecules";
+import Link from "../../atoms/Link/Link.jsx";
+import InputText from "../../atoms/InputText/InputText.jsx";
+import Modal from "../Modal/Modal.jsx";
+import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
 import useFocusTrap from "../Modal/useFocusTrap.js";
+import Button from "../../atoms/Button/Button.jsx";
 import Icon from "../../Icon/Icon.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import { useTheme } from "../../../app/theme.jsx";
 import "./DrawerMenu.css";
 
 export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
-  const { t } = useI18n();
+  const { t, language, setLanguage } = useI18n();
   const { theme, toggleTheme } = useTheme();
   const panelRef = useRef(null);
   const cookiesButtonRef = useRef(null);
@@ -96,8 +99,19 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
           <div className="drawer__row drawer__row--static">
             <Icon name="language" size="md" decorative />
             <div className="drawer__row-text">
-              <LanguageSwitcher label={t("drawer.language")} />
+              <label className="drawer__label" htmlFor="drawer-language">
+                {t("drawer.language")}
+              </label>
             </div>
+            <select
+              id="drawer-language"
+              className="drawer__select"
+              value={language}
+              onChange={(event) => setLanguage(event.target.value)}
+            >
+              <option value="es">ES</option>
+              <option value="en">EN</option>
+            </select>
           </div>
 
           <button

@@ -9,3 +9,4 @@ export { default as ExtrasList } from "./ExtrasList/ExtrasList.jsx";
 export { default as PriceBreakdown } from "./PriceBreakdown/PriceBreakdown.jsx";
 export { default as TopNav } from "./TopNav/TopNav.jsx";
 export { default as Login } from "./Login/Login.jsx";
+export { default as DrawerMenu } from "./DrawerMenu/DrawerMenu.jsx";

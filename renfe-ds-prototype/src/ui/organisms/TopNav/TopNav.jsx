@@ -5,7 +5,7 @@ import InputText from "../../atoms/InputText/InputText.jsx";
 import Link from "../../atoms/Link/Link.jsx";
 import "./TopNav.css";
 import { useI18n } from "../../../app/i18n.jsx";
-import DrawerMenu from "../../../components/navigation/DrawerMenu/DrawerMenu.jsx";
+import DrawerMenu from "../DrawerMenu/DrawerMenu.jsx";
 import Icon from "../../Icon/Icon.jsx";
 import Modal from "../Modal/Modal.jsx";
 
