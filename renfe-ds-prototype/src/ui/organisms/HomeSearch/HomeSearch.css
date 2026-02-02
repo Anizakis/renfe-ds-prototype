@@ -51,7 +51,6 @@
   align-items: center;
   justify-content: center;
   justify-self: center;
-  align-self: start;
   padding-top: calc(var(--type-text-m-line) + var(--spacing-03));
 }
 
