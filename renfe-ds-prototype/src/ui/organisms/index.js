@@ -12,3 +12,5 @@ export { default as Login } from "./Login/Login.jsx";
 export { default as DrawerMenu } from "./DrawerMenu/DrawerMenu.jsx";
 export { default as TravelerForm } from "./TravelerForm/TravelerForm.jsx";
 export { default as HomeSearch } from "./HomeSearch/HomeSearch.jsx";
+export { default as HomeInfoSection } from "./HomeInfoSection/HomeInfoSection.jsx";
+export { default as PromoGrid } from "./PromoGrid/PromoGrid.jsx";

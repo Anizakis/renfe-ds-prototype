@@ -96,9 +96,15 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
       <div className="results-filters__header">
         <div>
           <h2 className="section-title">{t("filtersPanel.title")}</h2>
-          {isUpdating && (
-            <span className="results-filters__updating">{t("filtersPanel.updating")}</span>
-          )}
+          <span className="results-filters__updating-slot" aria-live="polite">
+            {isUpdating ? (
+              <span className="results-filters__updating" role="status">
+                {t("filtersPanel.updating")}
+              </span>
+            ) : (
+              <span className="results-filters__updating" aria-hidden="true" />
+            )}
+          </span>
         </div>
         <Button
           variant="tertiary"

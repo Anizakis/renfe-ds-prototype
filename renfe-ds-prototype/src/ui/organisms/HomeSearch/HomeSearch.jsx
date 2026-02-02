@@ -37,7 +37,7 @@ export default function HomeSearch({ onSubmit: onSubmitProp }) {
   useEffect(() => {
     let isMounted = true;
     setStationsLoading(true);
-    import("../../data/stations.es.json")
+    import("../../../data/stations.es.json")
       .then((module) => {
         if (!isMounted) return;
         setStationsData(module.default ?? []);

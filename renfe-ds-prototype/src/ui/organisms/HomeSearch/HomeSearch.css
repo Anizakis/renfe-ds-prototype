@@ -146,12 +146,7 @@
     flex: 0 0 100%;
   }
 
-  /* botón como estaba */
-  .home-search-actions {
-    justify-content: flex-end;
-    align-self: start;
-    padding-top: 0;
-  }
+
 
   .home-search-button {
     width: auto;

@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import Container from "../ui/atoms/Container/Container.jsx";
 import PageStack from "../ui/atoms/PageStack/PageStack.jsx";
 import HomeSearch from "../ui/organisms/HomeSearch/HomeSearch.jsx";
+import HomeInfoSection from "../ui/organisms/HomeInfoSection/HomeInfoSection.jsx";
+import PromoGrid from "../ui/organisms/PromoGrid/PromoGrid.jsx";
 import "../templates/HomeTemplate.css";
 
 export default function Home() {
@@ -14,6 +16,8 @@ export default function Home() {
         <div className="search-card">
           <HomeSearch onSubmit={() => navigate("/results")} />
         </div>
+        <HomeInfoSection />
+        <PromoGrid />
       </PageStack>
     </Container>
   );

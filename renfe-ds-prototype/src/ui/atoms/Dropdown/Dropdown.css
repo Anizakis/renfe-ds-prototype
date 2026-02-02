@@ -25,8 +25,8 @@
 }
 
 .dropdown__select {
-  border: 1px solid var(--color-neutral-300);
-  background: var(--color-neutral-0);
+  border: 1px solid var(--color-neutral-400);
+  background: var(--color-neutral-25);
   border-radius: var(--radius-03);
   padding: var(--spacing-02) var(--spacing-03);
   min-height: var(--spacing-08);
@@ -43,8 +43,8 @@
 }
 
 .dropdown__select:hover {
-  border-color: var(--color-neutral-400);
-  background: var(--color-neutral-25);
+  border-color: var(--color-neutral-300);
+  background: var(--color-neutral-0);
 }
 
 .dropdown__select:focus-visible {

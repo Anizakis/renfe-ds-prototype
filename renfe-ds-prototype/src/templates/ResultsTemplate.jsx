@@ -39,8 +39,8 @@ export default function ResultsTemplate({
             <section className="results-content">
               <div className="results-panel results-panel--content">
                 {header}
-                {toolbar}
                 {dayPicker}
+                {toolbar}
                 <VisuallyHidden as="p" aria-live="polite">
                   {announcement}
                 </VisuallyHidden>

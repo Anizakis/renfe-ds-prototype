@@ -1,0 +1,98 @@
+.home-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-06);
+}
+
+.home-info__alert-body {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-03);
+}
+
+.home-info__alert-icon {
+  color: var(--color-warning-700);
+  font-size: var(--icon-m-glyph);
+  line-height: 1;
+}
+
+.home-info__alert-text {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  color: var(--color-neutral-700);
+}
+
+.home-info__incident {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: var(--spacing-06);
+  padding: var(--spacing-06);
+  border: 1px solid var(--color-neutral-200);
+  border-radius: var(--radius-04);
+  background: var(--color-neutral-0);
+  box-shadow: var(--shadow-sm);
+}
+
+.home-info__incident-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+}
+
+.home-info__incident-title {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-heading-h3-size);
+  line-height: var(--type-heading-h3-line);
+  color: var(--color-neutral-900);
+}
+
+.home-info__incident-text {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  color: var(--color-neutral-700);
+}
+
+.home-info__incident-list {
+  margin: 0;
+  padding-left: var(--spacing-04);
+  display: grid;
+  gap: var(--spacing-02);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  color: var(--color-neutral-700);
+}
+
+.home-info__incident-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-04);
+  margin-top: var(--spacing-02);
+}
+
+.home-info__phone {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-heading-h3-size);
+  line-height: var(--type-heading-h3-line);
+  font-weight: var(--type-weight-bold);
+  color: var(--color-neutral-900);
+}
+
+.home-info__incident-visual {
+  min-height: 220px;
+  border-radius: var(--radius-04);
+  border: 1px dashed var(--color-neutral-300);
+  background: linear-gradient(135deg, var(--color-neutral-25), var(--color-neutral-0));
+}
+
+@media (max-width: 1023px) {
+  .home-info__incident {
+    grid-template-columns: 1fr;
+  }
+}
