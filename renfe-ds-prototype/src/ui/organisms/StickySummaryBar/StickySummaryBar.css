@@ -16,7 +16,7 @@
 }
 .sticky-summary {
   position: fixed;
-  bottom: 0;
+  bottom: var(--sticky-summary-footer-offset, 0px);
   left: 0;
   right: 0;
   width: 100vw;
@@ -47,6 +47,7 @@
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
   color: var(--color-neutral-700);
+  min-width: 0;
 }
 
 .sticky-summary__details {
@@ -56,6 +57,7 @@
   flex-wrap: wrap;
   flex: 1 1 auto;
   min-width: calc(var(--spacing-18) + var(--spacing-02));
+  min-width: 0;
 }
 
 .sticky-summary__group {
@@ -63,6 +65,7 @@
   flex-direction: column;
   gap: var(--spacing-01);
   min-width: var(--spacing-15);
+  min-width: 0;
 }
 
 .sticky-summary__label {
@@ -100,7 +103,8 @@
 }
 
 .sticky-summary__trip-line {
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: anywhere;
 }
 
 .sticky-summary__trip-line {
@@ -113,6 +117,7 @@
   gap: var(--spacing-04);
   flex-wrap: wrap;
   justify-content: flex-end;
+  min-width: 0;
 }
 
 .sticky-summary__helper {

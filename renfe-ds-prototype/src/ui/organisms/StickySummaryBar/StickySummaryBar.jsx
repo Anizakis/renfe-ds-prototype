@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import "./StickySummaryBar.css";
 import VisuallyHidden from "../../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import Button from "../../atoms/Button/Button.jsx";
@@ -30,6 +31,7 @@ function StickySummaryBar({
   passengersLabel,
   onModifySearch
 }) {
+  const summaryRef = useRef(null);
   // Centralize extras logic here
   const { state } = useTravel();
   const selectedExtras = getSelectedExtras(state);
@@ -39,8 +41,67 @@ function StickySummaryBar({
   const pendingFare = !state.selectedFareId;
   const fareName = selectedFare?.nameKey ? t(selectedFare.nameKey) : selectedFare?.name;
   const extrasNames = selectedExtras.map((extra) => (extra.nameKey ? t(extra.nameKey) : extra.name));
+
+  useEffect(() => {
+    const summaryEl = summaryRef.current;
+    if (!summaryEl) return undefined;
+    const scope = document.querySelector(".results-page") ?? document.documentElement;
+    const headerEl = document.querySelector(".topnav") ?? document.querySelector("header");
+
+    const setSummaryHeight = () => {
+      const height = summaryEl.getBoundingClientRect().height;
+      scope.style.setProperty("--sticky-summary-h", `${Math.round(height)}px`);
+    };
+
+    const setHeaderHeight = () => {
+      if (!headerEl) {
+        scope.style.setProperty("--app-header-h", "0px");
+        return;
+      }
+      const height = headerEl.getBoundingClientRect().height;
+      scope.style.setProperty("--app-header-h", `${Math.round(height)}px`);
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      setSummaryHeight();
+      setHeaderHeight();
+    });
+    resizeObserver.observe(summaryEl);
+    if (headerEl) resizeObserver.observe(headerEl);
+
+    setSummaryHeight();
+    setHeaderHeight();
+
+    let rafId = null;
+    const updateFooterOffset = () => {
+      if (rafId) return;
+      rafId = window.requestAnimationFrame(() => {
+        rafId = null;
+        const footer = document.querySelector("footer");
+        const overlap = footer
+          ? Math.max(0, window.innerHeight - footer.getBoundingClientRect().top)
+          : 0;
+        summaryEl.style.setProperty("--sticky-summary-footer-offset", `${Math.round(overlap)}px`);
+      });
+    };
+
+    window.addEventListener("scroll", updateFooterOffset, { passive: true });
+    window.addEventListener("resize", updateFooterOffset);
+    updateFooterOffset();
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("scroll", updateFooterOffset);
+      window.removeEventListener("resize", updateFooterOffset);
+      if (rafId) window.cancelAnimationFrame(rafId);
+    };
+  }, []);
+
   return (
-    <div className={topSummary ? "sticky-summary sticky-summary--top" : "sticky-summary"}>
+    <div
+      ref={summaryRef}
+      className={topSummary ? "sticky-summary sticky-summary--top" : "sticky-summary"}
+    >
       {topSummary && (
         <>
           <div className="sticky-summary__main">
