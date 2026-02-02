@@ -4,6 +4,7 @@ import VisuallyHidden from "../../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx"
 import Button from "../../atoms/Button/Button.jsx";
 import { useTravel } from "../../../app/store.jsx";
 import { getSelectedExtras, getSelectedFare } from "../../../app/pricing.js";
+import { formatPrice } from "../../../app/utils.js";
 
 function StickySummaryBar({
   journey,
@@ -132,20 +133,21 @@ function StickySummaryBar({
       <div className="sticky-summary__inner">
         <div className="sticky-summary__details">
           <div className="sticky-summary__group">
-            <span className="sticky-summary__label">{t("summary.journey")}</span>
             <span className="sticky-summary__value">
               {returnJourney ? (
                 <span className="sticky-summary__trip-grid">
                   <span className="sticky-summary__trip-column">
+                    <span className="sticky-summary__label">{t("summary.outboundTrip")}</span>
                     <span className="sticky-summary__trip-line">
-                      {t("home.departDate")}: {journey ? `${journey.origin} → ${journey.destination}` : "—"}
+                      {journey ? `${journey.origin} → ${journey.destination}` : "—"}
                     </span>
                     <span className="sticky-summary__trip-line">{journey ? journey.date : "—"}</span>
                     <span className="sticky-summary__trip-line">{journey ? `${journey.departTime}-${journey.arriveTime} · ${journey.service}` : "—"}</span>
                   </span>
                   <span className="sticky-summary__trip-column">
+                    <span className="sticky-summary__label">{t("summary.returnTrip")}</span>
                     <span className="sticky-summary__trip-line">
-                      {t("home.returnDate")}: {returnJourney ? `${returnJourney.origin} → ${returnJourney.destination}` : "—"}
+                      {returnJourney ? `${returnJourney.origin} → ${returnJourney.destination}` : "—"}
                     </span>
                     <span className="sticky-summary__trip-line">{returnJourney ? returnJourney.date : "—"}</span>
                     <span className="sticky-summary__trip-line">{returnJourney ? `${returnJourney.departTime}-${returnJourney.arriveTime} · ${returnJourney.service}` : "—"}</span>
@@ -153,6 +155,7 @@ function StickySummaryBar({
                 </span>
               ) : journey ? (
                 <span className="sticky-summary__trip">
+                  <span className="sticky-summary__label">{t("summary.outboundTrip")}</span>
                   <span className="sticky-summary__trip-line">{journey.origin} → {journey.destination}</span>
                   <span className="sticky-summary__trip-line">{journey.date}</span>
                   <span className="sticky-summary__trip-line">{journey.departTime}-{journey.arriveTime} · {journey.service}</span>
@@ -178,7 +181,7 @@ function StickySummaryBar({
         <div className="sticky-summary__actions">
           <div className="sticky-summary__totals">
             <span className="sticky-summary__total" aria-live="polite" aria-atomic="true">
-              {t("summary.total")}: {typeof total === "number" ? total.toFixed(2) : total} €
+              {t("summary.total")}: {typeof total === "number" ? formatPrice(total) : total}
             </span>
             {showDetailsButton && (
               <button

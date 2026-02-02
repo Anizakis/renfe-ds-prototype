@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import "./JourneyCard.css";
 import Button from "../../atoms/Button/Button.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
+import { formatPrice } from "../../../app/utils.js";
 
 function buildPills(journey, activeFilters, t) {
   const priority = [];
@@ -150,7 +151,7 @@ export default function JourneyCard({
       </div>
       <div className="journey-card__price">
         <span className="journey-card__price-label">{priceFromLabel}</span>
-        <span>{journey.price.toFixed(2)} €</span>
+          <span>{formatPrice(journey.price)}</span>
       </div>
       <Button
         variant={selected ? "secondary" : "primary"}

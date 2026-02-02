@@ -695,6 +695,8 @@ const STRINGS = {
     summary: {
       title: "Resumen",
       journey: "Trayecto",
+      outboundTrip: "Trayecto ida",
+      returnTrip: "Trayecto vuelta",
       baseFare: "Base",
       fare: "Tarifa",
       extras: "Extras",
@@ -1475,6 +1477,8 @@ const STRINGS = {
     summary: {
       title: "Summary",
       journey: "Journey",
+      outboundTrip: "Outbound trip",
+      returnTrip: "Return trip",
       baseFare: "Base fare",
       fare: "Fare",
       extras: "Extras",

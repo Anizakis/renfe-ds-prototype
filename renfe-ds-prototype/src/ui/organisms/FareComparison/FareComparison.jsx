@@ -4,6 +4,7 @@ import Button from "../../atoms/Button/Button.jsx";
 import Modal from "../Modal/Modal.jsx";
 import VisuallyHidden from "../../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
+import { formatPrice } from "../../../app/utils.js";
 
 const getColumnOrder = (t) => [
   { id: "basic", label: t("fares.comparison.columns.basic"), key: "basic", className: "col-basic" },
@@ -139,7 +140,7 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
             >
               <div className="fareComparisonHeaderStack">
                 <span className={`fareComparisonName fareComparisonName--${column.className.replace('col-','')}`}>{getFareName(fare)}</span>
-                <span className="fareComparisonPrice">+{fare.price.toFixed(2)} €</span>
+                <span className="fareComparisonPrice">+{formatPrice(fare.price)}</span>
                 <span className="fareComparisonMicrocopy">{t("fares.comparison.basePriceNote")}</span>
               </div>
             </div>
@@ -225,7 +226,7 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
           triggerRef={triggerRef}
         >
           <h2 id="fare-conditions-title" className="fareComparisonModalTitle">
-            {getFareName(activeFare)} · +{activeFare?.price?.toFixed(2) ?? "0.00"} €
+            {getFareName(activeFare)} · +{formatPrice(activeFare?.price ?? 0)}
           </h2>
           <p id="fare-conditions-description" className="fareComparisonModalSubtitle">
             {t("fares.comparison.modalSubtitle")}

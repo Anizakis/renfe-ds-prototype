@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
 import "./PriceBreakdown.css";
+import { formatPrice } from "../../../app/utils.js";
 
 export default function PriceBreakdown({ title, items, total, totalLabel = "Total" }) {
   const [liveMessage, setLiveMessage] = useState("");
 
   useEffect(() => {
-    setLiveMessage(`${title}: ${total.toFixed(2)} €`);
+    setLiveMessage(`${title}: ${formatPrice(total)}`);
   }, [title, total]);
 
   return (
@@ -24,7 +25,7 @@ export default function PriceBreakdown({ title, items, total, totalLabel = "Tota
       </ul>
       <div className="price-breakdown__total">
         <span>{totalLabel}</span>
-        <span>{total.toFixed(2)} €</span>
+        <span>{formatPrice(total)}</span>
       </div>
       <VisuallyHidden>{liveMessage}</VisuallyHidden>
     </section>
