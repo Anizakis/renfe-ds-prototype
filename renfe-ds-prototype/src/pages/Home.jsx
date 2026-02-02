@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import Container from "../ui/atoms/Container/Container.jsx";
 import PageStack from "../ui/atoms/PageStack/PageStack.jsx";
-import HomeSearch from "../components/HomeSearch/HomeSearch.jsx";
+import HomeSearch from "../ui/organisms/HomeSearch/HomeSearch.jsx";
 import "../templates/HomeTemplate.css";
 
 export default function Home() {

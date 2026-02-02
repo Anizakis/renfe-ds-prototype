@@ -1,5 +1,6 @@
 import Button from "../../atoms/Button/Button.jsx";
 import { Tabs } from "../../atoms";
+import "./ResultsHeader.css";
 
 export default function ResultsHeader({
   title,

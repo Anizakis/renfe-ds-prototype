@@ -3,6 +3,7 @@ import PageStack from "../ui/atoms/PageStack/PageStack.jsx";
 import Grid from "../ui/atoms/Grid/Grid.jsx";
 import Stack from "../ui/atoms/Stack/Stack.jsx";
 import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
+import "./ResultsTemplate.css";
 
 export default function ResultsTemplate({
   title,

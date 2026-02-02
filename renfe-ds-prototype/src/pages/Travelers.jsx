@@ -5,7 +5,7 @@ import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.
 import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import { useI18n } from "../app/i18n.jsx";
 import { useTravel } from "../app/store.jsx";
-import TravelerAccordion from "../components/TravelerForm/TravelerAccordion.jsx";
+import TravelerAccordion from "../ui/organisms/TravelerForm/TravelerAccordion.jsx";
 import { useNavigate } from "react-router-dom";
 import { getSelectedExtras, getSelectedFare, getSelectedJourney, getSelectedReturnJourney, getTotalPrice, getPassengersTotal } from "../app/pricing.js";
 import { getBreakdownItems } from "../app/breakdown.js";

@@ -1,5 +1,6 @@
 import OnlyAvailableDaysToggle from "../../molecules/OnlyAvailableDaysToggle/OnlyAvailableDaysToggle.jsx";
 import Dropdown from "../../atoms/Dropdown/Dropdown.jsx";
+import "./ResultsToolbar.css";
 
 export default function ResultsToolbar({
   showAvailableOnly,

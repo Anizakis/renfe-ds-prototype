@@ -1,3 +1,5 @@
+import "./ResultsEmpty.css";
+
 export default function ResultsEmpty({ title, body, actions }) {
   return (
     <div className="results-empty" role="status">

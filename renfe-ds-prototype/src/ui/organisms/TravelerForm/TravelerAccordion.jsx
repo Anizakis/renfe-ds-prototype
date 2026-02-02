@@ -1,9 +1,8 @@
-
 import React, { useState } from "react";
 import TravelerForm from "./TravelerForm.jsx";
 import "./TravelerAccordion.css";
-import Icon from "../../ui/Icon/Icon.jsx";
-import { useI18n } from "../../app/i18n.jsx";
+import Icon from "../../Icon/Icon.jsx";
+import { useI18n } from "../../../app/i18n.jsx";
 
 export default function TravelerAccordion({ index = 1, type, defaultOpen = false }) {
   const { t } = useI18n();
@@ -14,7 +13,7 @@ export default function TravelerAccordion({ index = 1, type, defaultOpen = false
         <span className="traveler-accordion__title">
           <b>{t("travelers.accordionTitle")} {index}</b> <span className="traveler-accordion__subtitle">{type}</span>
         </span>
-        <span className={"traveler-accordion__icon" + (open ? " open" : "")}> 
+        <span className={"traveler-accordion__icon" + (open ? " open" : "")}>
           <Icon name={open ? "expand_less" : "expand_more"} size="md" decorative={true} />
         </span>
       </div>

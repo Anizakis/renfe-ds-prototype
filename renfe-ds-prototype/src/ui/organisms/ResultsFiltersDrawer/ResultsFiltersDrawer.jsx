@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import Button from "../../atoms/Button/Button.jsx";
+import "./ResultsFiltersDrawer.css";
 
 function getFocusableElements(container) {
   if (!container) return [];

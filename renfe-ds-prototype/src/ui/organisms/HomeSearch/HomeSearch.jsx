@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import InputText from "../../ui/atoms/InputText/InputText.jsx";
-import Button from "../../ui/atoms/Button/Button.jsx";
-import RadioGroup from "../../ui/atoms/RadioGroup/RadioGroup.jsx";
-import { DatePicker } from "../../ui/molecules";
-import PassengerSelector from "../../ui/molecules/PassengerSelector/PassengerSelector.jsx";
-import { useTravel } from "../../app/store.jsx";
-import { useI18n } from "../../app/i18n.jsx";
-import { getStationSuggestions, isValidStation } from "../../app/stations.js";
+import InputText from "../../atoms/InputText/InputText.jsx";
+import Button from "../../atoms/Button/Button.jsx";
+import RadioGroup from "../../atoms/RadioGroup/RadioGroup.jsx";
+import { DatePicker } from "../../molecules";
+import PassengerSelector from "../../molecules/PassengerSelector/PassengerSelector.jsx";
+import { useTravel } from "../../../app/store.jsx";
+import { useI18n } from "../../../app/i18n.jsx";
+import { getStationSuggestions, isValidStation } from "../../../app/stations.js";
 import "./HomeSearch.css";
 
 const SUGGESTIONS_LIMIT = 8;
@@ -400,13 +400,11 @@ export default function HomeSearch({ onSubmit: onSubmitProp }) {
                   return {
                     ...prev,
                     departDate: nextDepart,
-                    returnDate: tripType === "roundTrip" ? nextReturn : "",
+                    returnDate: nextReturn,
                   };
                 });
               }}
               minDate={todayDate}
-              ariaLabel={t("home.departDate")}
-              required
             />
           </div>
           {tripType === "roundTrip" && (
@@ -416,39 +414,30 @@ export default function HomeSearch({ onSubmit: onSubmitProp }) {
                 inputId="return-date"
                 helperId="return-date-helper"
                 value={returnDateValue}
-                onChange={(date) =>
-                  setForm((prev) => ({
-                    ...prev,
-                    returnDate: toIsoDate(date),
-                  }))
-                }
+                onChange={(date) => {
+                  const nextReturn = toIsoDate(date);
+                  setForm((prev) => ({ ...prev, returnDate: nextReturn }));
+                }}
                 minDate={returnMinDate}
-                ariaLabel={t("home.returnDate")}
-                required
               />
             </div>
           )}
           <div className="home-search-passengers">
             <PassengerSelector
-              value={normalizedPassengers}
-              onChange={(value) =>
-                setForm((prev) => ({ ...prev, passengers: value }))
-              }
+              value={form.passengers}
+              onChange={(passengers) => setForm((prev) => ({ ...prev, passengers }))}
             />
           </div>
           <div className="home-search-actions">
-            <div className="home-search-action-field">
-              <span className="home-search-action-spacer" aria-hidden="true" />
-              <Button
-                type="submit"
-                variant="primary"
-                size="l"
-                disabled={!isReady}
-                className="home-search-button"
-              >
-                {t("home.search")}
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              variant="primary"
+              size="l"
+              className="home-search-button"
+              disabled={!isReady}
+            >
+              {t("home.search")}
+            </Button>
           </div>
         </div>
       </div>

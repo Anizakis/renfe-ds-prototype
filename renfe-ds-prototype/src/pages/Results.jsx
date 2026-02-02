@@ -13,7 +13,6 @@ import { buildDayRange, generateJourneys } from "../data/mockData.js";
 import { getSelectedExtras, getSelectedJourney, getSelectedReturnJourney, getTotalPrice, getSelectedFare, getPassengersTotal } from "../app/pricing.js";
 import { useI18n } from "../app/i18n.jsx";
 import { createDefaultFilters } from "../ui/organisms/ResultsFilters/ResultsFilters.jsx";
-import "./results.css";
 import { getBreakdownItems } from "../app/breakdown.js";
 import ResultsTemplate from "../templates/ResultsTemplate.jsx";
 import ResultsHeader from "../ui/organisms/ResultsHeader/ResultsHeader.jsx";
