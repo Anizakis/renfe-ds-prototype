@@ -160,6 +160,12 @@
   }
 }
 
+@media (max-width: 1023px) {
+  .home-search-swap {
+    padding-top: 0;
+  }
+}
+
 .home-search-bottomRow {
   display: grid;
   gap: var(--grid-gutter);

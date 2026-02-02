@@ -27,6 +27,15 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
     }
   }, [isOpen, triggerRef]);
 
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return createPortal(
