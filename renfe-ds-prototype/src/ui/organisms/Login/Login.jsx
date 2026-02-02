@@ -5,6 +5,8 @@ import Stack from "../../atoms/Stack/Stack.jsx";
 import InputText from "../../atoms/InputText/InputText.jsx";
 import Button from "../../atoms/Button/Button.jsx";
 import Link from "../../atoms/Link/Link.jsx";
+import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
+import PasswordField from "../../molecules/PasswordField/PasswordField.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import "./Login.css";
 
@@ -27,6 +29,9 @@ export default function Login() {
     username: "",
     password: "",
   });
+  const [touched, setTouched] = useState({
+    username: false,
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -34,11 +39,26 @@ export default function Login() {
       ...prev,
       [name]: value,
     }));
+    setTouched((prev) => ({
+      ...prev,
+      [name]: true,
+    }));
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
   };
+
+  const usernameValue = form.username.trim();
+  const usernameDirty = touched.username;
+  const usernameError = usernameDirty && !usernameValue;
+  const usernameSuccess = usernameDirty && Boolean(usernameValue);
+  const usernameHelper = usernameError
+    ? t("auth.input.required")
+    : usernameSuccess
+      ? t("auth.input.success")
+      : "";
+  const usernameState = usernameError ? "error" : usernameSuccess ? "success" : "default";
 
   return (
     <Container as="section">
@@ -52,11 +72,11 @@ export default function Login() {
             <form className="login__form" onSubmit={handleSubmit} autoComplete="off">
               <Stack className="login__fields" gap="04">
                 <InputText
-                  label={t("auth.login.usernameEmail")}
+                  label={<VisuallyHidden as="span">{t("auth.login.usernameEmail")}</VisuallyHidden>}
                   inputId="login-username"
-                  helperText="\u00A0"
+                  helperText={usernameHelper}
                   hideHelper={false}
-                  hideLabel={true}
+                  state={usernameState}
                   placeholder={t("auth.login.usernameEmail")}
                   value={form.username}
                   onChange={handleChange}
@@ -67,21 +87,16 @@ export default function Login() {
                     required: true,
                   }}
                 />
-                <InputText
-                  label={t("auth.login.password")}
+                <PasswordField
+                  label={t("auth.password.label")}
                   inputId="login-password"
-                  helperText="\u00A0"
-                  hideHelper={false}
-                  hideLabel={true}
-                  placeholder={t("auth.login.password")}
                   value={form.password}
                   onChange={handleChange}
-                  inputProps={{
-                    name: "password",
-                    type: "password",
-                    autoComplete: "current-password",
-                    required: true,
-                  }}
+                  name="password"
+                  autoComplete="current-password"
+                  required
+                  placeholder={t("auth.login.password")}
+                  showLabel={false}
                 />
               </Stack>
 

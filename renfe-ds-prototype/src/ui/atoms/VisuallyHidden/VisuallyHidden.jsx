@@ -1,5 +1,9 @@
 import "./VisuallyHidden.css";
 
-export default function VisuallyHidden({ as: As = "span", children }) {
-  return <As className="visually-hidden">{children}</As>;
+export default function VisuallyHidden({ as: As = "span", children, ...props }) {
+  return (
+    <As className="visually-hidden" {...props}>
+      {children}
+    </As>
+  );
 }
