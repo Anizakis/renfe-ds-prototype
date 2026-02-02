@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import AppLayout from "./AppLayout.jsx";
 import Home from "../pages/Home.jsx";
 import Login from "../pages/Login.jsx";
+import Register from "../pages/Register.jsx";
 import Results from "../pages/Results.jsx";
 import Fares from "../pages/Fares.jsx";
 import Travelers from "../pages/Travelers.jsx";
@@ -15,6 +16,7 @@ export const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "login", element: <Login /> },
+      { path: "register", element: <Register /> },
       { path: "results", element: <Results /> },
       { path: "fares", element: <Fares /> },
       { path: "travelers", element: <Travelers /> },
