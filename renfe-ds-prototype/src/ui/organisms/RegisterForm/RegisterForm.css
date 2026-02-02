@@ -5,11 +5,10 @@
 .register__card {
   grid-column: 1 / -1;
   background: var(--color-neutral-0);
-  border: 1px solid var(--color-neutral-200);
+  border: var(--spacing-01) solid var(--color-neutral-200);
   border-radius: var(--radius-04);
-  box-shadow: var(--shadow-sm);
-  padding: var(--spacing-06);
-  max-width: 920px;
+  box-shadow: var(--shadow-xs);
+  padding: var(--spacing-06) var(--spacing-07);
   width: 100%;
   margin: 0 auto;
 }
@@ -35,6 +34,12 @@
   display: flex;
   flex-direction: column;
   gap: var(--spacing-04);
+  padding-bottom: var(--spacing-05);
+}
+
+.register__section + .register__section {
+  border-top: 1px solid var(--color-neutral-200);
+  padding-top: var(--spacing-05);
 }
 
 .register__section-title {
@@ -47,11 +52,92 @@
 
 .register__fields {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--spacing-04);
 }
 
+.register__fields--personal-bottom {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.register__field {
+  min-width: 0;
+}
+
+.register__field .input-textfield__header {
+  opacity: 0;
+  visibility: hidden;
+  min-height: var(--type-text-xs-line);
+  margin-bottom: var(--spacing-02);
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.register__field.is-filled .input-textfield__header {
+  opacity: 1;
+  visibility: visible;
+}
+
+.register__field .input-textfield__label {
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-700);
+}
+
+.register__dropdown {
+  width: 100%;
+  align-items: stretch;
+  gap: var(--spacing-02);
+}
+
+.register__dropdown .dropdown__label {
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-700);
+  opacity: 0;
+  visibility: hidden;
+  min-height: var(--type-text-xs-line);
+  margin-bottom: var(--spacing-02);
+  transition: opacity 0.2s ease;
+}
+
+.register__dropdown.is-filled .dropdown__label {
+  opacity: 1;
+  visibility: visible;
+}
+
+.register__dropdown .dropdown__select {
+  width: 100%;
+  min-width: 0;
+}
+
+.register__field--email {
+  grid-column: span 3;
+}
+
+.register__field--password {
+  grid-column: span 1;
+}
+
+.register__field--doc-type,
+.register__field--doc-number,
+.register__field--prefix,
+.register__field--phone,
+.register__field--sex,
+.register__field--first-name,
+.register__field--last-name2,
+.register__field--birth-date,
+.register__field--last-name1 {
+  grid-column: span 1;
+}
+.register__field--postal{
+    grid-column: span 1.5;
+}
+.register__field--country{
+    grid-column: span 0.5;
+}
 .register__details {
+  border-top: 1px solid var(--color-neutral-200);
   border: 1px solid var(--color-neutral-200);
   border-radius: var(--radius-03);
   padding: var(--spacing-04);
@@ -82,14 +168,65 @@
   gap: var(--spacing-03);
 }
 
+.register__details-text {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  color: var(--color-neutral-700);
+}
+
+.register__checkbox-error {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--icon-s-gap, 0.375rem);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-danger-600);
+}
+
 .register__actions {
   display: flex;
   justify-content: center;
   margin-top: var(--spacing-05);
 }
 
+.register__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-05);
+}
+
 @media (max-width: 768px) {
   .register__fields {
     grid-template-columns: 1fr;
   }
+
+  .register__fields--personal-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .register__field {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 1024px) {
+  .register__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .register__fields--personal-bottom {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .register__field {
+    grid-column: span 2;
+  }
+}
+
+.register__field--birth-date .input-textfield__header {
+  opacity: 1;
+  visibility: visible;
 }

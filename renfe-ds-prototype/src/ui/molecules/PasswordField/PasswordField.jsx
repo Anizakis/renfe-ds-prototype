@@ -56,6 +56,7 @@ export default function PasswordField({
   placeholder,
   showLabel = true,
   size = "m",
+  forceTouched = false,
 }) {
   const { t } = useI18n();
   const [isVisible, setIsVisible] = useState(false);
@@ -80,6 +81,12 @@ export default function PasswordField({
   ]
     .filter(Boolean)
     .join(" ");
+
+  useEffect(() => {
+    if (forceTouched && !isDirty) {
+      setIsDirty(true);
+    }
+  }, [forceTouched, isDirty]);
 
   useEffect(() => {
     if (!isDirty) {

@@ -216,11 +216,16 @@ const STRINGS = {
         dataTreatment: {
           title: "Tratamiento de datos",
           readMore: "Leer más",
+          body:
+            "Renfe Viajeros SME, S.A. informa que tus datos personales, o los que nos facilites de terceras personas con su consentimiento, se usarán para (1) gestionar la venta de nuestros productos; (2) luchar contra el fraude; (3) con tu consentimiento, para el envío de comunicaciones comerciales; (4) en el caso de los billetes personalizados, verificar la titularidad del billete mediante la validación de documentos de identidad; (5) enviar comunicaciones electrónicas con invitaciones a participar en encuestas; (6) elaborar perfiles (no obstante, no se adoptarán decisiones individuales automatizadas que produzcan efectos jurídicos sobre ti o que te afecten significativamente de modo similar); y (7) enviar comunicaciones por correo electrónico, SMS y/o WhatsApp con información relevante sobre el viaje o servicio contratado. No obstante, sólo nos pondremos en contacto contigo vía WhatsApp para este fin cuando contemos con tu consentimiento. Puedes ejercer tus derechos en derechos.viajeros@renfe.es, tal y como se explica en la información adicional que podrás consultar en la Política de Privacidad de Renfe Viajeros.",
         },
         acceptTerms: "He leído y acepto las condiciones del Programa Más Renfe.",
         marketingConsent: "Consiento el envío de comunicaciones comerciales.",
         dataShareConsent: "Consiento la cesión de datos a colaboradores del programa.",
         submit: "Registrarme",
+        errors: {
+          acceptTerms: "Es necesario aceptar las condiciones que son checkbox por debajo del acordeon",
+        },
         docOptions: {
           dni: "DNI",
           nie: "NIE",
@@ -988,11 +993,16 @@ const STRINGS = {
         dataTreatment: {
           title: "Data processing",
           readMore: "Read more",
+          body:
+            "Renfe Viajeros SME, S.A. informs you that your personal data, or data you provide about third parties with their consent, will be used to (1) manage the sale of our products; (2) fight fraud; (3) with your consent, send marketing communications; (4) for personalized tickets, verify ticket ownership by validating identity documents; (5) send electronic communications with invitations to participate in surveys; (6) create profiles (however, no automated individual decisions will be made that produce legal effects or similarly affect you significantly); and (7) send communications by email, SMS and/or WhatsApp with relevant information about the trip or contracted service. We will only contact you via WhatsApp for this purpose when we have your consent. You can exercise your rights at derechos.viajeros@renfe.es, as explained in the additional information available in the Renfe Viajeros Privacy Policy.",
         },
         acceptTerms: "I have read and accept the Más Renfe Program terms.",
         marketingConsent: "I agree to receive marketing communications.",
         dataShareConsent: "I agree to share data with program partners.",
         submit: "Register",
+        errors: {
+          acceptTerms: "You must accept the terms by checking the box below the accordion.",
+        },
         docOptions: {
           dni: "National ID",
           nie: "Foreigner ID",

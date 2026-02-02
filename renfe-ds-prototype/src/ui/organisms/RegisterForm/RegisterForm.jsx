@@ -1,4 +1,6 @@
 import { useState } from "react";
+import Container from "../../atoms/Container/Container.jsx";
+import PageStack from "../../atoms/PageStack/PageStack.jsx";
 import Stack from "../../atoms/Stack/Stack.jsx";
 import InputText from "../../atoms/InputText/InputText.jsx";
 import Dropdown from "../../atoms/Dropdown/Dropdown.jsx";
@@ -31,6 +33,7 @@ export default function RegisterForm() {
     dataShareConsent: false,
   });
   const [touched, setTouched] = useState({});
+  const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -60,6 +63,19 @@ export default function RegisterForm() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setSubmitAttempted(true);
+    setTouched((prev) => ({
+      ...prev,
+      email: true,
+      password: true,
+      docNumber: true,
+      phone: true,
+      firstName: true,
+      lastName1: true,
+      lastName2: true,
+      birthDate: true,
+      postalCode: true,
+    }));
   };
 
   const getFieldStatus = (name, value, { optional = false, validator } = {}) => {
@@ -88,246 +104,304 @@ export default function RegisterForm() {
   const phoneStatus = getFieldStatus("phone", form.phone);
   const firstNameStatus = getFieldStatus("firstName", form.firstName);
   const lastName1Status = getFieldStatus("lastName1", form.lastName1);
-  const lastName2Status = getFieldStatus("lastName2", form.lastName2, { optional: true });
+  const lastName2Status = getFieldStatus("lastName2", form.lastName2);
   const birthDateStatus = getFieldStatus("birthDate", form.birthDate);
   const postalCodeStatus = getFieldStatus("postalCode", form.postalCode);
+  const showTermsError = submitAttempted && !form.acceptTerms;
 
   return (
-    <div className="register__grid ds-grid">
-      <Stack className="register__card" gap="06">
-        <Stack as="header" className="register__header" gap="02">
-          <h1 className="register__title">{t("auth.register.title")}</h1>
-          <p className="register__subtitle">{t("auth.register.subtitle")}</p>
-        </Stack>
+    <Container as="section">
+      <PageStack className="register" align="stretch" textAlign="left">
+        <div className="register__grid ds-grid">
+          <Stack className="register__card" gap="06">
+            <Stack as="header" className="register__header" gap="02">
+              <h1 className="register__title">{t("auth.register.title")}</h1>
+              <p className="register__subtitle">{t("auth.register.subtitle")}</p>
+            </Stack>
 
-        <form className="register__form" onSubmit={handleSubmit} autoComplete="off">
-          <div className="register__section">
-            <h2 className="register__section-title">{t("auth.register.sections.basic")}</h2>
-            <div className="register__fields">
-              <InputText
-                label={t("auth.register.email")}
-                inputId="register-email"
-                helperText={emailStatus.helperText}
-                hideHelper={false}
-                state={emailStatus.state}
-                value={form.email}
-                onChange={handleChange}
-                inputProps={{
-                  name: "email",
-                  type: "email",
-                  autoComplete: "email",
-                  required: true,
-                  onBlur: handleBlur("email"),
-                }}
-              />
-              <PasswordField
-                label={t("auth.password.label")}
-                inputId="register-password"
-                value={form.password}
-                onChange={handleChange}
-                onBlur={handleBlur("password")}
-                name="password"
-                autoComplete="new-password"
-                required
-                placeholder={t("auth.register.password")}
-                showLabel
-              />
-              <Dropdown
-                label={t("auth.register.docType")}
-                value={form.docType}
-                onChange={(value) => setForm((prev) => ({ ...prev, docType: value }))}
-                options={[
-                  { value: "dni", label: t("auth.register.docOptions.dni") },
-                  { value: "nie", label: t("auth.register.docOptions.nie") },
-                  { value: "passport", label: t("auth.register.docOptions.passport") },
-                ]}
-              />
-              <InputText
-                label={t("auth.register.docNumber")}
-                inputId="register-doc-number"
-                helperText={docNumberStatus.helperText}
-                hideHelper={false}
-                state={docNumberStatus.state}
-                value={form.docNumber}
-                onChange={handleChange}
-                inputProps={{
-                  name: "docNumber",
-                  type: "text",
-                  required: true,
-                  onBlur: handleBlur("docNumber"),
-                }}
-              />
-              <Dropdown
-                label={t("auth.register.prefix")}
-                value={form.prefix}
-                onChange={(value) => setForm((prev) => ({ ...prev, prefix: value }))}
-                options={[
-                  { value: "+34", label: "+34" },
-                  { value: "+33", label: "+33" },
-                  { value: "+351", label: "+351" },
-                ]}
-              />
-              <InputText
-                label={t("auth.register.phone")}
-                inputId="register-phone"
-                helperText={phoneStatus.helperText}
-                hideHelper={false}
-                state={phoneStatus.state}
-                value={form.phone}
-                onChange={handleChange}
-                inputProps={{
-                  name: "phone",
-                  type: "tel",
-                  autoComplete: "tel",
-                  required: true,
-                  onBlur: handleBlur("phone"),
-                }}
-              />
-            </div>
-          </div>
+            <form className="register__form" onSubmit={handleSubmit} autoComplete="off">
+              <div className="register__section">
+                <h2 className="register__section-title">{t("auth.register.sections.basic")}</h2>
+                <div className="register__fields">
+                  <div className={`register__field register__field--email ${form.email ? "is-filled" : ""}`.trim()}>
+                    <InputText
+                      label={t("auth.register.email")}
+                      inputId="register-email"
+                      helperText={emailStatus.helperText}
+                      hideHelper={false}
+                      state={emailStatus.state}
+                      placeholder={t("auth.register.email")}
+                      value={form.email}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "email",
+                        type: "email",
+                        autoComplete: "email",
+                        required: true,
+                        onBlur: handleBlur("email"),
+                      }}
+                    />
+                  </div>
+                  <div className={`register__field register__field--password ${form.password ? "is-filled" : ""}`.trim()}>
+                    <PasswordField
+                      label={t("auth.password.label")}
+                      inputId="register-password"
+                      value={form.password}
+                      onChange={handleChange}
+                      onBlur={handleBlur("password")}
+                      name="password"
+                      autoComplete="new-password"
+                      required
+                      placeholder={t("auth.register.password")}
+                      showLabel
+                      forceTouched={submitAttempted}
+                    />
+                  </div>
+                  <div className="register__field register__field--doc-type is-filled">
+                    <Dropdown
+                      label={t("auth.register.docType")}
+                      value={form.docType}
+                      onChange={(value) => setForm((prev) => ({ ...prev, docType: value }))}
+                      layout="stacked"
+                      className="register__dropdown is-filled"
+                      options={[
+                        { value: "dni", label: t("auth.register.docOptions.dni") },
+                        { value: "nie", label: t("auth.register.docOptions.nie") },
+                        { value: "passport", label: t("auth.register.docOptions.passport") },
+                      ]}
+                    />
+                  </div>
+                  <div className={`register__field register__field--doc-number ${form.docNumber ? "is-filled" : ""}`.trim()}>
+                    <InputText
+                      label={t("auth.register.docNumber")}
+                      inputId="register-doc-number"
+                      helperText={docNumberStatus.helperText}
+                      hideHelper={false}
+                      state={docNumberStatus.state}
+                      placeholder={t("auth.register.docNumber")}
+                      value={form.docNumber}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "docNumber",
+                        type: "text",
+                        required: true,
+                        onBlur: handleBlur("docNumber"),
+                      }}
+                    />
+                  </div>
+                  <div className="register__field register__field--prefix is-filled">
+                    <Dropdown
+                      label={t("auth.register.prefix")}
+                      value={form.prefix}
+                      onChange={(value) => setForm((prev) => ({ ...prev, prefix: value }))}
+                      layout="stacked"
+                      className="register__dropdown is-filled"
+                      options={[
+                        { value: "+34", label: "+34" },
+                        { value: "+33", label: "+33" },
+                        { value: "+351", label: "+351" },
+                      ]}
+                    />
+                  </div>
+                  <div className={`register__field register__field--phone ${form.phone ? "is-filled" : ""}`.trim()}>
+                    <InputText
+                      label={t("auth.register.phone")}
+                      inputId="register-phone"
+                      helperText={phoneStatus.helperText}
+                      hideHelper={false}
+                      state={phoneStatus.state}
+                      placeholder={t("auth.register.phone")}
+                      value={form.phone}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "phone",
+                        type: "tel",
+                        autoComplete: "tel",
+                        required: true,
+                        onBlur: handleBlur("phone"),
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
 
-          <div className="register__section">
-            <h2 className="register__section-title">{t("auth.register.sections.personal")}</h2>
-            <div className="register__fields">
-              <Dropdown
-                label={t("auth.register.sex")}
-                value={form.sex}
-                onChange={(value) => setForm((prev) => ({ ...prev, sex: value }))}
-                options={[
-                  { value: "", label: t("auth.register.sexOptions.placeholder") },
-                  { value: "female", label: t("auth.register.sexOptions.female") },
-                  { value: "male", label: t("auth.register.sexOptions.male") },
-                  { value: "other", label: t("auth.register.sexOptions.other") },
-                ]}
-              />
-              <InputText
-                label={t("auth.register.firstName")}
-                inputId="register-first-name"
-                helperText={firstNameStatus.helperText}
-                hideHelper={false}
-                state={firstNameStatus.state}
-                value={form.firstName}
-                onChange={handleChange}
-                inputProps={{
-                  name: "firstName",
-                  type: "text",
-                  autoComplete: "given-name",
-                  required: true,
-                  onBlur: handleBlur("firstName"),
-                }}
-              />
-              <InputText
-                label={t("auth.register.lastName1")}
-                inputId="register-last-name1"
-                helperText={lastName1Status.helperText}
-                hideHelper={false}
-                state={lastName1Status.state}
-                value={form.lastName1}
-                onChange={handleChange}
-                inputProps={{
-                  name: "lastName1",
-                  type: "text",
-                  autoComplete: "family-name",
-                  required: true,
-                  onBlur: handleBlur("lastName1"),
-                }}
-              />
-              <InputText
-                label={t("auth.register.lastName2")}
-                inputId="register-last-name2"
-                helperText={lastName2Status.helperText}
-                hideHelper={false}
-                state={lastName2Status.state}
-                value={form.lastName2}
-                onChange={handleChange}
-                inputProps={{
-                  name: "lastName2",
-                  type: "text",
-                  onBlur: handleBlur("lastName2"),
-                }}
-              />
-              <InputText
-                label={t("auth.register.birthDate")}
-                inputId="register-birth-date"
-                helperText={birthDateStatus.helperText}
-                hideHelper={false}
-                state={birthDateStatus.state}
-                value={form.birthDate}
-                onChange={handleChange}
-                inputProps={{
-                  name: "birthDate",
-                  type: "date",
-                  required: true,
-                  onBlur: handleBlur("birthDate"),
-                }}
-              />
-              <Dropdown
-                label={t("auth.register.country")}
-                value={form.country}
-                onChange={(value) => setForm((prev) => ({ ...prev, country: value }))}
-                options={[
-                  { value: "ES", label: t("auth.register.countryOptions.es") },
-                  { value: "PT", label: t("auth.register.countryOptions.pt") },
-                  { value: "FR", label: t("auth.register.countryOptions.fr") },
-                ]}
-              />
-              <InputText
-                label={t("auth.register.postalCode")}
-                inputId="register-postal-code"
-                helperText={postalCodeStatus.helperText}
-                hideHelper={false}
-                state={postalCodeStatus.state}
-                value={form.postalCode}
-                onChange={handleChange}
-                inputProps={{
-                  name: "postalCode",
-                  type: "text",
-                  autoComplete: "postal-code",
-                  required: true,
-                  onBlur: handleBlur("postalCode"),
-                }}
-              />
-            </div>
-          </div>
+              <div className="register__section">
+                <h2 className="register__section-title">{t("auth.register.sections.personal")}</h2>
+                <div className="register__fields register__fields--personal-top">
+                  <div className={`register__field register__field--sex ${form.sex ? "is-filled" : ""}`.trim()}>
+                    <Dropdown
+                      label={t("auth.register.sex")}
+                      value={form.sex}
+                      onChange={(value) => setForm((prev) => ({ ...prev, sex: value }))}
+                      layout="stacked"
+                      className={`register__dropdown ${form.sex ? "is-filled" : ""}`.trim()}
+                      options={[
+                        { value: "", label: t("auth.register.sexOptions.placeholder") },
+                        { value: "female", label: t("auth.register.sexOptions.female") },
+                        { value: "male", label: t("auth.register.sexOptions.male") },
+                        { value: "other", label: t("auth.register.sexOptions.other") },
+                      ]}
+                    />
+                  </div>
+                  <div className={`register__field register__field--first-name ${form.firstName ? "is-filled" : ""}`.trim()}>
+                    <InputText
+                      label={t("auth.register.firstName")}
+                      inputId="register-first-name"
+                      helperText={firstNameStatus.helperText}
+                      hideHelper={false}
+                      state={firstNameStatus.state}
+                      placeholder={t("auth.register.firstName")}
+                      value={form.firstName}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "firstName",
+                        type: "text",
+                        autoComplete: "given-name",
+                        required: true,
+                        onBlur: handleBlur("firstName"),
+                      }}
+                    />
+                  </div>
+                  <div className={`register__field register__field--last-name1 ${form.lastName1 ? "is-filled" : ""}`.trim()}>
+                    <InputText
+                      label={t("auth.register.lastName1")}
+                      inputId="register-last-name1"
+                      helperText={lastName1Status.helperText}
+                      hideHelper={false}
+                      state={lastName1Status.state}
+                      placeholder={t("auth.register.lastName1")}
+                      value={form.lastName1}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "lastName1",
+                        type: "text",
+                        autoComplete: "family-name",
+                        required: true,
+                        onBlur: handleBlur("lastName1"),
+                      }}
+                    />
+                  </div>
+                  <div className={`register__field register__field--last-name2 ${form.lastName2 ? "is-filled" : ""}`.trim()}>
+                    <InputText
+                      label={t("auth.register.lastName2")}
+                      inputId="register-last-name2"
+                      helperText={lastName2Status.helperText}
+                      hideHelper={false}
+                      state={lastName2Status.state}
+                      placeholder={t("auth.register.lastName2")}
+                      value={form.lastName2}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "lastName2",
+                        type: "text",
+                        onBlur: handleBlur("lastName2"),
+                      }}
+                    />
+                  </div>
+                  </div>
+                  <div className="register__fields register__fields--personal-bottom">
+                  <div className={`register__field register__field--birth-date ${form.birthDate ? "is-filled" : ""}`.trim()}>
+                    <InputText
+                      label={t("auth.register.birthDate")}
+                      inputId="register-birth-date"
+                      helperText={birthDateStatus.helperText}
+                      hideHelper={false}
+                      state={birthDateStatus.state}
+                      placeholder={t("auth.register.birthDate")}
+                      value={form.birthDate}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "birthDate",
+                        type: "date",
+                        required: true,
+                        onBlur: handleBlur("birthDate"),
+                      }}
+                    />
+                  </div>
+                  <div className="register__field register__field--country is-filled">
+                    <Dropdown
+                      label={t("auth.register.country")}
+                      value={form.country}
+                      onChange={(value) => setForm((prev) => ({ ...prev, country: value }))}
+                      layout="stacked"
+                      className="register__dropdown is-filled"
+                      options={[
+                        { value: "ES", label: t("auth.register.countryOptions.es") },
+                        { value: "PT", label: t("auth.register.countryOptions.pt") },
+                        { value: "FR", label: t("auth.register.countryOptions.fr") },
+                      ]}
+                    />
+                  </div>
+                  <div className={`register__field register__field--postal ${form.postalCode ? "is-filled" : ""}`.trim()}>
+                    <InputText
+                      label={t("auth.register.postalCode")}
+                      inputId="register-postal-code"
+                      helperText={postalCodeStatus.helperText}
+                      hideHelper={false}
+                      state={postalCodeStatus.state}
+                      placeholder={t("auth.register.postalCode")}
+                      value={form.postalCode}
+                      onChange={handleChange}
+                      inputProps={{
+                        name: "postalCode",
+                        type: "text",
+                        autoComplete: "postal-code",
+                        required: true,
+                        onBlur: handleBlur("postalCode"),
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
 
-          <details className="register__details">
-            <summary className="register__details-summary">
-              {t("auth.register.dataTreatment.title")} {" "}
-              <span className="register__details-link">{t("auth.register.dataTreatment.readMore")}</span>
-            </summary>
-            <div className="register__details-body">
-              <label className="checkbox" htmlFor="register-accept-terms">
-                <input
-                  id="register-accept-terms"
-                  type="checkbox"
-                  checked={form.acceptTerms}
-                  onChange={(event) => handleCheckbox("acceptTerms")(event.target.checked)}
-                  required
-                />
-                <span className="checkbox__content">
-                  <span className="checkbox__label">{t("auth.register.acceptTerms")}</span>
-                </span>
-              </label>
-              <Checkbox
-                label={t("auth.register.marketingConsent")}
-                checked={form.marketingConsent}
-                onChange={handleCheckbox("marketingConsent")}
-              />
-              <Checkbox
-                label={t("auth.register.dataShareConsent")}
-                checked={form.dataShareConsent}
-                onChange={handleCheckbox("dataShareConsent")}
-              />
-            </div>
-          </details>
+              <details className="register__details">
+                <summary className="register__details-summary">
+                  {t("auth.register.dataTreatment.title")} {" "}
+                  <span className="register__details-link">{t("auth.register.dataTreatment.readMore")}</span>
+                </summary>
+                <div className="register__details-body">
+                  <p className="register__details-text">
+                    {t("auth.register.dataTreatment.body")}
+                  </p>
+                  <label className="checkbox" htmlFor="register-accept-terms">
+                    <input
+                      id="register-accept-terms"
+                      type="checkbox"
+                      checked={form.acceptTerms}
+                      onChange={(event) => handleCheckbox("acceptTerms")(event.target.checked)}
+                      required
+                    />
+                    <span className="checkbox__content">
+                      <span className="checkbox__label">{t("auth.register.acceptTerms")}</span>
+                    </span>
+                  </label>
+                  {showTermsError && (
+                    <div className="register__checkbox-error" role="alert">
+                      {t("auth.register.errors.acceptTerms")}
+                    </div>
+                  )}
+                  <Checkbox
+                    label={t("auth.register.marketingConsent")}
+                    checked={form.marketingConsent}
+                    onChange={handleCheckbox("marketingConsent")}
+                  />
+                  <Checkbox
+                    label={t("auth.register.dataShareConsent")}
+                    checked={form.dataShareConsent}
+                    onChange={handleCheckbox("dataShareConsent")}
+                  />
+                </div>
+              </details>
 
-          <div className="register__actions">
-            <Button type="submit" variant="primary" size="l">
-              {t("auth.register.submit")}
-            </Button>
-          </div>
-        </form>
-      </Stack>
-    </div>
+              <div className="register__actions">
+                <Button type="submit" variant="primary" size="l">
+                  {t("auth.register.submit")}
+                </Button>
+              </div>
+            </form>
+          </Stack>
+        </div>
+      </PageStack>
+    </Container>
   );
 }
