@@ -1,5 +1,6 @@
 import OnlyAvailableDaysToggle from "../../molecules/OnlyAvailableDaysToggle/OnlyAvailableDaysToggle.jsx";
 import Dropdown from "../../atoms/Dropdown/Dropdown.jsx";
+import { ResultsAppliedFiltersBar } from "../../molecules";
 import "./ResultsToolbar.css";
 
 export default function ResultsToolbar({
@@ -8,23 +9,30 @@ export default function ResultsToolbar({
   sortKey,
   setSortKey,
   t,
+  appliedChips,
 }) {
   return (
-    <div className="results-toolbar">
-      <OnlyAvailableDaysToggle
-        checked={showAvailableOnly}
-        onChange={setShowAvailableOnly}
-      />
-      <Dropdown
-        className="results-sort"
-        label={t("results.sortBy")}
-        value={sortKey}
-        onChange={setSortKey}
-        options={[
-          { value: "price", label: t("results.sortPrice") },
-          { value: "depart", label: t("results.sortDeparture") },
-          { value: "duration", label: t("results.sortDuration") },
-        ]}
+    <div className="results-toolbar-block">
+       <div className="results-toolbar">
+        <OnlyAvailableDaysToggle
+          checked={showAvailableOnly}
+          onChange={setShowAvailableOnly}
+        />
+        <Dropdown
+          className="results-sort"
+          label={t("results.sortBy")}
+          value={sortKey}
+          onChange={setSortKey}
+          options={[
+            { value: "price", label: t("results.sortPrice") },
+            { value: "depart", label: t("results.sortDeparture") },
+            { value: "duration", label: t("results.sortDuration") },
+          ]}
+        />
+      </div>
+       <ResultsAppliedFiltersBar
+        appliedLabel={t("filtersPanel.applied")}
+        chips={appliedChips}
       />
     </div>
   );

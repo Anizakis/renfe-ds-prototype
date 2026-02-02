@@ -113,6 +113,7 @@ export default function Results() {
   const navigate = useNavigate();
   const initialDate = state.search?.departDate || new Date().toISOString().slice(0, 10);
   const [filters, setFilters] = useState(() => buildInitialFilters(state.search));
+  const [isUpdating, setIsUpdating] = useState(false);
   const rangeLength = RANGE_LENGTH;
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const rangeStart = useMemo(
@@ -157,6 +158,18 @@ export default function Results() {
   const fareTotal = selectedFare?.price ?? 0;
   const extrasTotal = selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
   const breakdownItems = getBreakdownItems({ t, baseTotal, farePrice: fareTotal, extrasTotal, passengersTotal });
+
+  const appliedChips = useMemo(() => {
+    const chips = [];
+    const base = createDefaultFilters();
+    if (filters.petFriendly) chips.push(t("filtersPanel.sections.pets.toggle"));
+    if (filters.directOnly) chips.push(t("filtersPanel.sections.connections.directOnly"));
+    if (filters.maxPrice !== base.maxPrice) {
+      chips.push(`${t("filtersPanel.sections.price.maxPrice")} €${filters.maxPrice}`);
+    }
+    if (filters.accessibilityAssistance) chips.push(t("filtersPanel.sections.accessibility.assistance"));
+    return chips;
+  }, [filters, t]);
 
   const baseOrigin = origin || "Madrid-Príncipe Pío";
   const baseDestination = destination || "Valencia";
@@ -245,6 +258,12 @@ export default function Results() {
   }, [filters, selectedDate]);
 
   useEffect(() => {
+    queueMicrotask(() => setIsUpdating(true));
+    const timeout = setTimeout(() => queueMicrotask(() => setIsUpdating(false)), 600);
+    return () => clearTimeout(timeout);
+  }, [filters]);
+
+  useEffect(() => {
     if (loading) {
       queueMicrotask(() => setAnnouncement(t("results.loadingDay")));
       return;
@@ -315,8 +334,14 @@ export default function Results() {
   const filtersDrawerId = "results-filters-drawer";
   const filtersDrawerTitleId = "results-filters-title";
 
-  const listContent = loading
-    ? <SkeletonList />
+  const isListBusy = loading || isUpdating;
+  const listContent = isListBusy
+    ? (
+      <SkeletonList
+        statusText={isUpdating ? t("filtersPanel.updating") : ""}
+        isBusy={isListBusy}
+      />
+    )
     : sortedJourneysForSelectedDate.length === 0
       ? (
         <ResultsEmpty
@@ -411,6 +436,7 @@ export default function Results() {
           sortKey={sortKey}
           setSortKey={setSortKey}
           t={t}
+          appliedChips={appliedChips}
         />
       )}
       dayPicker={(

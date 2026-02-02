@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Checkbox, Slider, Switch } from "../../atoms";
 import RadioGroup from "../../atoms/RadioGroup/RadioGroup.jsx";
 import FilterSection from "../../molecules/FilterSection/FilterSection.jsx";
@@ -53,8 +53,14 @@ function formatTime(hour) {
 export default function ResultsFilters({ value, onChange, defaultFilters }) {
   const { t } = useI18n();
   const [filters, setFilters] = useState(() => value ?? defaultFilters ?? createDefaultFilters());
-  const [isUpdating, setIsUpdating] = useState(false);
   const resolvedFilters = value ?? filters;
+  const baseFilters = defaultFilters ?? createDefaultFilters();
+  const hasAppliedFilters = Boolean(
+    resolvedFilters.petFriendly
+    || resolvedFilters.directOnly
+    || resolvedFilters.maxPrice !== baseFilters.maxPrice
+    || resolvedFilters.accessibilityAssistance
+  );
 
   useEffect(() => {
     if (value) {
@@ -62,22 +68,6 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
     }
   }, [value]);
 
-  useEffect(() => {
-    queueMicrotask(() => setIsUpdating(true));
-    const timeout = setTimeout(() => queueMicrotask(() => setIsUpdating(false)), 600);
-    return () => clearTimeout(timeout);
-  }, [resolvedFilters]);
-
-  const appliedChips = useMemo(() => {
-    const chips = [];
-    if (resolvedFilters.petFriendly) chips.push(t("filtersPanel.sections.pets.toggle"));
-    if (resolvedFilters.directOnly) chips.push(t("filtersPanel.sections.connections.directOnly"));
-    if (resolvedFilters.maxPrice !== createDefaultFilters().maxPrice) {
-      chips.push(`${t("filtersPanel.sections.price.maxPrice")} €${resolvedFilters.maxPrice}`);
-    }
-    if (resolvedFilters.accessibilityAssistance) chips.push(t("filtersPanel.sections.accessibility.assistance"));
-    return chips;
-  }, [resolvedFilters, t]);
   const updateFilters = (updater) => {
     setFilters((prev) => {
       const nextValue = typeof updater === "function" ? updater(prev) : updater;
@@ -96,36 +86,16 @@ export default function ResultsFilters({ value, onChange, defaultFilters }) {
       <div className="results-filters__header">
         <div>
           <h2 className="section-title">{t("filtersPanel.title")}</h2>
-          <span className="results-filters__updating-slot" aria-live="polite">
-            {isUpdating ? (
-              <span className="results-filters__updating" role="status">
-                {t("filtersPanel.updating")}
-              </span>
-            ) : (
-              <span className="results-filters__updating" aria-hidden="true" />
-            )}
-          </span>
         </div>
         <Button
           variant="tertiary"
           size="s"
-          disabled={appliedChips.length === 0}
+          disabled={!hasAppliedFilters}
           onClick={resetFilters}
         >
           {t("filtersPanel.clearAll")}
         </Button>
       </div>
-
-      {appliedChips.length > 0 && (
-        <div className="results-filters__chips">
-          <span className="results-filters__chips-label">{t("filtersPanel.applied")}</span>
-          <div className="results-filters__chips-list">
-            {appliedChips.map((chip) => (
-              <span key={chip} className="results-filters__chip">{chip}</span>
-            ))}
-          </div>
-        </div>
-      )}
 
       <FilterSection
         title={t("filtersPanel.sections.connections.title")}

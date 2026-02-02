@@ -4,7 +4,7 @@
   justify-content: center;
   line-height: 1;
   vertical-align: middle;
-  font-variation-settings: "wght" var(--icon-weight);
+  font-variation-settings: "FILL" var(--icon-fill), "wght" var(--icon-weight), "GRAD" var(--icon-grade);
   color: currentColor;
 }
 
@@ -12,16 +12,19 @@
   font-size: var(--icon-s-glyph);
   width: var(--icon-s-box);
   height: var(--icon-s-box);
+  font-variation-settings: "FILL" var(--icon-fill), "wght" var(--icon-weight), "GRAD" var(--icon-grade), "opsz" var(--icon-opsz-sm);
 }
 
 .icon--md {
   font-size: var(--icon-m-glyph);
   width: var(--icon-m-box);
   height: var(--icon-m-box);
+  font-variation-settings: "FILL" var(--icon-fill), "wght" var(--icon-weight), "GRAD" var(--icon-grade), "opsz" var(--icon-opsz-md);
 }
 
 .icon--lg {
   font-size: var(--icon-l-glyph);
   width: var(--icon-l-box);
   height: var(--icon-l-box);
+  font-variation-settings: "FILL" var(--icon-fill), "wght" var(--icon-weight), "GRAD" var(--icon-grade), "opsz" var(--icon-opsz-lg);
 }

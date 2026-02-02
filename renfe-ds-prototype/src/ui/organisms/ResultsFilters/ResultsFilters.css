@@ -24,51 +24,6 @@
   flex-shrink: 0;
 }
 
-.results-filters__updating-slot {
-  display: block;
-  margin-top: var(--spacing-01);
-  min-height: var(--type-text-xs-line);
-}
-
-.results-filters__updating {
-  display: inline-flex;
-  font-family: var(--font-family-primary);
-  font-size: var(--type-text-xs-size);
-  line-height: var(--type-text-xs-line);
-  color: var(--color-neutral-600);
-}
-
-.results-filters__chips {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-02);
-}
-
-.results-filters__chips-label {
-  font-family: var(--font-family-primary);
-  font-size: var(--type-text-xs-size);
-  line-height: var(--type-text-xs-line);
-  color: var(--color-neutral-600);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.results-filters__chips-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-02);
-}
-
-.results-filters__chip {
-  background: var(--color-neutral-50);
-  color: var(--color-neutral-900);
-  border-radius: var(--radius-pill);
-  padding: var(--spacing-01) var(--spacing-03);
-  font-family: var(--font-family-primary);
-  font-size: var(--type-text-xs-size);
-  line-height: var(--type-text-xs-line);
-}
-
 .results-filters__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

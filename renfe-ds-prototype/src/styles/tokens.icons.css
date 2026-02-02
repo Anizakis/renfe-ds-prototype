@@ -1,6 +1,13 @@
 :root {
   /* Material Symbols weight */
   --icon-weight: 300;
+  --icon-fill: 0;
+  --icon-grade: 0;
+
+  --icon-opsz-sm: 20;
+  --icon-opsz-md: 24;
+  --icon-opsz-lg: 24;
+
 
   /* Icon L ↔ text.l (box = line-height) */
   --icon-l-box: 1.75rem;   /* 28px */

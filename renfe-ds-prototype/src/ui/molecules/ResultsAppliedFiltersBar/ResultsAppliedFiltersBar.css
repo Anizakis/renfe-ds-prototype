@@ -1,0 +1,40 @@
+.results-applied-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+.results-applied-bar__chipsWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+.results-applied-bar__label {
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  color: var(--color-neutral-600);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.results-applied-bar__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-02);
+}
+
+.results-applied-bar__chip {
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-900);
+  border-radius: var(--radius-pill);
+  padding: var(--spacing-01) var(--spacing-03);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+}
+
+.results-applied-bar__chipsPlaceholder {
+  min-height: calc(var(--type-text-xs-line) + var(--spacing-01));
+}

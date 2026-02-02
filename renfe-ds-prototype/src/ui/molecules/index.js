@@ -7,3 +7,4 @@ export { default as SkeletonList } from "./SkeletonList/SkeletonList.jsx";
 export { default as PassengerSelector } from "./PassengerSelector/PassengerSelector.jsx";
 export { default as OnlyAvailableDaysToggle } from "./OnlyAvailableDaysToggle/OnlyAvailableDaysToggle.jsx";
 export { default as FilterSection } from "./FilterSection/FilterSection.jsx";
+export { default as ResultsAppliedFiltersBar } from "./ResultsAppliedFiltersBar/ResultsAppliedFiltersBar.jsx";
