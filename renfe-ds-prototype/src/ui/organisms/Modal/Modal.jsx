@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import useFocusTrap from "../../../components/a11y/useFocusTrap.js";
+import useFocusTrap from "./useFocusTrap.js";
 import "./Modal.css";
 
 export default function Modal({

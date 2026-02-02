@@ -3,7 +3,7 @@ import InputText from "../../ui/atoms/InputText/InputText.jsx";
 import Button from "../../ui/atoms/Button/Button.jsx";
 import RadioGroup from "../../ui/atoms/RadioGroup/RadioGroup.jsx";
 import { DatePicker } from "../../ui/molecules";
-import PassengerSelector from "../PassengerSelector/PassengerSelector.jsx";
+import PassengerSelector from "../../ui/molecules/PassengerSelector/PassengerSelector.jsx";
 import { useTravel } from "../../app/store.jsx";
 import { useI18n } from "../../app/i18n.jsx";
 import { getStationSuggestions, isValidStation } from "../../app/stations.js";

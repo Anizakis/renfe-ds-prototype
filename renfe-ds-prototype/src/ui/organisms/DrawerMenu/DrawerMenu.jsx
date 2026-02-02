@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, InputText, VisuallyHidden, Button } from "../../atoms";
 import { LanguageSwitcher, Modal } from "../../molecules";
-import useFocusTrap from "../../../components/a11y/useFocusTrap.js";
+import useFocusTrap from "../Modal/useFocusTrap.js";
 import Icon from "../../Icon/Icon.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import { useTheme } from "../../../app/theme.jsx";

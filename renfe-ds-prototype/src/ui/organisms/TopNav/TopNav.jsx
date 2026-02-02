@@ -1,11 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { useMemo, useRef, useState, useEffect } from "react";
-import { Container, InputText, Link } from "../../atoms";
+import Container from "../../atoms/Container/Container.jsx";
+import InputText from "../../atoms/InputText/InputText.jsx";
+import Link from "../../atoms/Link/Link.jsx";
 import "./TopNav.css";
 import { useI18n } from "../../../app/i18n.jsx";
-import DrawerMenu from "../DrawerMenu/DrawerMenu.jsx";
+import DrawerMenu from "../../../components/navigation/DrawerMenu/DrawerMenu.jsx";
 import Icon from "../../Icon/Icon.jsx";
-import { Modal } from "../../molecules";
+import Modal from "../Modal/Modal.jsx";
 
 export default function TopNav() {
   const { t } = useI18n();

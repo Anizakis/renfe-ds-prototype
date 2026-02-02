@@ -1,12 +1,12 @@
 import { useState } from "react";
-import Container from "../../ui/atoms/Container/Container.jsx";
-import PageStack from "../../ui/atoms/PageStack/PageStack.jsx";
-import Stack from "../../ui/atoms/Stack/Stack.jsx";
-import InputText from "../../ui/atoms/InputText/InputText.jsx";
-import { Checkbox } from "../../ui/atoms";
-import Button from "../../ui/atoms/Button/Button.jsx";
-import Link from "../../ui/atoms/Link/Link.jsx";
-import { useI18n } from "../../app/i18n.jsx";
+import Container from "../../atoms/Container/Container.jsx";
+import PageStack from "../../atoms/PageStack/PageStack.jsx";
+import Stack from "../../atoms/Stack/Stack.jsx";
+import InputText from "../../atoms/InputText/InputText.jsx";
+import Checkbox from "../../atoms/Checkbox/Checkbox.jsx";
+import Button from "../../atoms/Button/Button.jsx";
+import Link from "../../atoms/Link/Link.jsx";
+import { useI18n } from "../../../app/i18n.jsx";
 import "./Login.css";
 
 export default function Login() {

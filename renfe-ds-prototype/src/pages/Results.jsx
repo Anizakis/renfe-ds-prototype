@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { DayPickerStrip } from "../ui/molecules";
 import JourneyCard from "../ui/organisms/JourneyCard/JourneyCard.jsx";
 import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
-import SkeletonList from "../components/SkeletonList/SkeletonList.jsx";
+import SkeletonList from "../ui/molecules/SkeletonList/SkeletonList.jsx";
 import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
 import ResultsSummary from "../ui/molecules/ResultsSummary/ResultsSummary.jsx";
 import ResultsFilters from "../ui/organisms/ResultsFilters/ResultsFilters.jsx";

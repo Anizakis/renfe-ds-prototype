@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Checkbox, Slider, Switch } from "../../atoms";
 import RadioGroup from "../../atoms/RadioGroup/RadioGroup.jsx";
-import FilterSection from "../../../components/FilterSection/FilterSection.jsx";
+import FilterSection from "../../molecules/FilterSection/FilterSection.jsx";
 import Button from "../../atoms/Button/Button.jsx";
 import Link from "../../atoms/Link/Link.jsx";
 import { useI18n } from "../../../app/i18n.jsx";

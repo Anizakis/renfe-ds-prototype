@@ -10,6 +10,8 @@ export { default as Alert } from "./Alert/Alert.jsx";
 export { default as RadioGroup } from "./RadioGroup/RadioGroup.jsx";
 export { default as Container } from "./Container/Container.jsx";
 export { default as Grid } from "./Grid/Grid.jsx";
+export { default as Dropdown } from "./Dropdown/Dropdown.jsx";
 export { default as PageStack } from "./PageStack/PageStack.jsx";
 export { default as Stack } from "./Stack/Stack.jsx";
 export { default as VisuallyHidden } from "./VisuallyHidden/VisuallyHidden.jsx";
+export { default as Loading } from "./Loading/Loading.jsx";

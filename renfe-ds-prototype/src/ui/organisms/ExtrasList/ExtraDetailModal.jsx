@@ -1,11 +1,11 @@
 import Modal from "../Modal/Modal.jsx";
-import Button from "../../ui/atoms/Button/Button.jsx";
-import { Checkbox } from "../../ui/atoms";
-import Icon from "../../ui/Icon/Icon.jsx";
+import Button from "../../atoms/Button/Button.jsx";
+import { Checkbox } from "../../atoms";
+import Icon from "../../Icon/Icon.jsx";
 import "./ExtraDetailModal.css";
 import { useState } from "react";
-import { useI18n } from "../../app/i18n.jsx";
-import { formatPrice } from "../../app/utils.js";
+import { useI18n } from "../../../app/i18n.jsx";
+import { formatPrice } from "../../../app/utils.js";
 
 export default function ExtraDetailModal({
   isOpen,

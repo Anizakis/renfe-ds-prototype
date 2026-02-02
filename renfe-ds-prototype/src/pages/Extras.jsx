@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import Container from "../ui/atoms/Container/Container.jsx";
 import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
-import ExtrasList from "../components/ExtrasList/ExtrasList.jsx";
-import PriceBreakdown from "../components/PriceBreakdown/PriceBreakdown.jsx";
+import ExtrasList from "../ui/organisms/ExtrasList/ExtrasList.jsx";
+import PriceBreakdown from "../ui/organisms/PriceBreakdown/PriceBreakdown.jsx";
 import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
 import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import Button from "../ui/atoms/Button/Button.jsx";

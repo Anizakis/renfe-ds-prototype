@@ -1,4 +1,4 @@
-import { VisuallyHidden } from "../../atoms";
+import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
 import "./SkeletonList.css";
 
 export default function SkeletonList() {

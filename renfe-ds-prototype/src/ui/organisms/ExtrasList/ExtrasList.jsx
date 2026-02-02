@@ -1,10 +1,10 @@
 import "./ExtrasList.css";
-import Icon from "../../ui/Icon/Icon.jsx";
+import Icon from "../../Icon/Icon.jsx";
 import { useState } from "react";
 import ExtraDetailModal from "./ExtraDetailModal.jsx";
-import { useTravel } from "../../app/store.jsx";
-import { formatPrice } from "../../app/utils.js";
-import { useI18n } from "../../app/i18n.jsx";
+import { useTravel } from "../../../app/store.jsx";
+import { formatPrice } from "../../../app/utils.js";
+import { useI18n } from "../../../app/i18n.jsx";
 
 export default function ExtrasList({ extras, selectedExtras, onToggle }) {
   const { t } = useI18n();

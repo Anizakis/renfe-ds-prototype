@@ -5,3 +5,7 @@ export { default as ResultsFilters } from "./ResultsFilters/ResultsFilters.jsx";
 export { default as JourneyCard } from "./JourneyCard/JourneyCard.jsx";
 export { default as Modal } from "./Modal/Modal.jsx";
 export { default as PriceDetailsModal } from "./PriceDetailsModal/PriceDetailsModal.jsx";
+export { default as ExtrasList } from "./ExtrasList/ExtrasList.jsx";
+export { default as PriceBreakdown } from "./PriceBreakdown/PriceBreakdown.jsx";
+export { default as TopNav } from "./TopNav/TopNav.jsx";
+export { default as Login } from "./Login/Login.jsx";
