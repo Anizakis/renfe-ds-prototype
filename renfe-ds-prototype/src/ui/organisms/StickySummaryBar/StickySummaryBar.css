@@ -172,7 +172,7 @@
   line-height: var(--type-text-xs-line);
   text-transform: uppercase;
   letter-spacing: 0.03em;
-  color: var(--color-neutral-500);
+  color: var(--color-brand-700);
 }
 
 .sticky-summary__value {
