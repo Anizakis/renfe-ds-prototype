@@ -86,6 +86,8 @@ export default function InputText({
           } ${
             hideHelper ? "is-hidden" : ""
           }`}
+          aria-live={isError ? "polite" : undefined}
+          aria-atomic={isError ? "true" : undefined}
         >
           {isError ? (
             <>

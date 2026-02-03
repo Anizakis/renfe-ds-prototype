@@ -20,7 +20,7 @@ export default function ResultsTemplate({
   priceModal,
 }) {
   return (
-    <main id="main" className="results-page">
+    <section className="results-page">
       <Container as="section">
         <PageStack gap="03" align="stretch" textAlign="left">
           <VisuallyHidden as="h1">{title}</VisuallyHidden>
@@ -31,11 +31,12 @@ export default function ResultsTemplate({
           {summary}
 
           <Grid className="results-grid">
-            <aside className="results-sidebar">
+            <section className="results-sidebar" aria-labelledby="results-filters-title">
+              <VisuallyHidden as="h2" id="results-filters-title">{title} — Filtros</VisuallyHidden>
               <div className="results-panel">
                 {filtersSidebar}
               </div>
-            </aside>
+            </section>
             <section className="results-content">
               <div className="results-panel results-panel--content">
                 {header}
@@ -56,6 +57,6 @@ export default function ResultsTemplate({
           {priceModal}
         </PageStack>
       </Container>
-    </main>
+    </section>
   );
 }

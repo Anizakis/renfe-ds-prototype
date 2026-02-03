@@ -377,6 +377,8 @@ export default function DatePicker({
     setVisibleMonthStart(startOfMonth(next));
   };
 
+  const panelTitleId = `${inputId ?? "date-picker"}-panel-title`;
+
   return (
     <div className="date-picker">
       <div className="date-picker__input" ref={containerRef}>
@@ -429,7 +431,8 @@ export default function DatePicker({
         <div
           className={`date-picker__panel ${isOpen ? "is-open" : ""}`}
           role="dialog"
-          aria-label={t("home.dates")}
+          aria-modal="true"
+          aria-labelledby={panelTitleId}
           onKeyDown={handleCalendarKeyDown}
           ref={panelRef}
           style={{ left: '50%', transform: 'translateX(-50%)' }}
@@ -443,7 +446,7 @@ export default function DatePicker({
             >
               <Icon name="chevron_left" size="sm" decorative />
             </button>
-            <span className="date-picker__panel-title">{t("home.dates")}</span>
+            <span className="date-picker__panel-title" id={panelTitleId}>{t("home.dates")}</span>
             <button
               type="button"
               className="date-picker__nav"
@@ -463,50 +466,67 @@ export default function DatePicker({
                 date: monthB,
                 days: monthDaysB,
               },
-            ].map((month) => {
+            ].map((month, monthIndex) => {
               const monthLabel = formatMonthTitle(month.date, locale, language);
+              const monthTitleId = `${inputId ?? "date-picker"}-month-${monthIndex}`;
+              const weeks = [];
+              for (let i = 0; i < month.days.length; i += 7) {
+                weeks.push(month.days.slice(i, i + 7));
+              }
               return (
                 <div key={monthLabel} className="date-picker__month">
-                  <div className="date-picker__month-title">{monthLabel}</div>
-                  <div className="date-picker__week">
-                    {t("home.weekDays").map((label) => (
-                      <span key={label} className="date-picker__weekday">{label}</span>
+                  <div className="date-picker__month-title" id={monthTitleId}>{monthLabel}</div>
+                  <div className="date-picker__grid" role="grid" aria-labelledby={monthTitleId}>
+                    <div className="date-picker__week" role="row">
+                      {t("home.weekDays").map((label) => (
+                        <span key={label} className="date-picker__weekday" role="columnheader">{label}</span>
+                      ))}
+                    </div>
+                    {weeks.map((week, weekIndex) => (
+                      <div key={`${monthLabel}-week-${weekIndex}`} role="row">
+                        {week.map((day, idx) => {
+                          if (!day) {
+                            return (
+                              <span
+                                key={`empty-${weekIndex}-${idx}`}
+                                className="date-picker__cell is-empty"
+                                role="gridcell"
+                                aria-hidden="true"
+                              />
+                            );
+                          }
+                          const iso = toIso(day);
+                          const selected = isSameDay(day, selectedDate);
+                          const today = isSameDay(day, new Date());
+                          const disabledDay = isDateDisabled(day);
+                          return (
+                            <button
+                              key={iso}
+                              type="button"
+                              data-date={iso}
+                              role="gridcell"
+                              className={[
+                                "date-picker__cell",
+                                selected ? "is-selected" : "",
+                                today ? "is-today" : "",
+                              ].filter(Boolean).join(" ")}
+                              onClick={() => selectDate(day)}
+                              aria-selected={selected}
+                              aria-disabled={disabledDay}
+                              disabled={disabledDay}
+                              tabIndex={selected || isSameDay(day, focusedDate) ? 0 : -1}
+                              aria-label={new Intl.DateTimeFormat(locale, {
+                                day: "2-digit",
+                                month: "long",
+                                year: "numeric",
+                              }).format(day)}
+                            >
+                              {day.getDate()}
+                            </button>
+                          );
+                        })}
+                      </div>
                     ))}
-                  </div>
-                  <div className="date-picker__grid" role="grid">
-                    {month.days.map((day, idx) => {
-                      if (!day) {
-                        return <span key={`empty-${idx}`} className="date-picker__cell is-empty" />;
-                      }
-                      const iso = toIso(day);
-                      const selected = isSameDay(day, selectedDate);
-                      const today = isSameDay(day, new Date());
-                      const disabledDay = isDateDisabled(day);
-                      return (
-                        <button
-                          key={iso}
-                          type="button"
-                          data-date={iso}
-                          className={[
-                            "date-picker__cell",
-                            selected ? "is-selected" : "",
-                            today ? "is-today" : "",
-                          ].filter(Boolean).join(" ")}
-                          onClick={() => selectDate(day)}
-                          aria-selected={selected}
-                          aria-disabled={disabledDay}
-                          disabled={disabledDay}
-                          tabIndex={selected || isSameDay(day, focusedDate) ? 0 : -1}
-                          aria-label={new Intl.DateTimeFormat(locale, {
-                            day: "2-digit",
-                            month: "long",
-                            year: "numeric",
-                          }).format(day)}
-                        >
-                          {day.getDate()}
-                        </button>
-                      );
-                    })}
                   </div>
                 </div>
               );

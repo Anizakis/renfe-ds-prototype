@@ -89,7 +89,7 @@ export default function Footer() {
 function LinkColumn({ title, items, moreLabel, moreHref }) {
   return (
     <div className="footer__column">
-      <h3 className="footer__title">{title}</h3>
+      <h2 className="footer__title">{title}</h2>
       <ul className="footer__links">
         {items.map((item) => (
           <li key={item.label} className="footer__link-item">
