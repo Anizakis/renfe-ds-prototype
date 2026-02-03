@@ -170,14 +170,61 @@ export default function Payment() {
           <div className="payment-form" aria-busy={isLoading ? "true" : undefined}>
             <div className="card">
               <Stack gap="04">
-                <InputText label={t("payment.name")} inputId="card-name" helperId="card-name-helper" helperText="" />
-                <InputText label={t("payment.cardNumber")} inputId="card-number" helperId="card-number-helper" helperText="" />
+                <InputText
+                  label={t("payment.name")}
+                  inputId="card-name"
+                  helperId="card-name-helper"
+                  helperText=""
+                  size="m"
+                  placeholder={t("payment.placeholders.name")}
+                  inputProps={{
+                    name: "cc-name",
+                    autoComplete: "cc-name",
+                  }}
+                />
+                <InputText
+                  label={t("payment.cardNumber")}
+                  inputId="card-number"
+                  helperId="card-number-helper"
+                  helperText=""
+                  size="m"
+                  placeholder={t("payment.placeholders.cardNumber")}
+                  inputProps={{
+                    name: "cc-number",
+                    autoComplete: "cc-number",
+                    inputMode: "numeric",
+                  }}
+                />
                 <Grid>
                   <div className="col-span-6">
-                    <InputText label={t("payment.expiry")} inputId="card-exp" helperId="card-exp-helper" helperText="" />
+                    <InputText
+                      label={t("payment.expiry")}
+                      inputId="card-exp"
+                      helperId="card-exp-helper"
+                      helperText=""
+                      size="m"
+                      placeholder={t("payment.placeholders.expiry")}
+                      inputProps={{
+                        name: "cc-exp",
+                        autoComplete: "cc-exp",
+                        inputMode: "numeric",
+                      }}
+                    />
                   </div>
                   <div className="col-span-6">
-                    <InputText label={t("payment.cvv")} inputId="card-cvv" helperId="card-cvv-helper" helperText="" />
+                    <InputText
+                      label={t("payment.cvv")}
+                      inputId="card-cvv"
+                      helperId="card-cvv-helper"
+                      helperText=""
+                      size="m"
+                      placeholder={t("payment.placeholders.cvv")}
+                      inputProps={{
+                        name: "cc-csc",
+                        autoComplete: "cc-csc",
+                        inputMode: "numeric",
+                      }}
+                    />
                   </div>
                 </Grid>
                 <Stack direction="row" gap="03" className="form-actions">
@@ -213,12 +260,14 @@ export default function Payment() {
           descriptionId="change-method-desc"
           triggerRef={triggerRef}
         >
-          <h2 id="change-method-title" className="section-title">{t("common.change")}</h2>
-          <p id="change-method-desc">
-            {t("payment.changeBody")}
-          </p>
-          <div className="form-actions">
-            <Button variant="primary" onClick={() => setIsModalOpen(false)}>{t("payment.accept")}</Button>
+          <div className="payment-change-modal">
+            <h2 id="change-method-title" className="section-title">{t("common.change")}</h2>
+            <p id="change-method-desc">
+              {t("payment.changeBody")}
+            </p>
+            <div className="form-actions">
+              <Button variant="primary" onClick={() => setIsModalOpen(false)}>{t("payment.accept")}</Button>
+            </div>
           </div>
         </Modal>
       </PageStack>

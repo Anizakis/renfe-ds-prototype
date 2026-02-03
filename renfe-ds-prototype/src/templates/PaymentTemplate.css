@@ -14,6 +14,12 @@
   height: fit-content;
 }
 
+.payment-change-modal {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-04);
+}
+
 @media (max-width: 1023px) {
   .payment-form {
     grid-column: 1 / -1;

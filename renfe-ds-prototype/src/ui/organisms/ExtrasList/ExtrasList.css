@@ -109,7 +109,7 @@
 }
 
 .extras-card {
-  background: var(--color-neutral-25);
+  background: var(--color-neutral-50);
   border: 1px solid var(--color-neutral-200);
   border-radius: var(--radius-03);
   box-shadow: var(--shadow-xs);
@@ -146,8 +146,16 @@
 }
 
 .extras-card__icon {
-  font-size: 2rem;
-  color: var(--color-accent-500);
+  color: var(--color-neutral-900);
+  display: inline-flex;
+  align-items: center;
+  line-height: var(--type-text-m-line);
+}
+
+.extras-card__icon .icon {
+  font-size: var(--type-text-m-size);
+  width: var(--type-text-m-size);
+  height: var(--type-text-m-size);
 }
 
 .extras-card__title {

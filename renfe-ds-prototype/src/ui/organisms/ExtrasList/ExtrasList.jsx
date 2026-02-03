@@ -9,6 +9,17 @@ import { useI18n } from "../../../app/i18n.jsx";
 export default function ExtrasList({ extras, selectedExtras, onToggle }) {
   const { t } = useI18n();
   const [modalExtra, setModalExtra] = useState(null);
+  const iconMap = {
+    restauracion: "restaurant",
+    "pack-superflex": "verified",
+    seat: "event_seat",
+    "puente-ave": "swap_calls",
+    "reembolso-total": "assignment_return",
+    mascotas: "pets",
+    bicicletas: "pedal_bike",
+    "cambios-ilimitados": "sync_alt",
+  };
+  const resolveIcon = (extra) => extra.iconName || iconMap[extra.id] || "add_circle";
   const MODAL_IDS = ["restauracion", "mascotas"];
   const handleAddClick = (extra) => {
     if (MODAL_IDS.includes(extra.id)) {
@@ -34,6 +45,7 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
           const extraDescription = extra.descriptionKey ? t(extra.descriptionKey) : extra.description;
           const extraPriceLabel = extra.priceLabelKey ? t(extra.priceLabelKey) : extra.priceLabel;
           const priceText = extraPriceLabel || formatPrice(extra.price);
+          const iconName = resolveIcon(extra);
           return (
             <div
               key={extra.id}
@@ -44,7 +56,9 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
             >
               <div className="extras-card__header">
                 <div className="extras-card__icon-title">
-                  <Icon name={extra.iconName} className="extras-card__icon" aria-hidden="true" />
+                  <span className="extras-card__icon" aria-hidden="true">
+                    <Icon name={iconName} size="md" decorative />
+                  </span>
                   <span className="extras-card__title">{extraName}</span>
                 </div>
                 <div className="extras-card__meta">
