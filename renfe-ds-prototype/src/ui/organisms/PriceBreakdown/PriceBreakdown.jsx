@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
+import Icon from "../../Icon/Icon.jsx";
 import "./PriceBreakdown.css";
 import { formatPrice } from "../../../app/utils.js";
 
@@ -17,9 +18,21 @@ export default function PriceBreakdown({ title, items, total, totalLabel = "Tota
       </div>
       <ul className="price-breakdown__list">
         {items.map((item) => (
-          <li key={item.label} className="price-breakdown__row">
-            <span>{item.label}</span>
-            <span>{item.value}</span>
+          <li key={item.key ?? item.label} className="price-breakdown__row">
+            {item.icon && (
+              <span className="price-breakdown__icon">
+                <Icon name={item.icon} size="sm" decorative />
+              </span>
+            )}
+            <div className="price-breakdown__content">
+              <span className="price-breakdown__label">{item.label}</span>
+              {item.value ? (
+                <span className="price-breakdown__value">{item.value}</span>
+              ) : null}
+              {item.description ? (
+                <span className="price-breakdown__description">{item.description}</span>
+              ) : null}
+            </div>
           </li>
         ))}
       </ul>

@@ -29,8 +29,51 @@
 
 .price-breakdown__row {
   display: flex;
-  justify-content: space-between;
+  gap: var(--spacing-03);
+  align-items: flex-start;
   color: var(--color-neutral-700);
+  padding: var(--spacing-02) 0;
+  border-bottom: 1px solid var(--color-neutral-200);
+}
+
+.price-breakdown__row:last-child {
+  border-bottom: none;
+}
+
+.price-breakdown__icon {
+  color: var(--color-neutral-700);
+  margin-top: 2px;
+  flex: 0 0 auto;
+}
+
+.price-breakdown__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-01);
+  min-width: 0;
+}
+
+.price-breakdown__label {
+  font-size: var(--type-text-xs-size);
+  line-height: var(--type-text-xs-line);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-neutral-500);
+}
+
+.price-breakdown__value {
+  font-size: var(--type-text-m-size);
+  line-height: var(--type-text-m-line);
+  font-weight: var(--type-weight-semibold);
+  color: var(--color-neutral-900);
+  overflow-wrap: anywhere;
+}
+
+.price-breakdown__description {
+  font-size: var(--type-text-s-size);
+  line-height: var(--type-text-s-line);
+  color: var(--color-neutral-700);
+  overflow-wrap: anywhere;
 }
 
 .price-breakdown__total {

@@ -5,3 +5,7 @@
 .fares-stack {
   padding-bottom: var(--spacing-15);
 }
+
+.extras-stack {
+  padding-bottom: var(--spacing-16);
+}

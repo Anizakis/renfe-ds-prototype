@@ -52,7 +52,7 @@ export default function Extras() {
 
   return (
     <Container as="section">
-      <PageStack gap="10" align="stretch" textAlign="left">
+      <PageStack gap="10" align="stretch" textAlign="left" className="extras-stack">
         <AnimatedCheckoutStepper currentStep="extras" />
         <VisuallyHidden as="h1">{t("extras.title")}</VisuallyHidden>
         <div className="extrasCard">
