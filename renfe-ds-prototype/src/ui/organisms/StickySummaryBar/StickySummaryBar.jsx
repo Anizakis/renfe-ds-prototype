@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import "./StickySummaryBar.css";
 import VisuallyHidden from "../../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import Button from "../../atoms/Button/Button.jsx";
+import Icon from "../../Icon/Icon.jsx";
 import { useTravel } from "../../../app/store.jsx";
 import { getSelectedExtras, getSelectedFare } from "../../../app/pricing.js";
 import { formatPrice } from "../../../app/utils.js";
@@ -42,6 +43,28 @@ function StickySummaryBar({
   const pendingFare = !state.selectedFareId;
   const fareName = selectedFare?.nameKey ? t(selectedFare.nameKey) : selectedFare?.name;
   const extrasNames = selectedExtras.map((extra) => (extra.nameKey ? t(extra.nameKey) : extra.name));
+  const baseOrigin = state.search?.origin || "—";
+  const baseDestination = state.search?.destination || "—";
+  const isRoundTrip = state.search?.tripType === "roundTrip";
+
+  const formatTripDate = (value) => {
+    if (!value) return "—";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+    const locale = typeof document !== "undefined"
+      ? (document.documentElement.lang || "es-ES")
+      : "es-ES";
+    const formatted = date.toLocaleDateString(locale, {
+      weekday: "long",
+      day: "2-digit",
+      month: "long",
+    });
+    const cleaned = formatted.replace(",", "").replace(/\s+de\s+/g, " ");
+    return cleaned
+      .split(" ")
+      .map((part) => part ? part[0].toUpperCase() + part.slice(1) : part)
+      .join(" ");
+  };
 
   useEffect(() => {
     const summaryEl = summaryRef.current;
@@ -134,47 +157,64 @@ function StickySummaryBar({
         <div className="sticky-summary__details">
           <div className="sticky-summary__group">
             <span className="sticky-summary__value">
-              {returnJourney ? (
-                <span className="sticky-summary__trip-grid">
-                  <span className="sticky-summary__trip-column">
-                    <span className="sticky-summary__label">{t("summary.outboundTrip")}</span>
-                    <span className="sticky-summary__trip-line">
-                      {journey ? `${journey.origin} → ${journey.destination}` : "—"}
-                    </span>
-                    <span className="sticky-summary__trip-line">{journey ? journey.date : "—"}</span>
-                    <span className="sticky-summary__trip-line">{journey ? `${journey.departTime}-${journey.arriveTime} · ${journey.service}` : "—"}</span>
+              <span className="sticky-summary__trip-grid">
+                <span className="sticky-summary__trip-column">
+                  <span className="sticky-summary__label">{t("summary.outboundTrip")}</span>
+                  <span className="sticky-summary__trip-date">
+                    {formatTripDate(journey?.date ?? state.search?.departDate)}
                   </span>
+                  <span className="sticky-summary__trip-list">
+                    <span className="sticky-summary__trip-item">
+                      <Icon name="radio_button_checked" size="sm" decorative />
+                      <span>{journey?.origin ?? baseOrigin}</span>
+                    </span>
+                    <span className="sticky-summary__trip-item">
+                      <Icon name="location_on" size="sm" decorative />
+                      <span>{journey?.destination ?? baseDestination}</span>
+                    </span>
+                  </span>
+                  <span className={`sticky-summary__trip-status ${journey ? "" : "is-muted"}`}>
+                    {journey
+                      ? `${journey.departTime}-${journey.arriveTime} · ${journey.service}`
+                      : t("summary.noTrainSelected")}
+                  </span>
+                </span>
+                {isRoundTrip && (
                   <span className="sticky-summary__trip-column">
                     <span className="sticky-summary__label">{t("summary.returnTrip")}</span>
-                    <span className="sticky-summary__trip-line">
-                      {returnJourney ? `${returnJourney.origin} → ${returnJourney.destination}` : "—"}
+                    <span className="sticky-summary__trip-date">
+                      {formatTripDate(returnJourney?.date ?? state.search?.returnDate)}
                     </span>
-                    <span className="sticky-summary__trip-line">{returnJourney ? returnJourney.date : "—"}</span>
-                    <span className="sticky-summary__trip-line">{returnJourney ? `${returnJourney.departTime}-${returnJourney.arriveTime} · ${returnJourney.service}` : "—"}</span>
+                    <span className="sticky-summary__trip-list">
+                      <span className="sticky-summary__trip-item">
+                        <Icon name="radio_button_checked" size="sm" decorative />
+                        <span>{returnJourney?.origin ?? baseDestination}</span>
+                      </span>
+                      <span className="sticky-summary__trip-item">
+                        <Icon name="location_on" size="sm" decorative />
+                        <span>{returnJourney?.destination ?? baseOrigin}</span>
+                      </span>
+                    </span>
+                    <span className={`sticky-summary__trip-status ${returnJourney ? "" : "is-muted"}`}>
+                      {returnJourney
+                        ? `${returnJourney.departTime}-${returnJourney.arriveTime} · ${returnJourney.service}`
+                        : t("summary.noTrainSelected")}
+                    </span>
                   </span>
-                </span>
-              ) : journey ? (
-                <span className="sticky-summary__trip">
-                  <span className="sticky-summary__label">{t("summary.outboundTrip")}</span>
-                  <span className="sticky-summary__trip-line">{journey.origin} → {journey.destination}</span>
-                  <span className="sticky-summary__trip-line">{journey.date}</span>
-                  <span className="sticky-summary__trip-line">{journey.departTime}-{journey.arriveTime} · {journey.service}</span>
-                </span>
-              ) : (
-                "—"
-              )}
+                )}
+              </span>
             </span>
           </div>
           {showFare && (
             <div className="sticky-summary__group">
               <span className="sticky-summary__label">{t("summary.fare")}</span>
-              <span className="sticky-summary__value">{pendingFare ? t("summary.pending") : selectedFare ? fareName : t("summary.noFare")}</span>
+              <span className="sticky-summary__value sticky-summary__trip-date">{pendingFare ? t("summary.pending") : selectedFare ? fareName : t("summary.noFare")}</span>
             </div>
           )}
           {showExtras && (
             <div className="sticky-summary__group">
               <span className="sticky-summary__label">{t("summary.extras")}</span>
-              <span className="sticky-summary__value">{pendingExtras ? t("summary.pending") : selectedExtras.length > 0 ? extrasNames.join(", ") : t("summary.noExtras")}</span>
+              <span className="sticky-summary__value sticky-summary__trip-date">{pendingExtras ? t("summary.pending") : selectedExtras.length > 0 ? extrasNames.join(", ") : t("summary.noExtras")}</span>
             </div>
           )}
         </div>
