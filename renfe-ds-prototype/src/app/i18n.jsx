@@ -249,7 +249,9 @@ const STRINGS = {
     },
     results: {
       title: "Resultados",
-      filters: "Filtros",
+      filters: {
+        title: "Filtros",
+      },
       journeys: "Trenes disponibles",
       select: "Elegir",
       selected: "Seleccionado",
@@ -1032,7 +1034,9 @@ const STRINGS = {
     },
     results: {
       title: "Results",
-      filters: "Filters",
+      filters: {
+        title: "Filters",
+      },
       journeys: "Available trains",
       select: "Select",
       selected: "Selected",

@@ -3,6 +3,7 @@ import PageStack from "../ui/atoms/PageStack/PageStack.jsx";
 import Grid from "../ui/atoms/Grid/Grid.jsx";
 import Stack from "../ui/atoms/Stack/Stack.jsx";
 import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
+import { useI18n } from "../app/i18n.jsx";
 import "./ResultsTemplate.css";
 
 export default function ResultsTemplate({
@@ -19,6 +20,7 @@ export default function ResultsTemplate({
   summaryBar,
   priceModal,
 }) {
+  const { t } = useI18n();
   return (
     <section className="results-page">
       <Container as="section">
@@ -32,7 +34,7 @@ export default function ResultsTemplate({
 
           <Grid className="results-grid">
             <section className="results-sidebar" aria-labelledby="results-filters-title">
-              <VisuallyHidden as="h2" id="results-filters-title">{title} — Filtros</VisuallyHidden>
+              <VisuallyHidden as="h2" id="results-filters-title">{t("results.filters.title")}</VisuallyHidden>
               <div className="results-panel">
                 {filtersSidebar}
               </div>

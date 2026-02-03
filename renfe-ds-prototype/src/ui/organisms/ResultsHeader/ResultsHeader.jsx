@@ -29,7 +29,7 @@ export default function ResultsHeader({
             aria-controls={filtersDrawerId}
             ref={filtersButtonRef}
           >
-            {t("results.filters")}
+            {t("results.filters.title")}
           </Button>
         </div>
       </div>
