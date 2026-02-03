@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./StickySummaryBar.css";
 import VisuallyHidden from "../../../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import Button from "../../atoms/Button/Button.jsx";
@@ -34,6 +34,11 @@ function StickySummaryBar({
   onModifySearch
 }) {
   const summaryRef = useRef(null);
+  const detailsRef = useRef(null);
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [detailsMaxHeight, setDetailsMaxHeight] = useState("0px");
+  const [isDesktop, setIsDesktop] = useState(false);
+  const detailsId = "sticky-summary-details";
   // Centralize extras logic here
   const { state } = useTravel();
   const selectedExtras = getSelectedExtras(state);
@@ -46,6 +51,7 @@ function StickySummaryBar({
   const baseOrigin = state.search?.origin || "—";
   const baseDestination = state.search?.destination || "—";
   const isRoundTrip = state.search?.tripType === "roundTrip";
+  const isDetailsExpanded = isDesktop || isExpanded;
 
   const formatTripDate = (value) => {
     if (!value) return "—";
@@ -112,6 +118,37 @@ function StickySummaryBar({
     window.addEventListener("scroll", updateFooterOffset, { passive: true });
     window.addEventListener("resize", updateFooterOffset);
     updateFooterOffset();
+const renderTripGroup = ({
+  label,
+  dateValue,
+  originValue,
+  destinationValue,
+  isSelected,
+  statusText
+}) => (
+  <div className="sticky-summary__group">
+    <span className="sticky-summary__label">{label}</span>
+
+    <span className="sticky-summary__trip-date">
+      {formatTripDate(dateValue)}
+    </span>
+
+    <span className="sticky-summary__trip-list">
+      <span className="sticky-summary__trip-item">
+        <Icon name="radio_button_checked" size="sm" decorative />
+        <span>{originValue}</span>
+      </span>
+      <span className="sticky-summary__trip-item">
+        <Icon name="location_on" size="sm" decorative />
+        <span>{destinationValue}</span>
+      </span>
+    </span>
+
+    <span className={`sticky-summary__trip-status ${isSelected ? "" : "is-muted"}`}>
+      {statusText}
+    </span>
+  </div>
+);
 
     return () => {
       resizeObserver.disconnect();
@@ -120,6 +157,46 @@ function StickySummaryBar({
       if (rafId) window.cancelAnimationFrame(rafId);
     };
   }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    const media = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(media.matches);
+    update();
+    if (media.addEventListener) {
+      media.addEventListener("change", update);
+    } else {
+      media.addListener(update);
+    }
+    return () => {
+      if (media.removeEventListener) {
+        media.removeEventListener("change", update);
+      } else {
+        media.removeListener(update);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const panel = detailsRef.current;
+    if (!panel) return undefined;
+
+    const updateHeight = () => {
+      if (isDesktop) {
+        setDetailsMaxHeight("none");
+        return;
+      }
+      if (isDetailsExpanded) {
+        setDetailsMaxHeight(`${panel.scrollHeight}px`);
+      } else {
+        setDetailsMaxHeight("0px");
+      }
+    };
+
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
+  }, [isDesktop, isDetailsExpanded, showFare, showExtras, isRoundTrip, selectedExtras.length, journey, returnJourney]);
 
   return (
     <div
@@ -154,97 +231,125 @@ function StickySummaryBar({
         </>
       )}
       <div className="sticky-summary__inner">
-        <div className="sticky-summary__details">
-          <div className="sticky-summary__group">
-            <span className="sticky-summary__value">
-              <span className="sticky-summary__trip-grid">
-                <span className="sticky-summary__trip-column">
-                  <span className="sticky-summary__label">{t("summary.outboundTrip")}</span>
-                  <span className="sticky-summary__trip-date">
-                    {formatTripDate(journey?.date ?? state.search?.departDate)}
-                  </span>
-                  <span className="sticky-summary__trip-list">
-                    <span className="sticky-summary__trip-item">
-                      <Icon name="radio_button_checked" size="sm" decorative />
-                      <span>{journey?.origin ?? baseOrigin}</span>
+        <div className="sticky-summary__summary-row">
+          <Button
+            variant="tertiary"
+            size="s"
+            className="sticky-summary__summary-toggle"
+            aria-expanded={isDetailsExpanded ? "true" : "false"}
+            aria-controls={detailsId}
+            onClick={() => setIsExpanded((prev) => !prev)}
+            hasTrailingIcon
+            trailingIcon={(
+              <span className={`sticky-summary__toggle-icon ${isDetailsExpanded ? "is-expanded" : ""}`}>
+                <Icon name="expand_more" size="sm" decorative />
+              </span>
+            )}
+          >
+            Sumario del viaje
+          </Button>
+
+          <div
+            className={`sticky-summary__details-panel ${isDetailsExpanded ? "is-expanded" : ""}`}
+            id={detailsId}
+            aria-hidden={isDetailsExpanded ? "false" : "true"}
+            ref={detailsRef}
+            style={{ maxHeight: detailsMaxHeight }}
+          >
+            <div className="sticky-summary__details">
+              <div className="sticky-summary__group sticky-summary__group--trip">
+                <span className="sticky-summary__value">
+                  <span className="sticky-summary__trip-grid">
+                    <span className="sticky-summary__trip-column">
+                      <span className="sticky-summary__label">{t("summary.outboundTrip")}</span>
+                      <span className="sticky-summary__trip-date">
+                        {formatTripDate(journey?.date ?? state.search?.departDate)}
+                      </span>
+                      <span className="sticky-summary__trip-list">
+                        <span className="sticky-summary__trip-item">
+                          <Icon name="radio_button_checked" size="sm" decorative />
+                          <span>{journey?.origin ?? baseOrigin}</span>
+                        </span>
+                        <span className="sticky-summary__trip-item">
+                          <Icon name="location_on" size="sm" decorative />
+                          <span>{journey?.destination ?? baseDestination}</span>
+                        </span>
+                      </span>
+                      <span className={`sticky-summary__trip-status ${journey ? "" : "is-muted"}`}>
+                        {journey
+                          ? `${journey.departTime}-${journey.arriveTime} · ${journey.service}`
+                          : t("summary.noTrainSelected")}
+                      </span>
                     </span>
-                    <span className="sticky-summary__trip-item">
-                      <Icon name="location_on" size="sm" decorative />
-                      <span>{journey?.destination ?? baseDestination}</span>
-                    </span>
-                  </span>
-                  <span className={`sticky-summary__trip-status ${journey ? "" : "is-muted"}`}>
-                    {journey
-                      ? `${journey.departTime}-${journey.arriveTime} · ${journey.service}`
-                      : t("summary.noTrainSelected")}
+                    {isRoundTrip && (
+                      <span className="sticky-summary__trip-column">
+                        <span className="sticky-summary__label">{t("summary.returnTrip")}</span>
+                        <span className="sticky-summary__trip-date">
+                          {formatTripDate(returnJourney?.date ?? state.search?.returnDate)}
+                        </span>
+                        <span className="sticky-summary__trip-list">
+                          <span className="sticky-summary__trip-item">
+                            <Icon name="radio_button_checked" size="sm" decorative />
+                            <span>{returnJourney?.origin ?? baseDestination}</span>
+                          </span>
+                          <span className="sticky-summary__trip-item">
+                            <Icon name="location_on" size="sm" decorative />
+                            <span>{returnJourney?.destination ?? baseOrigin}</span>
+                          </span>
+                        </span>
+                        <span className={`sticky-summary__trip-status ${returnJourney ? "" : "is-muted"}`}>
+                          {returnJourney
+                            ? `${returnJourney.departTime}-${returnJourney.arriveTime} · ${returnJourney.service}`
+                            : t("summary.noTrainSelected")}
+                        </span>
+                      </span>
+                    )}
                   </span>
                 </span>
-                {isRoundTrip && (
-                  <span className="sticky-summary__trip-column">
-                    <span className="sticky-summary__label">{t("summary.returnTrip")}</span>
-                    <span className="sticky-summary__trip-date">
-                      {formatTripDate(returnJourney?.date ?? state.search?.returnDate)}
-                    </span>
-                    <span className="sticky-summary__trip-list">
-                      <span className="sticky-summary__trip-item">
-                        <Icon name="radio_button_checked" size="sm" decorative />
-                        <span>{returnJourney?.origin ?? baseDestination}</span>
-                      </span>
-                      <span className="sticky-summary__trip-item">
-                        <Icon name="location_on" size="sm" decorative />
-                        <span>{returnJourney?.destination ?? baseOrigin}</span>
-                      </span>
-                    </span>
-                    <span className={`sticky-summary__trip-status ${returnJourney ? "" : "is-muted"}`}>
-                      {returnJourney
-                        ? `${returnJourney.departTime}-${returnJourney.arriveTime} · ${returnJourney.service}`
-                        : t("summary.noTrainSelected")}
-                    </span>
-                  </span>
-                )}
+              </div>
+              {showFare && (
+                <div className="sticky-summary__group sticky-summary__group--fare">
+                  <span className="sticky-summary__label">{t("summary.fare")}</span>
+                  <span className="sticky-summary__value sticky-summary__trip-date">{pendingFare ? t("summary.pending") : selectedFare ? fareName : t("summary.noFare")}</span>
+                </div>
+              )}
+              {showExtras && (
+                <div className="sticky-summary__group sticky-summary__group--extras">
+                  <span className="sticky-summary__label">{t("summary.extras")}</span>
+                  <span className="sticky-summary__value sticky-summary__trip-date">{pendingExtras ? t("summary.pending") : selectedExtras.length > 0 ? extrasNames.join(", ") : t("summary.noExtras")}</span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="sticky-summary__actions">
+            <div className="sticky-summary__totals">
+              <span className="sticky-summary__total" aria-live="polite" aria-atomic="true">
+                {t("summary.total")}: {typeof total === "number" ? formatPrice(total) : total}
               </span>
-            </span>
-          </div>
-          {showFare && (
-            <div className="sticky-summary__group">
-              <span className="sticky-summary__label">{t("summary.fare")}</span>
-              <span className="sticky-summary__value sticky-summary__trip-date">{pendingFare ? t("summary.pending") : selectedFare ? fareName : t("summary.noFare")}</span>
+              {showDetailsButton && (
+                <button
+                  type="button"
+                  className="sticky-summary__details-link"
+                  onClick={onViewDetails}
+                  ref={priceTriggerRef}
+                >
+                  {detailsLabel || t("summary.viewDetails")}
+                </button>
+              )}
+              {showHelper && helper && (
+                <span className="sticky-summary__helper">{helper}</span>
+              )}
             </div>
-          )}
-          {showExtras && (
-            <div className="sticky-summary__group">
-              <span className="sticky-summary__label">{t("summary.extras")}</span>
-              <span className="sticky-summary__value sticky-summary__trip-date">{pendingExtras ? t("summary.pending") : selectedExtras.length > 0 ? extrasNames.join(", ") : t("summary.noExtras")}</span>
-            </div>
-          )}
-        </div>
-        <div className="sticky-summary__actions">
-          <div className="sticky-summary__totals">
-            <span className="sticky-summary__total" aria-live="polite" aria-atomic="true">
-              {t("summary.total")}: {typeof total === "number" ? formatPrice(total) : total}
-            </span>
-            {showDetailsButton && (
-              <button
-                type="button"
-                className="sticky-summary__details-link"
-                onClick={onViewDetails}
-                ref={priceTriggerRef}
-              >
-                {detailsLabel || t("summary.viewDetails")}
-              </button>
-            )}
-            {showHelper && helper && (
-              <span className="sticky-summary__helper">{helper}</span>
-            )}
+            <Button
+              variant="primary"
+              size="l"
+              disabled={!canContinue}
+              onClick={onContinue}
+            >
+              {continueLabel || t("common.continue")}
+            </Button>
           </div>
-          <Button
-            variant="primary"
-            size="l"
-            disabled={!canContinue}
-            onClick={onContinue}
-          >
-            {continueLabel || t("common.continue")}
-          </Button>
         </div>
         {ariaLive && (
           <VisuallyHidden as="p" aria-live="polite">{ariaLive}</VisuallyHidden>

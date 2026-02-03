@@ -39,7 +39,7 @@ export default function Fares() {
 
   return (
     <Container as="section">
-      <PageStack gap="10" align="stretch" textAlign="left">
+      <PageStack gap="10" align="stretch" textAlign="left" className="fares-stack">
         <VisuallyHidden as="h1">{t("fares.title")}</VisuallyHidden>
         <AnimatedCheckoutStepper currentStep="fares" />
         <FareComparison

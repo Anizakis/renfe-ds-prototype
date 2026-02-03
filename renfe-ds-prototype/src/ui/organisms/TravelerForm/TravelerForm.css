@@ -45,6 +45,7 @@
   display: flex;
   gap: var(--spacing-05);
   margin-bottom: var(--spacing-03);
+  flex-wrap: wrap;
 }
 
 .traveler-form__col {
@@ -106,4 +107,30 @@
   font-size: var(--type-text-m-size);
   cursor: pointer;
   outline: none;
+}
+
+@media (max-width: 1023px) {
+  .traveler-card {
+    padding: var(--spacing-05);
+  }
+
+  .traveler-form__row {
+    flex-direction: column;
+    gap: var(--spacing-03);
+  }
+
+  .traveler-form__col--sm,
+  .traveler-form__col--lg {
+    flex: 1 1 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .traveler-card {
+    padding: var(--spacing-04);
+  }
+
+  .traveler-form__legend {
+    font-size: var(--type-text-m-size);
+  }
 }

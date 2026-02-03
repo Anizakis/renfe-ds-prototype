@@ -1,10 +1,6 @@
 /* StickySummaryBar.css */
 
-/* Opcional: variables para controlar divisor y “zona segura” */
-:root {
-  --sticky-summary-divider-pad: var(--spacing-05);   /* padding a ambos lados del divisor */
-  --sticky-summary-divider-inset: var(--spacing-02); /* separación arriba/abajo del divisor */
-}
+/* StickySummaryBar responsive */
 
 .sticky-summary--top {
   position: static;
@@ -36,20 +32,50 @@
   z-index: 10;
 }
 
-/* GRID: details | actions (actions siempre al final) */
 .sticky-summary__inner {
   padding: var(--spacing-04) var(--grid-margin);
   max-width: var(--container-max);
   margin-inline: auto;
   width: 100%;
 
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  column-gap: var(--spacing-04);
-  row-gap: var(--spacing-04);
-  align-items: start;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-03);
+  align-items: stretch;
 
   min-height: var(--spacing-10);
+}
+
+@media (min-width: 1024px) {
+  .sticky-summary__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: var(--spacing-04);
+    row-gap: var(--spacing-03);
+    align-items: start;
+  }
+
+  .sticky-summary__details-panel {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .sticky-summary__actions {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+.sticky-summary__summary-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-02);
+}
+
+@media (min-width: 1024px) {
+  .sticky-summary__summary-row {
+    display: contents;
+  }
 }
 
 .sticky-summary__totals {
@@ -65,51 +91,79 @@
   min-width: 0;
 }
 
-/* Details: sin gap horizontal; el aire lo dan los paddings por grupo */
-.sticky-summary__details {
-  display: flex;
-  align-items: stretch;
-  flex-wrap: wrap;
-  flex: 1 1 auto;
-
-  column-gap: 0;
-  row-gap: var(--spacing-04);
-
-  min-width: 0;
+/* Details panel (accordion) */
+.sticky-summary__details-panel {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 240ms ease;
 }
 
-/* Cada grupo reparte espacio y tiene padding simétrico (zona segura del divisor) */
+.sticky-summary__details-panel.is-expanded {
+  max-height: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-summary__details-panel {
+    transition: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sticky-summary__details-panel {
+    max-height: none !important;
+    overflow: visible;
+  }
+}
+
+/* Details: 1 (móvil), 2 (tablet), 4 (desktop) */
+.sticky-summary__details {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-04);
+  min-width: 0;
+  align-items: stretch;
+  grid-auto-flow: row;
+}
+
+@media (min-width: 768px) {
+  .sticky-summary__details {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* tablet: el viaje ocupa la fila completa */
+  .sticky-summary__group--trip {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sticky-summary__details {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  /* desktop: el viaje ocupa 2 columnas */
+  .sticky-summary__group--trip {
+    grid-column: span 2;
+  }
+}
+
+/* Cada grupo (móvil/tablet: todos iguales) */
 .sticky-summary__group {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-01);
-
-  flex: 1 1 0;
+  padding: 0;
   min-width: 0;
-
-  padding-inline: var(--sticky-summary-divider-pad);
 }
 
-/* El primer grupo (viaje) alinea con el grid y puede tener más peso */
-.sticky-summary__group:first-child {
-  padding-inline-start: 0;
-  flex: 2 1 360px; /* ajusta o elimina si no quieres priorizar el bloque de viaje */
-}
-
-/* El último no añade “sobremargen” hacia actions */
-.sticky-summary__group:last-child {
-  padding-inline-end: 0;
-}
-
-/* Divisor vertical entre grupos (sin que el texto pase por encima) */
-.sticky-summary__group:not(:first-child)::before {
-  content: "";
-  position: absolute;
-  inset-inline-start: 0;
-  inset-block: var(--sticky-summary-divider-inset);
-  width: 1px;
-  background: var(--color-neutral-200);
+/* Solo en desktop alineamos extremos con el contenedor */
+@media (min-width: 1024px) {
+  .sticky-summary__group:first-child {
+    padding-inline-start: 0;
+  }
+  .sticky-summary__group:last-child {
+    padding-inline-end: 0;
+  }
 }
 
 .sticky-summary__label {
@@ -131,22 +185,23 @@
   overflow-wrap: anywhere;
 }
 
-.sticky-summary__trip {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-01);
-}
-
-/* Trip grid: mismo patrón de padding+divisor por columna */
+/* Trip grid interno */
 .sticky-summary__trip-grid {
-  display: flex;
-  flex-wrap: wrap;
-
+  display: grid;
+  grid-template-columns: 1fr; /* apilado en móvil */
+  row-gap: var(--spacing-04);  /* separación ida/vuelta sin líneas */
   column-gap: 0;
-  row-gap: var(--spacing-04);
 
   width: 100%;
   min-width: 0;
+}
+
+/* 2 columnas (ida/vuelta) cuando hay espacio */
+@media (min-width: 768px) {
+  .sticky-summary__trip-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 0;
+  }
 }
 
 .sticky-summary__trip-date {
@@ -202,52 +257,63 @@
   color: var(--color-neutral-600);
 }
 
+/* Trip column spacing */
 .sticky-summary__trip-column {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-02);
 
-  flex: 1 1 0;
-  min-width: min(280px, 100%);
+  min-width: 0;
 
-  padding-inline: var(--sticky-summary-divider-pad);
+  padding-block: 0;
+  padding-inline: 0;
 }
 
-.sticky-summary__trip-column:first-child {
-  padding-inline-start: 0;
-}
-
-.sticky-summary__trip-column:last-child {
-  padding-inline-end: 0;
-}
-
-.sticky-summary__trip-column:not(:first-child)::before {
-  content: "";
-  position: absolute;
-  inset-inline-start: 0;
-  inset-block: var(--sticky-summary-divider-inset);
-  width: 1px;
-  background: var(--color-neutral-200);
-}
-
-/* Desktop: ida/vuelta en una fila si hay espacio */
-@media (min-width: 1024px) {
-  .sticky-summary__trip-grid {
-    flex-wrap: nowrap;
-  }
-}
-
-/* Actions: siempre al final (columna derecha) */
+/* Actions */
 .sticky-summary__actions {
   display: flex;
   align-items: center;
   gap: var(--spacing-04);
-  flex-wrap: wrap;
-  justify-content: flex-end;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 
-  justify-self: end;
   min-width: 0;
+  justify-self: stretch;
+}
+
+@media (min-width: 1024px) {
+  .sticky-summary__actions {
+    justify-self: end;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+}
+
+.sticky-summary__summary-toggle {
+  align-self: flex-start;
+}
+
+.sticky-summary__toggle-icon {
+  display: inline-flex;
+  align-items: center;
+  transition: transform 220ms ease;
+}
+
+.sticky-summary__toggle-icon.is-expanded {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticky-summary__toggle-icon {
+    transition: none;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sticky-summary__summary-toggle {
+    display: none;
+  }
 }
 
 .sticky-summary__helper {
@@ -281,34 +347,4 @@
   outline: none;
   box-shadow: var(--effect-focus-primary);
   border-radius: var(--radius-02);
-}
-
-/* Mobile/Tablet: apilado y sin divisores verticales */
-@media (max-width: 1023px) {
-  .sticky-summary__inner {
-    grid-template-columns: 1fr;
-    align-items: stretch;
-    min-height: var(--spacing-12);
-  }
-
-  .sticky-summary__actions {
-    justify-self: stretch;
-    justify-content: space-between;
-  }
-
-  .sticky-summary__group {
-    padding-inline: 0;
-  }
-
-  .sticky-summary__group::before {
-    display: none;
-  }
-
-  .sticky-summary__trip-column {
-    padding-inline: 0;
-  }
-
-  .sticky-summary__trip-column::before {
-    display: none;
-  }
 }

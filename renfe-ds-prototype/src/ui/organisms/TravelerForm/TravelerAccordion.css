@@ -24,6 +24,7 @@
   font-weight: 700;
   border-radius: var(--radius-04);
   transition: background 0.2s;
+  gap: var(--spacing-03);
 }
 
 .traveler-accordion__header:hover {
@@ -32,6 +33,9 @@
 
 .traveler-accordion__title {
   font-weight: 700;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-02);
 }
 
 .traveler-accordion__subtitle {
@@ -56,4 +60,30 @@
 
 .traveler-accordion__content {
   padding: 0 var(--spacing-07) var(--spacing-07) var(--spacing-07);
+}
+
+@media (max-width: 1023px) {
+  .traveler-accordion__header {
+    padding: var(--spacing-05);
+    font-size: var(--type-text-l-size);
+  }
+
+  .traveler-accordion__content {
+    padding: 0 var(--spacing-05) var(--spacing-05) var(--spacing-05);
+  }
+}
+
+@media (max-width: 768px) {
+  .traveler-accordion__header {
+    padding: var(--spacing-04);
+    align-items: flex-start;
+  }
+
+  .traveler-accordion__subtitle {
+    margin-left: 0;
+  }
+
+  .traveler-accordion__content {
+    padding: 0 var(--spacing-04) var(--spacing-04) var(--spacing-04);
+  }
 }

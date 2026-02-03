@@ -1,3 +1,7 @@
 .travelers-stack {
   padding-bottom: var(--spacing-12);
 }
+
+.fares-stack {
+  padding-bottom: var(--spacing-15);
+}

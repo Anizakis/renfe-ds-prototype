@@ -4,10 +4,16 @@
   background: var(--color-neutral-25);
   border: var(--spacing-01) solid var(--color-neutral-200);
   border-radius: var(--radius-04);
-  padding: var(--spacing-05) var(--spacing-05);
+  padding: var(--spacing-04) var(--spacing-04);
   box-shadow: var(--shadow-xs);
   overflow-x: auto;
   box-sizing: border-box;
+}
+
+.fareComparisonCards {
+  display: none;
+  flex-direction: column;
+  gap: var(--spacing-04);
 }
 
 .fareComparisonGrid {
@@ -15,6 +21,7 @@
   grid-template-columns: minmax(var(--spacing-11), 1.2fr) repeat(4, minmax(0, 1fr));
   grid-auto-rows: auto;
   align-items: stretch;
+  min-width: 100%;
 }
 
 .fareComparisonRow {
@@ -235,12 +242,44 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .fareComparison {
-    padding: var(--spacing-05);
+  .fareComparisonGrid {
+    min-width: calc(var(--spacing-12) * 6);
+  }
+
+  .fareComparisonCard {
+    padding: var(--spacing-04) var(--spacing-03);
+  }
+
+  .fareComparisonCards {
+    display: flex;
   }
 
   .fareComparisonGrid {
-    min-width: calc(var(--spacing-12) * 8);
+    display: none;
+  }
+
+  .fareComparisonCard {
+    overflow-x: visible;
+  }
+
+  .fareComparisonCell {
+    padding: var(--spacing-03) var(--spacing-04);
+    font-size: var(--type-text-xs-size);
+    line-height: var(--type-text-xs-line);
+  }
+
+  .fareComparisonCell--label {
+    padding: var(--spacing-02) var(--spacing-03);
+  }
+
+  .fareComparisonCell--cta {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 1023px) {
+  .fareComparisonGrid {
+    grid-template-columns: minmax(var(--spacing-10), 1fr) repeat(4, minmax(0, 1fr));
   }
 }
 

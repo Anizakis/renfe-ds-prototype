@@ -127,6 +127,49 @@ export default function FareComparison({ fares, selectedFareId, onSelect }) {
   return (
     <section className="fareComparisonSection">
       <div className="fareComparisonCard">
+        <div className="fareComparisonCards" aria-label={t("fares.comparison.tableLabel")}
+        >
+          {COLUMN_ORDER.map((column) => {
+            const fare = fares.find((item) => item.id === column.id);
+            if (!fare) return null;
+            const isSelected = fare.id === selectedFareId;
+            const features = getFareFeatures(fare);
+            return (
+              <article
+                key={`${fare.id}-card`}
+                className={`fare-card ${isSelected ? "is-selected" : ""}`}
+                data-tone={fare.tone}
+              >
+                <div className="fare-card__accent" />
+                <div className="fare-card__header">
+                  <span className="fare-card__name">{getFareName(fare)}</span>
+                  <span className="fare-card__price">+{formatPrice(fare.price)}</span>
+                </div>
+                <span className="fareComparisonMicrocopy">{t("fares.comparison.basePriceNote")}</span>
+                <ul className="fare-card__list">
+                  {features.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+                <Button
+                  size="s"
+                  variant={isSelected ? "primary" : "secondary"}
+                  aria-pressed={isSelected ? "true" : "false"}
+                  onClick={() => onSelect(fare.id)}
+                >
+                  {isSelected ? t("fares.comparison.selected") : t("fares.comparison.select")}
+                </Button>
+                <button
+                  type="button"
+                  className="fareComparisonLink"
+                  onClick={(event) => handleOpenConditions(fare.id, event)}
+                >
+                  {t("fares.comparison.viewConditions")}
+                </button>
+              </article>
+            );
+          })}
+        </div>
         <div className="fareComparisonGrid" role="table" aria-label={t("fares.comparison.tableLabel")}>
           <div className="fareComparisonCell fareComparisonCell--corner" />
         {COLUMN_ORDER.map((column) => {

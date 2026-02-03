@@ -171,3 +171,19 @@
   font-weight: var(--type-weight-medium);
   color: var(--color-neutral-600);
 }
+
+@media (max-width: 640px) {
+  .journey-card {
+    grid-template-columns: 1fr;
+    align-items: flex-start;
+  }
+
+  .journey-card__price {
+    align-items: flex-start;
+  }
+
+  .journey-card > .btn {
+    width: 100%;
+    justify-self: stretch;
+  }
+}

@@ -9,7 +9,6 @@
   background: var(--color-neutral-25);
   position: sticky;
   top: calc(var(--spacing-11) + var(--spacing-03));
-  z-index: 20;
   min-height: var(--spacing-10);
 }
 
