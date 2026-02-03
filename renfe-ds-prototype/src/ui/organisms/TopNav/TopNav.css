@@ -62,8 +62,18 @@
 
 .topnav__logo {
   height: 100%;
+  aspect-ratio: 9 / 4;
   width: auto;
   display: block;
+  background-color: var(--color-brand-600);
+  mask-image: url("/renfe-seeklogo.svg");
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  mask-position: center;
+  -webkit-mask-image: url("/renfe-seeklogo.svg");
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  -webkit-mask-position: center;
 }
 
 

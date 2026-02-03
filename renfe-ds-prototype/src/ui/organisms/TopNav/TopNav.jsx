@@ -35,11 +35,7 @@ export default function TopNav() {
           <div className="topnav__left">
             <Link className="topnav__brand" to="/" aria-label={t("appName")}>
               <span className="topnav__logo-box" aria-hidden="true">
-                <img
-                  src="/renfe-seeklogo.svg"
-                  alt={t("appName")}
-                  className="topnav__logo"
-                />
+                <span className="topnav__logo" aria-hidden="true" />
               </span>
             </Link>
           </div>

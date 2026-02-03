@@ -249,7 +249,7 @@ export default function Results() {
     if (loadingTimeout.current) {
       clearTimeout(loadingTimeout.current);
     }
-    loadingTimeout.current = setTimeout(() => queueMicrotask(() => setLoading(false)), 600);
+    loadingTimeout.current = setTimeout(() => queueMicrotask(() => setLoading(false)), 1000);
     return () => {
       if (loadingTimeout.current) {
         clearTimeout(loadingTimeout.current);
