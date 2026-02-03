@@ -6,7 +6,7 @@ import PriceBreakdown from "../ui/organisms/PriceBreakdown/PriceBreakdown.jsx";
 import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
 import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
 import Button from "../ui/atoms/Button/Button.jsx";
-import PriceDetailsModal from "../ui/organisms/PriceDetailsModal/PriceDetailsModal.jsx";
+import PriceDetailsModal from "../ui/molecules/PriceDetailsModal/PriceDetailsModal.jsx";
 import { useTravel } from "../app/store.jsx";
 import { extras } from "../data/mockData.js";
 import { getTotalPrice, getSelectedJourney, getSelectedFare, getSelectedExtras, getPassengersTotal } from "../app/pricing.js";

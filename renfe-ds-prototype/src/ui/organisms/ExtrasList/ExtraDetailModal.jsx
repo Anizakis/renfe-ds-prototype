@@ -1,4 +1,4 @@
-import Modal from "../Modal/Modal.jsx";
+import Modal from "../../molecules/Modal/Modal.jsx";
 import Button from "../../atoms/Button/Button.jsx";
 import { Checkbox } from "../../atoms";
 import Icon from "../../Icon/Icon.jsx";

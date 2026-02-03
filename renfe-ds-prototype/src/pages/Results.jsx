@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DayPickerStrip } from "../ui/molecules";
-import JourneyCard from "../ui/organisms/JourneyCard/JourneyCard.jsx";
+import JourneyCard from "../ui/molecules/JourneyCard/JourneyCard.jsx";
 import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import SkeletonList from "../ui/molecules/SkeletonList/SkeletonList.jsx";
 import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
 import ResultsSummary from "../ui/molecules/ResultsSummary/ResultsSummary.jsx";
 import ResultsFilters from "../ui/organisms/ResultsFilters/ResultsFilters.jsx";
-import PriceDetailsModal from "../ui/organisms/PriceDetailsModal/PriceDetailsModal.jsx";
+import PriceDetailsModal from "../ui/molecules/PriceDetailsModal/PriceDetailsModal.jsx";
 import { useTravel } from "../app/store.jsx";
 import { buildDayRange, generateJourneys } from "../data/mockData.js";
 import { getSelectedExtras, getSelectedJourney, getSelectedReturnJourney, getTotalPrice, getSelectedFare, getPassengersTotal } from "../app/pricing.js";

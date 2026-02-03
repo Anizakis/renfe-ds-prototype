@@ -5,7 +5,7 @@ export { default as InputText } from "./InputText/InputText.jsx";
 export { default as Checkbox } from "./Checkbox/Checkbox.jsx";
 export { default as Switch } from "./Switch/Switch.jsx";
 export { default as Slider } from "./Slider/Slider.jsx";
-export { default as Tabs } from "./Tabs/Tabs.jsx";
+export { default as Tabs } from "../molecules/Tabs/Tabs.jsx";
 export { default as Alert } from "./Alert/Alert.jsx";
 export { default as RadioGroup } from "./RadioGroup/RadioGroup.jsx";
 export { default as Container } from "./Container/Container.jsx";

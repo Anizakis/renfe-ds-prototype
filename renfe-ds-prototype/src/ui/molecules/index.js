@@ -9,3 +9,6 @@ export { default as OnlyAvailableDaysToggle } from "./OnlyAvailableDaysToggle/On
 export { default as FilterSection } from "./FilterSection/FilterSection.jsx";
 export { default as ResultsAppliedFiltersBar } from "./ResultsAppliedFiltersBar/ResultsAppliedFiltersBar.jsx";
 export { default as PromoCard } from "./PromoCard/PromoCard.jsx";
+export { default as JourneyCard } from "./JourneyCard/JourneyCard.jsx";
+export { default as Modal } from "./Modal/Modal.jsx";
+export { default as PriceDetailsModal } from "./PriceDetailsModal/PriceDetailsModal.jsx";

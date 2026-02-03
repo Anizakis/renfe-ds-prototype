@@ -7,7 +7,7 @@ import "./TopNav.css";
 import { useI18n } from "../../../app/i18n.jsx";
 import DrawerMenu from "../DrawerMenu/DrawerMenu.jsx";
 import Icon from "../../Icon/Icon.jsx";
-import Modal from "../Modal/Modal.jsx";
+import Modal from "../../molecules/Modal/Modal.jsx";
 
 export default function TopNav() {
   const { t } = useI18n();

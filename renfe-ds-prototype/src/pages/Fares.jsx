@@ -5,7 +5,7 @@ import PageStack from "../ui/atoms/PageStack/PageStack.jsx";
 import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
 import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
 import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
-import PriceDetailsModal from "../ui/organisms/PriceDetailsModal/PriceDetailsModal.jsx";
+import PriceDetailsModal from "../ui/molecules/PriceDetailsModal/PriceDetailsModal.jsx";
 import FareComparison from "../ui/organisms/FareComparison/FareComparison.jsx";
 import { useTravel } from "../app/store.jsx";
 import { fares as fareDetails } from "../data/mockData.js";

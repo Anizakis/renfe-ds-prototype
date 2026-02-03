@@ -1,3 +1,11 @@
+/* StickySummaryBar.css */
+
+/* Opcional: variables para controlar divisor y “zona segura” */
+:root {
+  --sticky-summary-divider-pad: var(--spacing-05);   /* padding a ambos lados del divisor */
+  --sticky-summary-divider-inset: var(--spacing-02); /* separación arriba/abajo del divisor */
+}
+
 .sticky-summary--top {
   position: static;
   width: 100%;
@@ -14,6 +22,7 @@
   min-height: var(--spacing-12);
   padding: var(--spacing-05);
 }
+
 .sticky-summary {
   position: fixed;
   bottom: var(--sticky-summary-footer-offset, 0px);
@@ -27,16 +36,19 @@
   z-index: 10;
 }
 
+/* GRID: details | actions (actions siempre al final) */
 .sticky-summary__inner {
   padding: var(--spacing-04) var(--grid-margin);
   max-width: var(--container-max);
   margin-inline: auto;
   width: 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--spacing-04);
-  flex-wrap: wrap;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: var(--spacing-04);
+  row-gap: var(--spacing-04);
+  align-items: start;
+
   min-height: var(--spacing-10);
 }
 
@@ -53,27 +65,51 @@
   min-width: 0;
 }
 
+/* Details: sin gap horizontal; el aire lo dan los paddings por grupo */
 .sticky-summary__details {
   display: flex;
   align-items: stretch;
-  gap: var(--spacing-05);
   flex-wrap: wrap;
   flex: 1 1 auto;
-  min-width: calc(var(--spacing-18) + var(--spacing-02));
+
+  column-gap: 0;
+  row-gap: var(--spacing-04);
+
   min-width: 0;
 }
 
+/* Cada grupo reparte espacio y tiene padding simétrico (zona segura del divisor) */
 .sticky-summary__group {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-01);
-  min-width: var(--spacing-15);
+
+  flex: 1 1 0;
   min-width: 0;
+
+  padding-inline: var(--sticky-summary-divider-pad);
 }
 
-.sticky-summary__group + .sticky-summary__group {
-  border-left: 1px solid var(--color-neutral-200);
-  padding-left: var(--spacing-05);
+/* El primer grupo (viaje) alinea con el grid y puede tener más peso */
+.sticky-summary__group:first-child {
+  padding-inline-start: 0;
+  flex: 2 1 360px; /* ajusta o elimina si no quieres priorizar el bloque de viaje */
+}
+
+/* El último no añade “sobremargen” hacia actions */
+.sticky-summary__group:last-child {
+  padding-inline-end: 0;
+}
+
+/* Divisor vertical entre grupos (sin que el texto pase por encima) */
+.sticky-summary__group:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: var(--sticky-summary-divider-inset);
+  width: 1px;
+  background: var(--color-neutral-200);
 }
 
 .sticky-summary__label {
@@ -90,6 +126,9 @@
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
   color: var(--color-neutral-900);
+
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .sticky-summary__trip {
@@ -98,11 +137,16 @@
   gap: var(--spacing-01);
 }
 
+/* Trip grid: mismo patrón de padding+divisor por columna */
 .sticky-summary__trip-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--spacing-05);
+
+  column-gap: 0;
+  row-gap: var(--spacing-04);
+
   width: 100%;
+  min-width: 0;
 }
 
 .sticky-summary__trip-date {
@@ -111,12 +155,16 @@
   line-height: var(--type-text-m-line);
   color: var(--color-neutral-900);
   font-weight: 600;
+
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .sticky-summary__trip-list {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-02);
+  min-width: 0;
 }
 
 .sticky-summary__trip-item {
@@ -127,6 +175,7 @@
   font-size: var(--type-text-s-size);
   line-height: var(--type-text-s-line);
   color: var(--color-neutral-900);
+  min-width: 0;
 }
 
 .sticky-summary__trip-item .icon {
@@ -134,11 +183,19 @@
   color: var(--color-neutral-700);
 }
 
+.sticky-summary__trip-item > span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .sticky-summary__trip-status {
   font-family: var(--font-family-primary);
   font-size: var(--type-text-xs-size);
   line-height: var(--type-text-xs-line);
   color: var(--color-neutral-800);
+
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 
 .sticky-summary__trip-status.is-muted {
@@ -146,29 +203,50 @@
 }
 
 .sticky-summary__trip-column {
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: var(--spacing-02);
+
+  flex: 1 1 0;
   min-width: min(280px, 100%);
+
+  padding-inline: var(--sticky-summary-divider-pad);
 }
 
-.sticky-summary__trip-column + .sticky-summary__trip-column {
-  border-left: 1px solid var(--color-neutral-200);
-  padding-left: var(--spacing-05);
+.sticky-summary__trip-column:first-child {
+  padding-inline-start: 0;
 }
 
+.sticky-summary__trip-column:last-child {
+  padding-inline-end: 0;
+}
+
+.sticky-summary__trip-column:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block: var(--sticky-summary-divider-inset);
+  width: 1px;
+  background: var(--color-neutral-200);
+}
+
+/* Desktop: ida/vuelta en una fila si hay espacio */
 @media (min-width: 1024px) {
   .sticky-summary__trip-grid {
     flex-wrap: nowrap;
   }
 }
 
+/* Actions: siempre al final (columna derecha) */
 .sticky-summary__actions {
   display: flex;
   align-items: center;
   gap: var(--spacing-04);
   flex-wrap: wrap;
   justify-content: flex-end;
+
+  justify-self: end;
   min-width: 0;
 }
 
@@ -205,14 +283,32 @@
   border-radius: var(--radius-02);
 }
 
+/* Mobile/Tablet: apilado y sin divisores verticales */
 @media (max-width: 1023px) {
   .sticky-summary__inner {
-    flex-direction: column;
+    grid-template-columns: 1fr;
     align-items: stretch;
     min-height: var(--spacing-12);
   }
 
   .sticky-summary__actions {
+    justify-self: stretch;
     justify-content: space-between;
+  }
+
+  .sticky-summary__group {
+    padding-inline: 0;
+  }
+
+  .sticky-summary__group::before {
+    display: none;
+  }
+
+  .sticky-summary__trip-column {
+    padding-inline: 0;
+  }
+
+  .sticky-summary__trip-column::before {
+    display: none;
   }
 }
