@@ -1,0 +1,7 @@
+# ⚠️ PENDIENTE: reemplazar placeholders por handles reales
+* @owner-placeholder @frontend-reviewer-placeholder @design-reviewer-placeholder
+
+# Ejemplos específicos (ajusta según necesidad)
+/src/ui/ @design-system-owner-placeholder
+/src/styles/ @design-system-owner-placeholder
+/.github/ @repo-maintainer-placeholder
