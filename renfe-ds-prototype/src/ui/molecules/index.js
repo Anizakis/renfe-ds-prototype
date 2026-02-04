@@ -12,3 +12,4 @@ export { default as PromoCard } from "./PromoCard/PromoCard.jsx";
 export { default as JourneyCard } from "./JourneyCard/JourneyCard.jsx";
 export { default as Modal } from "./Modal/Modal.jsx";
 export { default as PriceDetailsModal } from "./PriceDetailsModal/PriceDetailsModal.jsx";
+

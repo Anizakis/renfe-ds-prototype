@@ -215,7 +215,7 @@ function StickySummaryBar({
               </span>
             )}
           >
-            Sumario del viaje
+            {t("summary.tripSummary")}
           </Button>
 
           <div
