@@ -1,7 +1,7 @@
 import "./Stack.css";
 
 export default function Stack({
-  as: As = "div",
+  as,
   direction = "column",
   gap = "04",
   align = "stretch",
@@ -10,6 +10,7 @@ export default function Stack({
   children,
   ...props
 }) {
+  const Component = as ?? "div";
   const style = {
     flexDirection: direction,
     gap: `var(--spacing-${gap})`,
@@ -18,8 +19,8 @@ export default function Stack({
   };
 
   return (
-    <As className={`ds-stack ${className}`} style={style} {...props}>
+    <Component className={`ds-stack ${className}`} style={style} {...props}>
       {children}
-    </As>
+    </Component>
   );
 }

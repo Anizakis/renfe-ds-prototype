@@ -45,17 +45,17 @@ npm run tokens:colors
 ---
 
 ## Resumen de inspección
-- Prototipo React + Vite con React Router, ESLint y Tailwind/PostCSS (ver [package.json](package.json), [vite.config.js](vite.config.js), [eslint.config.js](eslint.config.js), [tailwind.config.js](tailwind.config.js)).
-- Rutas del flujo de compra definidas en [src/app/router.jsx](src/app/router.jsx).
-- Estado global con Context + `useReducer` y persistencia en localStorage en [src/app/store.jsx](src/app/store.jsx).
-- i18n propio con provider en [src/app/i18n.jsx](src/app/i18n.jsx).
-- Tokens CSS cargados desde [src/styles](src/styles) en [src/main.jsx](src/main.jsx).
-- Tema claro/oscuro con `ThemeProvider` y clase `.dark` en [src/app/theme.jsx](src/app/theme.jsx) y [index.html](index.html).
-- UI organizada por atomic design en [src/ui](src/ui) con convención documentada en [src/ui/README.md](src/ui/README.md).
-- Datos mock y generadores de viajes en [src/data/mockData.js](src/data/mockData.js).
-- Plantilla de PR presente en [.github/pull_request_template.md](.github/pull_request_template.md).
-- CI mínima configurada en [.github/workflows/ci.yml](.github/workflows/ci.yml).
-- Tests configurados (Vitest/Testing Library + Playwright) en [package.json](package.json) y [playwright.config.js](playwright.config.js).
+- Prototipo React + Vite con React Router, ESLint y Tailwind/PostCSS (ver [package.json](renfe-ds-prototype/package.json), [vite.config.js](renfe-ds-prototype/vite.config.js), [eslint.config.js](renfe-ds-prototype/eslint.config.js), [tailwind.config.js](renfe-ds-prototype/tailwind.config.js)).
+- Rutas del flujo de compra definidas en [src/app/router.jsx](renfe-ds-prototype/src/app/router.jsx).
+- Estado global con Context + `useReducer` y persistencia en localStorage en [src/app/store.jsx](renfe-ds-prototype/src/app/store.jsx).
+- i18n propio con provider en [src/app/i18n.jsx](renfe-ds-prototype/src/app/i18n.jsx).
+- Tokens CSS cargados desde [src/styles](renfe-ds-prototype/src/styles) en [src/main.jsx](renfe-ds-prototype/src/main.jsx).
+- Tema claro/oscuro con `ThemeProvider` y clase `.dark` en [src/app/theme.jsx](renfe-ds-prototype/src/app/theme.jsx) y [index.html](renfe-ds-prototype/index.html).
+- UI organizada por atomic design en [src/ui](renfe-ds-prototype/src/ui) con convención documentada en [src/ui/README.md](renfe-ds-prototype/src/ui/README.md).
+- Datos mock y generadores de viajes en [src/data/mockData.js](renfe-ds-prototype/src/data/mockData.js).
+- Plantilla de PR presente en [.github/pull_request_template.md](renfe-ds-prototype/.github/pull_request_template.md).
+- CI mínima configurada en [.github/workflows/ci.yml](renfe-ds-prototype/.github/workflows/ci.yml).
+- Tests configurados (Vitest/Testing Library + Playwright) en [package.json](renfe-ds-prototype/package.json) y [playwright.config.js](renfe-ds-prototype/playwright.config.js).
 - No existe `CHANGELOG.md` en el repositorio.
 
 ---
@@ -92,23 +92,23 @@ npm run tokens:colors
 
 | Tecnología | Para qué se usa | Dónde vive |
 |---|---|---|
-| React 19 | UI y componentes | [package.json](package.json) |
-| Vite 7 | Dev server/build | [package.json](package.json), [vite.config.js](vite.config.js) |
-| React Router | Rutas del prototipo | [src/app/router.jsx](src/app/router.jsx) |
-| Tailwind + PostCSS | Base/Utilities | [src/index.css](src/index.css), [tailwind.config.js](tailwind.config.js), [postcss.config.js](postcss.config.js) |
-| Tokens CSS | Fuente de verdad visual | [src/styles](src/styles), cargados en [src/main.jsx](src/main.jsx) |
-| i18n propio | ES/EN en runtime | [src/app/i18n.jsx](src/app/i18n.jsx) |
-| Store propio | Estado + persistencia | [src/app/store.jsx](src/app/store.jsx) |
-| Theme (dark) | Clase `.dark` | [src/app/theme.jsx](src/app/theme.jsx), [index.html](index.html) |
-| Material Symbols | Iconografía | [index.html](index.html), [src/ui/Icon/Icon.jsx](src/ui/Icon/Icon.jsx) |
-| ESLint | Lint de JS/JSX | [eslint.config.js](eslint.config.js) |
+| React 19 | UI y componentes | [package.json](renfe-ds-prototype/package.json) |
+| Vite 7 | Dev server/build | [package.json](renfe-ds-prototype/package.json), [vite.config.js](renfe-ds-prototype/vite.config.js) |
+| React Router | Rutas del prototipo | [src/app/router.jsx](renfe-ds-prototype/src/app/router.jsx) |
+| Tailwind + PostCSS | Base/Utilities | [src/index.css](renfe-ds-prototype/src/index.css), [tailwind.config.js](renfe-ds-prototype/tailwind.config.js), [postcss.config.js](renfe-ds-prototype/postcss.config.js) |
+| Tokens CSS | Fuente de verdad visual | [src/styles](renfe-ds-prototype/src/styles), cargados en [src/main.jsx](renfe-ds-prototype/src/main.jsx) |
+| i18n propio | ES/EN en runtime | [src/app/i18n.jsx](renfe-ds-prototype/src/app/i18n.jsx) |
+| Store propio | Estado + persistencia | [src/app/store.jsx](renfe-ds-prototype/src/app/store.jsx) |
+| Theme (dark) | Clase `.dark` | [src/app/theme.jsx](renfe-ds-prototype/src/app/theme.jsx), [index.html](renfe-ds-prototype/index.html) |
+| Material Symbols | Iconografía | [index.html](renfe-ds-prototype/index.html), [src/ui/Icon/Icon.jsx](renfe-ds-prototype/src/ui/Icon/Icon.jsx) |
+| ESLint | Lint de JS/JSX | [eslint.config.js](renfe-ds-prototype/eslint.config.js) |
 
 ---
 
 ## Setup local paso a paso
 
 ### Requisitos
-- Node.js 18+ (ver [.nvmrc](.nvmrc) y `engines` en [package.json](package.json)).
+- Node.js 18+ (ver [.nvmrc](renfe-ds-prototype/.nvmrc) y `engines` en [package.json](renfe-ds-prototype/package.json)).
 
 ### Instalación
 ```bash
@@ -130,15 +130,15 @@ npm run preview
 ```bash
 npm run tokens:colors
 ```
-Script: [src/scripts/figma-colors-to-css.mjs](src/scripts/figma-colors-to-css.mjs)
+Script: [src/scripts/figma-colors-to-css.mjs](renfe-ds-prototype/src/scripts/figma-colors-to-css.mjs)
 
 ### Variables de entorno
-- Ejemplo disponible en [.env.example](.env.example).
+- Ejemplo disponible en [.env.example](renfe-ds-prototype/.env.example).
 - No hay variables reales declaradas en el repo.
 
 ### Troubleshooting
-- Si no cargan iconos, revisa Material Symbols en [index.html](index.html).
-- Si el tema no cambia, verifica `.dark` en `<html>` y [src/app/theme.jsx](src/app/theme.jsx).
+- Si no cargan iconos, revisa Material Symbols en [index.html](renfe-ds-prototype/index.html).
+- Si el tema no cambia, verifica `.dark` en `<html>` y [src/app/theme.jsx](renfe-ds-prototype/src/app/theme.jsx).
 
 ---
 
@@ -158,19 +158,19 @@ src/
 ```
 
 **Capas principales**
-- **Routes/Pages:** [src/pages](src/pages)
-- **Layout/App:** [src/app/AppLayout.jsx](src/app/AppLayout.jsx)
-- **State/persistencia:** [src/app/store.jsx](src/app/store.jsx)
-- **i18n:** [src/app/i18n.jsx](src/app/i18n.jsx)
-- **Theme:** [src/app/theme.jsx](src/app/theme.jsx)
-- **UI System:** [src/ui](src/ui)
-- **Tokens:** [src/styles](src/styles)
+- **Routes/Pages:** [src/pages](renfe-ds-prototype/src/pages)
+- **Layout/App:** [src/app/AppLayout.jsx](renfe-ds-prototype/src/app/AppLayout.jsx)
+- **State/persistencia:** [src/app/store.jsx](renfe-ds-prototype/src/app/store.jsx)
+- **i18n:** [src/app/i18n.jsx](renfe-ds-prototype/src/app/i18n.jsx)
+- **Theme:** [src/app/theme.jsx](renfe-ds-prototype/src/app/theme.jsx)
+- **UI System:** [src/ui](renfe-ds-prototype/src/ui)
+- **Tokens:** [src/styles](renfe-ds-prototype/src/styles)
 
 **Convenciones de nombres**
 - PascalCase en carpetas/componentes.
 - Estados CSS con `is-*`.
 - BEM-like interno.
-Fuente: [src/ui/README.md](src/ui/README.md)
+Fuente: [src/ui/README.md](renfe-ds-prototype/src/ui/README.md)
 
 ---
 
@@ -184,16 +184,16 @@ Fuente: [src/ui/README.md](src/ui/README.md)
 ### Tokens
 
 **Dónde están**
-- Colores: [src/styles/tokens.colors.css](src/styles/tokens.colors.css)
-- Tipografía: [src/styles/tokens.type.css](src/styles/tokens.type.css)
-- Spacing: [src/styles/tokens.spacing.css](src/styles/tokens.spacing.css)
-- Radius: [src/styles/tokens.radius.css](src/styles/tokens.radius.css)
-- Effects/Focus/Blur: [src/styles/tokens.effects.css](src/styles/tokens.effects.css)
-- Layout/Grid: [src/styles/tokens.layout.css](src/styles/tokens.layout.css)
-- Iconos: [src/styles/tokens.icons.css](src/styles/tokens.icons.css)
+- Colores: [src/styles/tokens.colors.css](renfe-ds-prototype/src/styles/tokens.colors.css)
+- Tipografía: [src/styles/tokens.type.css](renfe-ds-prototype/src/styles/tokens.type.css)
+- Spacing: [src/styles/tokens.spacing.css](renfe-ds-prototype/src/styles/tokens.spacing.css)
+- Radius: [src/styles/tokens.radius.css](renfe-ds-prototype/src/styles/tokens.radius.css)
+- Effects/Focus/Blur: [src/styles/tokens.effects.css](renfe-ds-prototype/src/styles/tokens.effects.css)
+- Layout/Grid: [src/styles/tokens.layout.css](renfe-ds-prototype/src/styles/tokens.layout.css)
+- Iconos: [src/styles/tokens.icons.css](renfe-ds-prototype/src/styles/tokens.icons.css)
 
 **Formato y consumo**
-- Tokens son variables CSS `--*` y se cargan en [src/main.jsx](src/main.jsx).
+- Tokens son variables CSS `--*` y se cargan en [src/main.jsx](renfe-ds-prototype/src/main.jsx).
 
 **Ejemplo real de uso**
 ```css
@@ -204,32 +204,32 @@ Fuente: [src/ui/README.md](src/ui/README.md)
 }
 .btn--primary { background: var(--color-brand-600); }
 ```
-Fuente: [src/ui/atoms/Button/Button.css](src/ui/atoms/Button/Button.css)
+Fuente: [src/ui/atoms/Button/Button.css](renfe-ds-prototype/src/ui/atoms/Button/Button.css)
 
 **Reglas**
 - Evitar hardcode de valores; usar tokens siempre.
-- Colores se regeneran desde Figma: [src/scripts/figma-colors-to-css.mjs](src/scripts/figma-colors-to-css.mjs).
-- No hay scripts para tokens de spacing/type/radius; se gestionan manualmente en [src/styles](src/styles).
+- Colores se regeneran desde Figma: [src/scripts/figma-colors-to-css.mjs](renfe-ds-prototype/src/scripts/figma-colors-to-css.mjs).
+- No hay scripts para tokens de spacing/type/radius; se gestionan manualmente en [src/styles](renfe-ds-prototype/src/styles).
 
 ### Estilos / theming
 - Estrategia: **CSS variables + clases base**.
 - Dark mode por clase `.dark` en `<html>` y persistencia en localStorage.
-Fuente: [src/app/theme.jsx](src/app/theme.jsx), [src/index.css](src/index.css)
+Fuente: [src/app/theme.jsx](renfe-ds-prototype/src/app/theme.jsx), [src/index.css](renfe-ds-prototype/src/index.css)
 
 ### Componentes
 
 #### Catálogo por categorías
 
-**Atoms** ([src/ui/atoms](src/ui/atoms))
+**Atoms** ([src/ui/atoms](renfe-ds-prototype/src/ui/atoms))
 Alert, Button, Checkbox, Container, Dropdown, Grid, InputText, Link, Loading, PageStack, RadioGroup, Slider, Stack, Switch, VisuallyHidden
 
-**Molecules** ([src/ui/molecules](src/ui/molecules))
+**Molecules** ([src/ui/molecules](renfe-ds-prototype/src/ui/molecules))
 DatePicker, DayPickerStrip, FilterSection, JourneyCard, LanguageSwitcher, Modal, OnlyAvailableDaysToggle, PassengerSelector, PasswordField, PriceDetailsModal, PromoCard, ResultsAppliedFiltersBar, ResultsEmpty, ResultsSummary, SkeletonList, Tabs
 
-**Organisms** ([src/ui/organisms](src/ui/organisms))
+**Organisms** ([src/ui/organisms](renfe-ds-prototype/src/ui/organisms))
 AnimatedCheckoutStepper, DrawerMenu, ExtrasList, FareComparison, Footer, HomeInfoSection, HomeSearch, JourneyList, Login, PriceBreakdown, PromoGrid, RegisterForm, ResultsFilters, ResultsFiltersDrawer, ResultsHeader, ResultsToolbar, StickySummaryBar, TopNav, TravelerForm
 
-**Nota:** `Tabs` está en molecules pero exportado desde [src/ui/atoms/index.js](src/ui/atoms/index.js).
+**Nota:** `Tabs` está en molecules pero exportado desde [src/ui/atoms/index.js](renfe-ds-prototype/src/ui/atoms/index.js).
 
 ---
 
@@ -238,7 +238,7 @@ AnimatedCheckoutStepper, DrawerMenu, ExtrasList, FareComparison, Footer, HomeInf
 #### 1) `Button`
 - **Problema:** CTA y acciones consistentes con tokens.
 - **API (props clave):** `variant`, `size`, `loading`, `disabled`, `leadingIcon`, `trailingIcon`.
-Fuente: [src/ui/atoms/Button/Button.jsx](src/ui/atoms/Button/Button.jsx)
+Fuente: [src/ui/atoms/Button/Button.jsx](renfe-ds-prototype/src/ui/atoms/Button/Button.jsx)
 
 **Uso real**
 ```jsx
@@ -246,7 +246,7 @@ Fuente: [src/ui/atoms/Button/Button.jsx](src/ui/atoms/Button/Button.jsx)
 	{t("payment.pay")}
 </Button>
 ```
-Fuente: [src/pages/Payment.jsx](src/pages/Payment.jsx)
+Fuente: [src/pages/Payment.jsx](renfe-ds-prototype/src/pages/Payment.jsx)
 
 **A11y:** `aria-busy` en loading + estados disabled en HTML.
 
@@ -255,13 +255,13 @@ Fuente: [src/pages/Payment.jsx](src/pages/Payment.jsx)
 #### 2) `InputText`
 - **Problema:** Inputs accesibles con label, helper y estados.
 - **API clave:** `label`, `helperText`, `state`, `inputId`, `helperId`, `inputProps`.
-Fuente: [src/ui/atoms/InputText/InputText.jsx](src/ui/atoms/InputText/InputText.jsx)
+Fuente: [src/ui/atoms/InputText/InputText.jsx](renfe-ds-prototype/src/ui/atoms/InputText/InputText.jsx)
 
 **Uso real**
 ```jsx
 <InputText label={t("payment.cardNumber")} inputId="card-number" helperText="" />
 ```
-Fuente: [src/pages/Payment.jsx](src/pages/Payment.jsx)
+Fuente: [src/pages/Payment.jsx](renfe-ds-prototype/src/pages/Payment.jsx)
 
 **A11y:** `aria-invalid`, `aria-describedby`, label asociado.
 
@@ -270,7 +270,7 @@ Fuente: [src/pages/Payment.jsx](src/pages/Payment.jsx)
 #### 3) `Tabs`
 - **Problema:** navegación por días con teclado.
 - **API:** `tabs`, `activeId`, `onChange`, `label`.
-Fuente: [src/ui/molecules/Tabs/Tabs.jsx](src/ui/molecules/Tabs/Tabs.jsx)
+Fuente: [src/ui/molecules/Tabs/Tabs.jsx](renfe-ds-prototype/src/ui/molecules/Tabs/Tabs.jsx)
 
 **A11y:** `role="tablist"` + navegación con ArrowLeft/Right, Home/End.
 
@@ -279,7 +279,7 @@ Fuente: [src/ui/molecules/Tabs/Tabs.jsx](src/ui/molecules/Tabs/Tabs.jsx)
 #### 4) `Modal`
 - **Problema:** overlays con focus trap.
 - **API:** `isOpen`, `titleId`, `descriptionId`, `onClose`, `triggerRef`.
-Fuente: [src/ui/molecules/Modal/Modal.jsx](src/ui/molecules/Modal/Modal.jsx)
+Fuente: [src/ui/molecules/Modal/Modal.jsx](renfe-ds-prototype/src/ui/molecules/Modal/Modal.jsx)
 
 **A11y:** `role="dialog"`, `aria-modal`, retorno de foco al trigger.
 
@@ -288,7 +288,7 @@ Fuente: [src/ui/molecules/Modal/Modal.jsx](src/ui/molecules/Modal/Modal.jsx)
 #### 5) `StickySummaryBar`
 - **Problema:** resumen de compra persistente con detalles.
 - **API:** `journey`, `returnJourney`, `total`, `breakdownItems`, `onContinue`, `onViewDetails`, `helper`.
-Fuente: [src/ui/organisms/StickySummaryBar/StickySummaryBar.jsx](src/ui/organisms/StickySummaryBar/StickySummaryBar.jsx)
+Fuente: [src/ui/organisms/StickySummaryBar/StickySummaryBar.jsx](renfe-ds-prototype/src/ui/organisms/StickySummaryBar/StickySummaryBar.jsx)
 
 **A11y:** `aria-live` para cambios de precio.
 
@@ -297,14 +297,14 @@ Fuente: [src/ui/organisms/StickySummaryBar/StickySummaryBar.jsx](src/ui/organism
 #### 6) `PriceBreakdown`
 - **Problema:** desglose del precio final (single column con iconos).
 - **API:** `title`, `items`, `total`, `totalLabel`.
-Fuente: [src/ui/organisms/PriceBreakdown/PriceBreakdown.jsx](src/ui/organisms/PriceBreakdown/PriceBreakdown.jsx)
+Fuente: [src/ui/organisms/PriceBreakdown/PriceBreakdown.jsx](renfe-ds-prototype/src/ui/organisms/PriceBreakdown/PriceBreakdown.jsx)
 
 ---
 
 ## Flujos del prototipo
 
 ### Pantallas (router)
-Definidas en [src/app/router.jsx](src/app/router.jsx):
+Definidas en [src/app/router.jsx](renfe-ds-prototype/src/app/router.jsx):
 
 - `/` → Home (buscador)
 - `/login` → Login
@@ -317,11 +317,11 @@ Definidas en [src/app/router.jsx](src/app/router.jsx):
 
 ### User journeys principales
 1) Buscar → Resultados → Tarifas → Viajeros → Extras → Pago
-Fuentes: [src/pages](src/pages), [src/app/router.jsx](src/app/router.jsx)
+Fuentes: [src/pages](renfe-ds-prototype/src/pages), [src/app/router.jsx](renfe-ds-prototype/src/app/router.jsx)
 
 ### Datos mock/fixtures
-- Generación de viajes y catálogos: [src/data/mockData.js](src/data/mockData.js)
-- Estaciones: [src/data/stations.es.json](src/data/stations.es.json), [estaciones.csv](estaciones.csv)
+- Generación de viajes y catálogos: [src/data/mockData.js](renfe-ds-prototype/src/data/mockData.js)
+- Estaciones: [src/data/stations.es.json](renfe-ds-prototype/src/data/stations.es.json), [estaciones.csv](renfe-ds-prototype/estaciones.csv)
 
 ---
 
@@ -360,26 +360,26 @@ El prototipo se ha preparado para ser operable por teclado y compatible con tecn
 **Contrato del componente**
 - Props públicas claramente definidas en el archivo del componente.
 - Variantes via `variant` y estados con `is-*`.
-Fuente: [src/ui/README.md](src/ui/README.md)
+Fuente: [src/ui/README.md](renfe-ds-prototype/src/ui/README.md)
 
 **Reglas de estilos**
-- Usa tokens siempre: [src/styles](src/styles).
+- Usa tokens siempre: [src/styles](renfe-ds-prototype/src/styles).
 - Evita valores mágicos; reutiliza variables.
 
 **Compatibilidad**
 - Cambios en props o nombre de variantes = breaking change.
 
 **Checklist antes de PR**
-- `npm run lint` ([package.json](package.json))
-- `npm run build` ([package.json](package.json))
-- Responsive según [src/styles/tokens.layout.css](src/styles/tokens.layout.css)
+- `npm run lint` ([package.json](renfe-ds-prototype/package.json))
+- `npm run build` ([package.json](renfe-ds-prototype/package.json))
+- Responsive según [src/styles/tokens.layout.css](renfe-ds-prototype/src/styles/tokens.layout.css)
 - A11y básica: teclado + labels
 
 ---
 
 ### 10.2 Propuesta y aprobación de cambios (workflow)
 
-Existe plantilla de PR en [.github/pull_request_template.md](.github/pull_request_template.md). CODEOWNERS en [.github/CODEOWNERS](.github/CODEOWNERS) usa placeholders.
+Existe plantilla de PR en [.github/pull_request_template.md](renfe-ds-prototype/.github/pull_request_template.md). CODEOWNERS en [.github/CODEOWNERS](renfe-ds-prototype/.github/CODEOWNERS) usa placeholders.
 
 **Flujo mínimo recomendado (para preservar coherencia del sistema)**
 **1) Propuesta**
@@ -479,18 +479,18 @@ No hay `CHANGELOG.md` ni tags/releases publicados.
 3) Exportar en `index.js` correspondiente.
 4) Usar en página existente y validar.
 
-Fuentes: [src/ui/README.md](src/ui/README.md), [src/ui/atoms/index.js](src/ui/atoms/index.js), [src/ui/molecules/index.js](src/ui/molecules/index.js), [src/ui/organisms/index.js](src/ui/organisms/index.js)
+Fuentes: [src/ui/README.md](renfe-ds-prototype/src/ui/README.md), [src/ui/atoms/index.js](renfe-ds-prototype/src/ui/atoms/index.js), [src/ui/molecules/index.js](renfe-ds-prototype/src/ui/molecules/index.js), [src/ui/organisms/index.js](renfe-ds-prototype/src/ui/organisms/index.js)
 
 ### Añadir/editar tokens
-- Colores: editar [src/tokens/colors.figmasync.json](src/tokens/colors.figmasync.json) y ejecutar `npm run tokens:colors`.
-- Otros tokens: editar manualmente en [src/styles](src/styles). Automatización no implementada.
+- Colores: editar [src/tokens/colors.figmasync.json](renfe-ds-prototype/src/tokens/colors.figmasync.json) y ejecutar `npm run tokens:colors`.
+- Otros tokens: editar manualmente en [src/styles](renfe-ds-prototype/src/styles). Automatización no implementada.
 
 ### Checklist de PR
 - `npm run lint`
 - `npm run build`
 - Revisión de tokens usados
 - A11y básica
-- Responsive según [src/styles/tokens.layout.css](src/styles/tokens.layout.css)
+- Responsive según [src/styles/tokens.layout.css](renfe-ds-prototype/src/styles/tokens.layout.css)
 
 ---
 

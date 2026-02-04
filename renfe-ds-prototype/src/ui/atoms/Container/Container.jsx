@@ -1,9 +1,11 @@
 import "./Container.css";
 
-export default function Container({ as: As = "div", className = "", children, ...props }) {
+export default function Container({ as, className = "", children, ...props }) {
+  const Component = as ?? "div";
+
   return (
-    <As className={`ds-container ${className}`} {...props}>
+    <Component className={`ds-container ${className}`} {...props}>
       {children}
-    </As>
+    </Component>
   );
 }

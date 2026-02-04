@@ -1625,3 +1625,7 @@ export function useI18n() {
   }
   return ctx;
 }
+
+export function useI18nOptional() {
+  return useContext(I18nContext);
+}

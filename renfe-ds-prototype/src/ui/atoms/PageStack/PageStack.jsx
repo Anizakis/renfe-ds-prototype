@@ -1,13 +1,14 @@
 import "./PageStack.css";
 
 export default function PageStack({
-  as: As = "div",
+  as,
   align = "stretch",
   textAlign = "left",
   className = "",
   children,
   ...props
 }) {
+  const Component = as ?? "div";
   const style = {
     flexDirection: "column",
     gap: `var(--spacing-05)`,
@@ -16,8 +17,8 @@ export default function PageStack({
     width: "100%",
   };
   return (
-    <As className={`page-stack ${className}`} style={style} {...props}>
+    <Component className={`page-stack ${className}`} style={style} {...props}>
       {children}
-    </As>
+    </Component>
   );
 }

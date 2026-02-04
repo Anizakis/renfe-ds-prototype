@@ -1,9 +1,11 @@
 import "./Grid.css";
 
-export default function Grid({ as: As = "div", className = "", children, ...props }) {
+export default function Grid({ as, className = "", children, ...props }) {
+  const Component = as ?? "div";
+
   return (
-    <As className={`ds-grid ${className}`} {...props}>
+    <Component className={`ds-grid ${className}`} {...props}>
       {children}
-    </As>
+    </Component>
   );
 }

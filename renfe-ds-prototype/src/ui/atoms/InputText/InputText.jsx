@@ -1,5 +1,5 @@
 import Icon from "../../Icon/Icon.jsx";
-import { useI18n } from "../../../app/i18n.jsx";
+import { useI18nOptional } from "../../../app/i18n.jsx";
 import "./InputText.css";
 
 export default function InputText({
@@ -23,12 +23,8 @@ export default function InputText({
   inputRef,
   leadingIcon,
 }) {
-  let t;
-  try {
-    ({ t } = useI18n());
-  } catch {
-    t = undefined;
-  }
+  const i18n = useI18nOptional();
+  const t = i18n?.t;
   const isDisabled = disabled || state === "disabled";
   const isReadOnly = readOnly || state === "readOnly";
   const isError = state === "error";

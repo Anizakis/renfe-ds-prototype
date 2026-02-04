@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useI18n } from "../../../app/i18n";
 import Icon from "../../Icon/Icon";
 import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden";
@@ -61,14 +61,12 @@ export default function PasswordField({
   const { t } = useI18n();
   const [isVisible, setIsVisible] = useState(false);
   const [isDirty, setIsDirty] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const [statusMessage, setStatusMessage] = useState("");
-  const prevValidRef = useRef(null);
+  const resolvedDirty = forceTouched || isDirty;
 
   const requirements = useMemo(() => getPasswordRequirements(value || "", t), [value, t]);
-  const showRequirements = isDirty && (value || "").length > 0;
-  const showError = isDirty && !requirements.isValid;
-  const showSuccess = isDirty && requirements.isValid;
+  const showRequirements = resolvedDirty && (value || "").length > 0;
+  const showError = resolvedDirty && !requirements.isValid;
+  const showSuccess = resolvedDirty && requirements.isValid;
   const stateClass = showError ? "error" : showSuccess ? "success" : "default";
 
   const helperId = inputId ? `${inputId}-helper` : undefined;
@@ -82,32 +80,11 @@ export default function PasswordField({
     .filter(Boolean)
     .join(" ");
 
-  useEffect(() => {
-    if (forceTouched && !isDirty) {
-      setIsDirty(true);
-    }
-  }, [forceTouched, isDirty]);
-
-  useEffect(() => {
-    if (!isDirty) {
-      prevValidRef.current = null;
-      setStatusMessage("");
-      return;
-    }
-
-    const prevValid = prevValidRef.current;
-    if (prevValid === null) {
-      prevValidRef.current = requirements.isValid;
-      return;
-    }
-
-    if (prevValid !== requirements.isValid) {
-      setStatusMessage(
-        requirements.isValid ? t("auth.password.success") : t("auth.password.error")
-      );
-      prevValidRef.current = requirements.isValid;
-    }
-  }, [requirements.isValid, isDirty, t]);
+  const statusMessage = resolvedDirty
+    ? requirements.isValid
+      ? t("auth.password.success")
+      : t("auth.password.error")
+    : "";
 
   const handleChange = (event) => {
     if (!isDirty) {
@@ -117,15 +94,10 @@ export default function PasswordField({
   };
 
   const handleBlur = (event) => {
-    setIsFocused(false);
     if (!isDirty) {
       setIsDirty(true);
     }
     onBlur?.(event);
-  };
-
-  const handleFocus = () => {
-    setIsFocused(true);
   };
 
   const helperText = showError
@@ -160,7 +132,6 @@ export default function PasswordField({
           value={value}
           onChange={handleChange}
           onBlur={handleBlur}
-          onFocus={handleFocus}
           aria-invalid={showError ? "true" : "false"}
           aria-describedby={describedBy || undefined}
           autoComplete={autoComplete}

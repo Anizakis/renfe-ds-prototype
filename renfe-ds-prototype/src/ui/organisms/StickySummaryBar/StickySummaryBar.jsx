@@ -118,37 +118,6 @@ function StickySummaryBar({
     window.addEventListener("scroll", updateFooterOffset, { passive: true });
     window.addEventListener("resize", updateFooterOffset);
     updateFooterOffset();
-const renderTripGroup = ({
-  label,
-  dateValue,
-  originValue,
-  destinationValue,
-  isSelected,
-  statusText
-}) => (
-  <div className="sticky-summary__group">
-    <span className="sticky-summary__label">{label}</span>
-
-    <span className="sticky-summary__trip-date">
-      {formatTripDate(dateValue)}
-    </span>
-
-    <span className="sticky-summary__trip-list">
-      <span className="sticky-summary__trip-item">
-        <Icon name="radio_button_checked" size="sm" decorative />
-        <span>{originValue}</span>
-      </span>
-      <span className="sticky-summary__trip-item">
-        <Icon name="location_on" size="sm" decorative />
-        <span>{destinationValue}</span>
-      </span>
-    </span>
-
-    <span className={`sticky-summary__trip-status ${isSelected ? "" : "is-muted"}`}>
-      {statusText}
-    </span>
-  </div>
-);
 
     return () => {
       resizeObserver.disconnect();
