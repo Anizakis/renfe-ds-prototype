@@ -37,6 +37,12 @@ const STRINGS = {
         en: "EN",
       },
     },
+    inputText: {
+      label: "Etiqueta",
+      placeholder: "Texto",
+      helperText: "Texto de ayuda",
+      errorIconLabel: "Error",
+    },
     home: {
       title: "Buscar viaje",
       origin: "Origen",
@@ -63,6 +69,7 @@ const STRINGS = {
       swap: "Intercambiar",
       stationValid: "Estación válida",
       dateAriaLabel: "Selecciona una fecha",
+      datePlaceholder: "dd-mm-aaaa",
       openCalendar: "Abrir calendario",
       prevMonth: "Mes anterior",
       nextMonth: "Mes siguiente",
@@ -827,6 +834,12 @@ const STRINGS = {
         en: "EN",
       },
     },
+    inputText: {
+      label: "Label",
+      placeholder: "Text",
+      helperText: "Helper text",
+      errorIconLabel: "Error",
+    },
     home: {
       title: "Search trip",
       origin: "Origin",
@@ -853,6 +866,7 @@ const STRINGS = {
       swap: "Swap",
       stationValid: "Valid station",
       dateAriaLabel: "Select a date",
+      datePlaceholder: "dd-mm-yyyy",
       openCalendar: "Open calendar",
       prevMonth: "Previous month",
       nextMonth: "Next month",

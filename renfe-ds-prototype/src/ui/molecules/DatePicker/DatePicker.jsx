@@ -389,7 +389,7 @@ export default function DatePicker({
           helperText={helperText}
           showCounter={false}
           hideHelper={false}
-          placeholder="dd-mm-aaaa"
+          placeholder={t("home.datePlaceholder")}
           value={inputValue}
           onChange={handleInputChange}
           size="l"
