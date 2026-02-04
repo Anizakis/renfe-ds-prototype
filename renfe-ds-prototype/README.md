@@ -437,18 +437,17 @@ Fuente: [src/ui/README.md](src/ui/README.md)
 ---
 
 ## Calidad y mantenimiento
-- Lint: `npm run lint` ([package.json](package.json), [eslint.config.js](eslint.config.js))
-- Build: `npm run build` ([package.json](package.json))
-- CI mínima: [.github/workflows/ci.yml](.github/workflows/ci.yml)
-- Tests: 
-	- Propuesta mínima (cuando se priorice):
-		- Unit/integration: Vitest + React Testing Library
-		- E2E (flujos clave): Playwright
-		- A11y smoke: axe en componentes críticos (Modal, Tabs, formularios)
-	- Cobertura inicial (por impacto):
-		1) Router + navegación del checkout
-		2) Store (`useReducer`) y persistencia
-		3) Componentes críticos: Modal, Tabs, InputText, StickySummaryBar
+	Tests (configurados):
+	  - Unit/integration: Vitest + React Testing Library
+	    - Ejecutar: `npm run test` (CI) o `npm run test:watch` (local)
+	  - E2E (flujos clave): Playwright
+	    - Ejecutar: `npm run test:e2e`
+	    - Primera vez: `npx playwright install`
+	  - A11y smoke: axe en componentes críticos (Modal, Tabs, formularios)
+	  - Cobertura inicial (por impacto):
+	    1) Router + navegación del checkout
+	    2) Store (`useReducer`) y persistencia
+	    3) Componentes críticos: Modal, Tabs, InputText, StickySummaryBar
 - Storybook: 
     - Añadir documentación por componente en Markdown/MDX en `src/ui/**/README.md`
     - Incluir:
