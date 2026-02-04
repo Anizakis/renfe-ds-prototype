@@ -37,9 +37,10 @@ npm run tokens:colors
 10. [Calidad y mantenimiento](#calidad-y-mantenimiento)
 11. [Guías de contribución](#guías-de-contribución)
 12. [Epics de evolución del prototipo (nuevos recorridos + backend real)](#epics-de-evolución-del-prototipo-nuevos-recorridos--backend-real)
-	- [Backlog (operativo)](#backlog-operativo)
-13. [Licencia / contacto](#licencia--contacto)
-14. [📌 Archivos revisados](#-archivos-revisados)
+	- [Backlog / TODOs (priorizado)](#backlog--todos-priorizado)
+13. [Documentación y estado del repo](#documentación-y-estado-del-repo)
+14. [Licencia / contacto](#licencia--contacto)
+15. [📌 Archivos revisados](#-archivos-revisados)
 
 ---
 
@@ -54,7 +55,8 @@ npm run tokens:colors
 - Datos mock y generadores de viajes en [src/data/mockData.js](src/data/mockData.js).
 - Plantilla de PR presente en [.github/pull_request_template.md](.github/pull_request_template.md).
 - CI mínima configurada en [.github/workflows/ci.yml](.github/workflows/ci.yml).
-- ⚠️ Pendiente: no se detecta `CHANGELOG.md` ni tests automáticos.
+- Tests configurados (Vitest/Testing Library + Playwright) en [package.json](package.json) y [playwright.config.js](playwright.config.js).
+- No existe `CHANGELOG.md` en el repositorio.
 
 ---
 
@@ -70,8 +72,8 @@ npm run tokens:colors
 ### Convención de etiquetado (para evitar confusiones)
 - **Preview:** deployments por Pull Request / branch.
 - **Demo:** entorno estable para demos internas y revisiones.
-- **Staging:** preproducción (si existe) para validar antes de release.
-- **Prod:** entorno oficial para usuarios reales (requiere criterios mínimos: control de releases, observabilidad/monitorización y disciplina de cambios).
+- **Staging:** no definido en el repo.
+- **Prod:** no definido en el repo.
 
 ### Checklist mínimo antes de considerar “Prod”
 - [ ] CI pasando (`lint` + `build`) en PRs (ya existe: `.github/workflows/ci.yml`)
@@ -132,7 +134,7 @@ Script: [src/scripts/figma-colors-to-css.mjs](src/scripts/figma-colors-to-css.mj
 
 ### Variables de entorno
 - Ejemplo disponible en [.env.example](.env.example).
-- ⚠️ Pendiente / No encontrado: no se detectaron variables reales en el repo.
+- No hay variables reales declaradas en el repo.
 
 ### Troubleshooting
 - Si no cargan iconos, revisa Material Symbols en [index.html](index.html).
@@ -207,7 +209,7 @@ Fuente: [src/ui/atoms/Button/Button.css](src/ui/atoms/Button/Button.css)
 **Reglas**
 - Evitar hardcode de valores; usar tokens siempre.
 - Colores se regeneran desde Figma: [src/scripts/figma-colors-to-css.mjs](src/scripts/figma-colors-to-css.mjs).
-- ⚠️ Pendiente: no hay scripts para tokens de spacing/type/radius; se gestionan manualmente en [src/styles](src/styles).
+- No hay scripts para tokens de spacing/type/radius; se gestionan manualmente en [src/styles](src/styles).
 
 ### Estilos / theming
 - Estrategia: **CSS variables + clases base**.
@@ -323,19 +325,28 @@ Fuentes: [src/pages](src/pages), [src/app/router.jsx](src/app/router.jsx)
 
 ---
 
-## Accesibilidad
+## Accesibilidad (a11y)
 
-**Convenciones detectadas**
-- Focus visible con tokens: [src/styles/tokens.effects.css](src/styles/tokens.effects.css)
-- `aria-live` para cambios en resumen: [src/ui/organisms/StickySummaryBar/StickySummaryBar.jsx](src/ui/organisms/StickySummaryBar/StickySummaryBar.jsx)
-- Labels/DescribedBy en inputs: [src/ui/atoms/InputText/InputText.jsx](src/ui/atoms/InputText/InputText.jsx)
+El prototipo se ha preparado para ser operable por teclado y compatible con tecnologías de asistencia mediante:
 
-**Checklist mínimo**
-- Teclado: Tab/Shift+Tab, flechas en tabs.
-- Foco visible con `--effect-focus-*`.
-- Labels asociados a inputs.
+- **Landmarks semánticos**: un único `main` a nivel de layout y regiones distinguibles para secciones de soporte (p. ej., paneles laterales).
+- **Skip link**: acceso directo al contenido principal.
+- **Gestión de foco en overlays**: modales y drawer con foco inicial, **focus trap**, cierre con **ESC** y retorno del foco al disparador.
+- **Componentes con soporte de teclado** (p. ej., Tabs y DatePicker) y semántica/ARIA donde aplica.
+- **Anuncios para lector de pantalla** en cambios relevantes (p. ej., actualizaciones en resúmenes/precio o feedback de formularios cuando corresponde).
 
-⚠️ Pendiente: no hay scripts automatizados de a11y.
+### Rutas recomendadas para retest manual
+- `/results`
+- `/travelers`
+- `/payment`
+
+### Checklist de retest (rápido)
+- Un único `main` top-level y regiones distinguibles.
+- Skip link visible al foco y salto correcto al contenido.
+- Modales/drawer: trap, ESC y retorno de foco.
+- Tabs: flechas + Home/End.
+- DatePicker: teclado y relación de título/diálogo.
+- Errores de formulario anunciables y campos con `aria-invalid` / `aria-describedby`.
 
 ---
 
@@ -368,7 +379,7 @@ Fuente: [src/ui/README.md](src/ui/README.md)
 
 ### 10.2 Propuesta y aprobación de cambios (workflow)
 
-⚠️ Estado actual: existe plantilla de PR en [.github/pull_request_template.md](.github/pull_request_template.md). CODEOWNERS en [.github/CODEOWNERS](.github/CODEOWNERS) usa placeholders (pendiente de handles reales).
+Existe plantilla de PR en [.github/pull_request_template.md](.github/pull_request_template.md). CODEOWNERS en [.github/CODEOWNERS](.github/CODEOWNERS) usa placeholders.
 
 **Flujo mínimo recomendado (para preservar coherencia del sistema)**
 **1) Propuesta**
@@ -379,7 +390,7 @@ Fuente: [src/ui/README.md](src/ui/README.md)
 	- Criterios de aceptación (qué debe cumplir)
 	- Clasificación: `token` / `component` / `pattern` / `a11y` / `bug`
 
-**2) Diseño (si aplica)**
+**2) Diseño**
 - Adjuntar referencia a Figma (o equivalente) y justificar:
 	- ¿Se reutilizan tokens existentes?
 	- ¿Hace falta crear token/variante nueva?
@@ -407,7 +418,7 @@ Fuente: [src/ui/README.md](src/ui/README.md)
 
 ### 10.3 Versionado y documentación de cambios
 
-⚠️ Estado actual: no se ha detectado `CHANGELOG.md` ni tags/releases publicados.
+No hay `CHANGELOG.md` ni tags/releases publicados.
 
 **Estándar mínimo propuesto (SemVer)**
 - **MAJOR**: cambios incompatibles (breaking)
@@ -472,7 +483,7 @@ Fuentes: [src/ui/README.md](src/ui/README.md), [src/ui/atoms/index.js](src/ui/at
 
 ### Añadir/editar tokens
 - Colores: editar [src/tokens/colors.figmasync.json](src/tokens/colors.figmasync.json) y ejecutar `npm run tokens:colors`.
-- Otros tokens: editar manualmente en [src/styles](src/styles). ⚠️ Pendiente automatización.
+- Otros tokens: editar manualmente en [src/styles](src/styles). Automatización no implementada.
 
 ### Checklist de PR
 - `npm run lint`
@@ -523,10 +534,10 @@ Fuentes: [src/ui/README.md](src/ui/README.md), [src/ui/atoms/index.js](src/ui/at
 - [ ] Capa de servicios en frontend (p. ej. `src/services/` o `src/api/`) con:
 	- cliente HTTP
 	- manejo de errores normalizado
-	- reintentos / cancelación (si aplica)
+	- reintentos / cancelación
 	- estados de loading
 - [ ] Sustitución progresiva de `src/data/mockData.js` por llamadas reales.
-- [ ] Autenticación (si aplica): login/register con sesión real.
+- [ ] Autenticación: login/register con sesión real.
 - [ ] Observabilidad mínima: logs/errores (Sentry o equivalente), trazas básicas.
 
 **DoD**
@@ -542,22 +553,43 @@ Fuentes: [src/ui/README.md](src/ui/README.md), [src/ui/atoms/index.js](src/ui/at
 
 ---
 
-### Backlog (operativo)
-1) **Changelog + versión** (SemVer) y disciplina de releases.
-2) **Documentación por componente** (mínimo README por componente o Storybook).
-3) **Tests de smoke**:
-	 - Store/persistencia
-	 - Modal/Tabs/InputText
-	 - Flujo principal de compra (E2E)
-4) **A11y automatizable** (axe smoke) y checklist manual por PR.
-5) **Tokens pipeline**: extender automatización más allá de colores (spacing/type/radius) o establecer regla de edición + review.
-6) **Completar CODEOWNERS** con handles reales (⚠️ pendiente).
-7) **Gestión de cookies**: banner de consentimiento + preferencias y almacenamiento.
+## Backlog / TODOs (priorizado)
+
+### P0 — Calidad y coherencia del prototipo (demo/TFM)
+- [ ] **Añadir `CHANGELOG.md`** (SemVer) y convención mínima de releases.
+- [ ] **Añadir `LICENSE`** (si procede).
+- [ ] **Router: añadir 404/NotFound** (manejo de rutas no definidas).
+- [ ] **Navegación global**: resolver enlaces a rutas no definidas (TopNav/Drawer/Footer):
+	- (A) páginas placeholder “En construcción”, o
+	- (B) deshabilitar/enlazar externamente según corresponda.
+- [ ] **Pago: estado de éxito** (pantalla o confirmación final) para cerrar el flujo end-to-end.
+- [ ] **i18n**: eliminar hardcodes detectables en componentes base (placeholders/default labels) y asegurar paridad ES/EN.
+- [ ] **Consistencia de exports/clasificación**: asegurar que la capa (átomo/molécula/organismo) coincide con la exportación pública.
+
+### P1 — Automatización y mantenibilidad
+- [ ] **CODEOWNERS**: sustituir placeholders por responsables reales y reglas de aprobación.
+- [ ] **Docs por componente**: ficha mínima por componente crítico (props, variantes, teclado/a11y, do/don’t).
+- [ ] **Tokens pipeline**: ampliar/estandarizar export de tokens (más allá de colores).
+
+### P2 — Evolución funcional (si se conecta a producto)
+- [ ] Sustitución progresiva de mocks por backend real (contratos API + entornos).
+- [ ] Autenticación real (login/register con sesión).
+- [ ] Gestión global de errores (ErrorBoundary, fallbacks, reintentos normalizados).
+- [ ] Observabilidad (captura de errores + logging) si se integra backend.
+
+---
+
+## Documentación y estado del repo
+
+Nota: Este repositorio prioriza el prototipo funcional y la trazabilidad con el sistema de diseño.
+
+Planificado:
+- Automatización adicional de tokens y documentación por componente.
 
 ---
 
 ## Licencia / contacto
-⚠️ Pendiente / No encontrado: no hay licencia detectada.
+No hay licencia en el repositorio.
 
 ---
 
