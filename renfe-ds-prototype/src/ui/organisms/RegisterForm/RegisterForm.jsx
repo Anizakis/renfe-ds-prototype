@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Container from "../../atoms/Container/Container.jsx";
 import PageStack from "../../atoms/PageStack/PageStack.jsx";
 import Stack from "../../atoms/Stack/Stack.jsx";
@@ -7,7 +7,10 @@ import Dropdown from "../../atoms/Dropdown/Dropdown.jsx";
 import Checkbox from "../../atoms/Checkbox/Checkbox.jsx";
 import Button from "../../atoms/Button/Button.jsx";
 import PasswordField from "../../molecules/PasswordField/PasswordField.jsx";
+import Modal from "../../molecules/Modal/Modal.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
+import { useNavigate } from "react-router-dom";
+import { useTravel } from "../../../app/store.jsx";
 import "./RegisterForm.css";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,8 +18,18 @@ const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
 const DNI_REGEX = /^\d{8}\s?[A-Za-z]$/;
 const PHONE_REGEX = /^\d{9}$/;
 
+function isPasswordValid(value) {
+  const lengthOk = value.length >= 8 && value.length <= 16;
+  const upperOk = /[A-ZÁÉÍÓÚÜÑ]/.test(value);
+  const lowerOk = /[a-záéíóúüñ]/.test(value);
+  const numberOk = /\d/.test(value);
+  return lengthOk && upperOk && lowerOk && numberOk;
+}
+
 export default function RegisterForm() {
   const { t } = useI18n();
+  const { dispatch } = useTravel();
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -37,6 +50,8 @@ export default function RegisterForm() {
   });
   const [touched, setTouched] = useState({});
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const submitRef = useRef(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -79,6 +94,36 @@ export default function RegisterForm() {
       birthDate: true,
       postalCode: true,
     }));
+    const passwordOk = isPasswordValid(form.password || "");
+    const termsOk = form.acceptTerms;
+    const emailOk = Boolean(form.email.trim()) && EMAIL_REGEX.test(form.email.trim());
+    const docOk = Boolean(form.docNumber.trim())
+      && (form.docType !== "dni" || DNI_REGEX.test(form.docNumber.trim()));
+    const phoneOk = Boolean(form.phone.trim()) && PHONE_REGEX.test(form.phone.trim());
+    const firstNameOk = Boolean(form.firstName.trim()) && LETTERS_REGEX.test(form.firstName.trim());
+    const lastName1Ok = Boolean(form.lastName1.trim()) && LETTERS_REGEX.test(form.lastName1.trim());
+    const lastName2Ok = Boolean(form.lastName2.trim()) && LETTERS_REGEX.test(form.lastName2.trim());
+    const birthDateOk = Boolean(form.birthDate.trim());
+    const postalOk = Boolean(form.postalCode.trim());
+    const fieldsOk = emailOk && docOk && phoneOk && firstNameOk && lastName1Ok && lastName2Ok && birthDateOk && postalOk;
+    if (!passwordOk || !termsOk || !fieldsOk) return;
+    const docTypeMap = {
+      dni: "DNI",
+      nie: "NIE",
+      passport: "Pasaporte",
+    };
+    dispatch({ type: "SET_PROFILE", payload: {
+      nombre: form.firstName.trim(),
+      apellido1: form.lastName1.trim(),
+      apellido2: form.lastName2.trim(),
+      docType: docTypeMap[form.docType] ?? "DNI",
+      docNumber: form.docNumber.trim(),
+      email: form.email.trim(),
+      phonePrefix: form.prefix,
+      phone: form.phone.trim(),
+    } });
+    dispatch({ type: "SET_AUTH", payload: { isAuthenticated: true } });
+    setIsConfirmOpen(true);
   };
 
   const getFieldStatus = (name, rawValue) => {
@@ -414,7 +459,7 @@ export default function RegisterForm() {
               </div>
 
               <div className="register__actions">
-                <Button type="submit" variant="primary" size="l">
+                <Button type="submit" variant="primary" size="l" ref={submitRef}>
                   {t("auth.register.submit")}
                 </Button>
               </div>
@@ -422,6 +467,35 @@ export default function RegisterForm() {
           </Stack>
         </div>
       </PageStack>
+
+      <Modal
+        isOpen={isConfirmOpen}
+        onClose={() => {
+          setIsConfirmOpen(false);
+          navigate("/");
+        }}
+        titleId="register-confirm-title"
+        descriptionId="register-confirm-desc"
+        triggerRef={submitRef}
+      >
+        <div className="register__confirm-modal">
+          <h2 id="register-confirm-title" className="section-title">
+            {t("auth.register.confirmTitle")}
+          </h2>
+          <p id="register-confirm-desc">{t("auth.register.confirmBody")}</p>
+          <div className="form-actions">
+            <Button
+              variant="primary"
+              onClick={() => {
+                setIsConfirmOpen(false);
+                navigate("/");
+              }}
+            >
+              {t("auth.register.confirmCta")}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </Container>
   );
 }

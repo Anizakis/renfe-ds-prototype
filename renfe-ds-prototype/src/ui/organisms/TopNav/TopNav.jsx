@@ -5,12 +5,15 @@ import InputText from "../../atoms/InputText/InputText.jsx";
 import Link from "../../atoms/Link/Link.jsx";
 import "./TopNav.css";
 import { useI18n } from "../../../app/i18n.jsx";
+import { useTravel } from "../../../app/store.jsx";
 import DrawerMenu from "../DrawerMenu/DrawerMenu.jsx";
 import Icon from "../../Icon/Icon.jsx";
 import Modal from "../../molecules/Modal/Modal.jsx";
 
 export default function TopNav() {
   const { t } = useI18n();
+  const { state } = useTravel();
+  const isAuthenticated = Boolean(state?.auth?.isAuthenticated);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
@@ -73,7 +76,9 @@ export default function TopNav() {
                   className={({ isActive }) => `topnav__link ${isActive ? "active" : ""}`}
                 >
                   <Icon name="person" size="md" decorative />
-                  <span className="topnav__link-text">{t("nav.access")}</span>
+                  <span className="topnav__link-text">
+                    {isAuthenticated ? t("nav.account") : t("nav.access")}
+                  </span>
                 </NavLink>
               </li>
             </ul>

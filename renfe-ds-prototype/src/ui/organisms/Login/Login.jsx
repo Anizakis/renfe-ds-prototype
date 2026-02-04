@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Container from "../../atoms/Container/Container.jsx";
 import PageStack from "../../atoms/PageStack/PageStack.jsx";
 import Stack from "../../atoms/Stack/Stack.jsx";
@@ -7,8 +7,19 @@ import Button from "../../atoms/Button/Button.jsx";
 import Link from "../../atoms/Link/Link.jsx";
 import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
 import PasswordField from "../../molecules/PasswordField/PasswordField.jsx";
+import Modal from "../../molecules/Modal/Modal.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
+import { useNavigate } from "react-router-dom";
+import { useTravel } from "../../../app/store.jsx";
 import "./Login.css";
+
+function isPasswordValid(value) {
+  const lengthOk = value.length >= 8 && value.length <= 16;
+  const upperOk = /[A-ZÁÉÍÓÚÜÑ]/.test(value);
+  const lowerOk = /[a-záéíóúüñ]/.test(value);
+  const numberOk = /\d/.test(value);
+  return lengthOk && upperOk && lowerOk && numberOk;
+}
 
 function SocialCircleButton({ label, text, onClick }) {
   return (
@@ -25,6 +36,8 @@ function SocialCircleButton({ label, text, onClick }) {
 
 export default function Login() {
   const { t } = useI18n();
+  const { dispatch } = useTravel();
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     username: "",
     password: "",
@@ -32,6 +45,9 @@ export default function Login() {
   const [touched, setTouched] = useState({
     username: false,
   });
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const submitRef = useRef(null);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -47,10 +63,16 @@ export default function Login() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    setSubmitAttempted(true);
+    const usernameOk = Boolean(form.username.trim());
+    const passwordOk = Boolean(form.password) && isPasswordValid(form.password);
+    if (!usernameOk || !passwordOk) return;
+    dispatch({ type: "SET_AUTH", payload: { isAuthenticated: true } });
+    setIsConfirmOpen(true);
   };
 
   const usernameValue = form.username.trim();
-  const usernameDirty = touched.username;
+  const usernameDirty = touched.username || submitAttempted;
   const usernameError = usernameDirty && !usernameValue;
   const usernameSuccess = usernameDirty && Boolean(usernameValue);
   const usernameHelper = usernameError
@@ -97,6 +119,7 @@ export default function Login() {
                   required
                   placeholder={t("auth.login.password")}
                   showLabel={false}
+                  forceTouched={submitAttempted}
                 />
               </Stack>
 
@@ -106,7 +129,13 @@ export default function Login() {
                 </Link>
               </div>
 
-              <Button type="submit" variant="primary" size="l" className="login__submit">
+              <Button
+                type="submit"
+                variant="primary"
+                size="l"
+                className="login__submit"
+                ref={submitRef}
+              >
                 {t("auth.login.submit")}
               </Button>
             </form>
@@ -127,6 +156,35 @@ export default function Login() {
           </Stack>
         </div>
       </PageStack>
+
+      <Modal
+        isOpen={isConfirmOpen}
+        onClose={() => {
+          setIsConfirmOpen(false);
+          navigate("/");
+        }}
+        titleId="login-confirm-title"
+        descriptionId="login-confirm-desc"
+        triggerRef={submitRef}
+      >
+        <div className="login__confirm-modal">
+          <h2 id="login-confirm-title" className="section-title">
+            {t("auth.login.confirmTitle")}
+          </h2>
+          <p id="login-confirm-desc">{t("auth.login.confirmBody")}</p>
+          <div className="form-actions">
+            <Button
+              variant="primary"
+              onClick={() => {
+                setIsConfirmOpen(false);
+                navigate("/");
+              }}
+            >
+              {t("auth.login.confirmCta")}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </Container>
   );
 }

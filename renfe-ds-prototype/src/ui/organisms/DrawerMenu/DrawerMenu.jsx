@@ -9,11 +9,14 @@ import Button from "../../atoms/Button/Button.jsx";
 import Icon from "../../Icon/Icon.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import { useTheme } from "../../../app/theme.jsx";
+import { useTravel } from "../../../app/store.jsx";
 import "./DrawerMenu.css";
 
 export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
   const { t, language, setLanguage } = useI18n();
   const { theme, toggleTheme } = useTheme();
+  const { state } = useTravel();
+  const isAuthenticated = Boolean(state?.auth?.isAuthenticated);
   const panelRef = useRef(null);
   const cookiesButtonRef = useRef(null);
   const [isCookiesOpen, setIsCookiesOpen] = useState(false);
@@ -97,7 +100,9 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
             <li>
               <Link className="drawer__row" to="/login" onClick={onClose}>
                 <Icon name="person" size="md" decorative />
-                <span className="drawer__row-text">{t("drawer.access")}</span>
+                <span className="drawer__row-text">
+                  {isAuthenticated ? t("drawer.account") : t("drawer.access")}
+                </span>
               </Link>
             </li>
           </ul>

@@ -4,6 +4,10 @@ import React, { createContext, useContext, useEffect, useMemo, useReducer } from
 const STORAGE_KEY = "renfe-ds-state";
 
 const initialState = {
+  auth: {
+    isAuthenticated: false,
+    profile: null,
+  },
   search: {
     origin: "",
     destination: "",
@@ -30,6 +34,10 @@ function reducer(state, action) {
   switch (action.type) {
     case "SET_SEARCH":
       return { ...state, search: { ...state.search, ...action.payload } };
+    case "SET_AUTH":
+      return { ...state, auth: { ...state.auth, ...action.payload } };
+    case "SET_PROFILE":
+      return { ...state, auth: { ...state.auth, profile: action.payload } };
     case "SET_JOURNEY":
       if (typeof action.payload === "string") {
         return { ...state, selectedJourneyId: action.payload, selectedJourney: null };

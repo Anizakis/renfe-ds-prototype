@@ -86,17 +86,21 @@ export default function TravelerForm({ travelerIndex = 1, travelerType }) {
   const { t } = useI18n();
   const resolvedTravelerType = travelerType ?? t("travelers.passengerAdult");
   const { state, dispatch } = useTravel();
-  const defaultFields = useMemo(() => ({
-    nombre: "",
-    apellido1: "",
-    apellido2: "",
-    docType: "DNI",
-    docNumber: "",
-    email: "",
-    phonePrefix: "+34",
-    phone: "",
-    familiaNumerosa: false,
-  }), []);
+  const defaultFields = useMemo(() => {
+    const profile = state.auth?.profile;
+    const shouldPrefill = travelerIndex === 1 && profile;
+    return {
+      nombre: shouldPrefill ? profile.nombre ?? "" : "",
+      apellido1: shouldPrefill ? profile.apellido1 ?? "" : "",
+      apellido2: shouldPrefill ? profile.apellido2 ?? "" : "",
+      docType: shouldPrefill ? profile.docType ?? "DNI" : "DNI",
+      docNumber: shouldPrefill ? profile.docNumber ?? "" : "",
+      email: shouldPrefill ? profile.email ?? "" : "",
+      phonePrefix: shouldPrefill ? profile.phonePrefix ?? "+34" : "+34",
+      phone: shouldPrefill ? profile.phone ?? "" : "",
+      familiaNumerosa: false,
+    };
+  }, [state.auth?.profile, travelerIndex]);
   const storedTraveler = state.travelers?.[travelerIndex - 1];
   const [fields, setFields] = useState(() => storedTraveler?.fields ?? defaultFields);
   const [touched, setTouched] = useState({});
