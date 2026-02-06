@@ -35,7 +35,6 @@
 }
 
 .date-picker__panel {
-  position: absolute;
   z-index: 30;
   top: calc(100% + var(--spacing-03));
   left: 50%;
@@ -81,7 +80,7 @@
 
 .date-picker__months {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--spacing-04);
 }
 
@@ -94,8 +93,12 @@
   margin-bottom: var(--spacing-02);
 }
 
-.date-picker__week,
 .date-picker__grid {
+  display: block;
+}
+
+.date-picker__week,
+.date-picker__week-row {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: var(--spacing-01);
@@ -141,8 +144,29 @@
 }
 
 @media (max-width: 768px) {
+  .date-picker__panel {
+    left: 0;
+    right: 0;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: var(--spacing-03);
+    transform: translateY(6px) scale(0.98);
+  }
+
+  .date-picker__panel.is-open {
+    transform: translateY(0) scale(1);
+  }
+
   .date-picker__months {
     grid-template-columns: 1fr;
+  }
+
+  .date-picker__cell {
+    width: 100%;
+    height: auto;
+    min-height: 36px;
+    aspect-ratio: 1 / 1;
   }
 }
 

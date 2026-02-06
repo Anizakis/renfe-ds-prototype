@@ -332,7 +332,6 @@ export default function Results() {
   }, [journeysForSelectedDate, sortKey]);
 
   const filtersDrawerId = "results-filters-drawer";
-  const filtersDrawerTitleId = "results-filters-title";
 
   const isListBusy = loading || isUpdating;
   const listContent = isListBusy
@@ -462,7 +461,6 @@ export default function Results() {
           t={t}
           triggerRef={filtersButtonRef}
           drawerId={filtersDrawerId}
-          titleId={filtersDrawerTitleId}
         >
           <ResultsFilters
             value={filters}

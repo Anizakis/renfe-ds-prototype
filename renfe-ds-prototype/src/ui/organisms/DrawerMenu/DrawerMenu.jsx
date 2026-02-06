@@ -32,10 +32,13 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
 
   useEffect(() => {
     if (!isOpen) return undefined;
-    const { overflow } = document.body.style;
+    const { overflow: bodyOverflow } = document.body.style;
+    const { overflow: htmlOverflow } = document.documentElement.style;
     document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = overflow;
+      document.body.style.overflow = bodyOverflow;
+      document.documentElement.style.overflow = htmlOverflow;
     };
   }, [isOpen]);
 

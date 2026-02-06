@@ -221,9 +221,7 @@ export default function DatePicker({
   };
 
   const monthA = visibleMonthStart;
-  const monthB = addMonths(monthA, 1);
   const monthDaysA = buildMonthMatrix(monthA);
-  const monthDaysB = buildMonthMatrix(monthB);
 
   const applyCaret = (nextCaret) => {
     requestAnimationFrame(() => {
@@ -378,6 +376,7 @@ export default function DatePicker({
   };
 
   const panelTitleId = `${inputId ?? "date-picker"}-panel-title`;
+  const monthLabel = formatMonthTitle(monthA, locale, language);
 
   return (
     <div className="date-picker">
@@ -435,7 +434,6 @@ export default function DatePicker({
           aria-labelledby={panelTitleId}
           onKeyDown={handleCalendarKeyDown}
           ref={panelRef}
-          style={{ left: '50%', transform: 'translateX(-50%)' }}
         >
           <div className="date-picker__panel-header">
             <button
@@ -446,7 +444,7 @@ export default function DatePicker({
             >
               <Icon name="chevron_left" size="sm" decorative />
             </button>
-            <span className="date-picker__panel-title" id={panelTitleId}>{t("home.dates")}</span>
+            <span className="date-picker__panel-title" id={panelTitleId}>{monthLabel}</span>
             <button
               type="button"
               className="date-picker__nav"
@@ -462,20 +460,14 @@ export default function DatePicker({
                 date: monthA,
                 days: monthDaysA,
               },
-              {
-                date: monthB,
-                days: monthDaysB,
-              },
             ].map((month, monthIndex) => {
-              const monthLabel = formatMonthTitle(month.date, locale, language);
               const monthTitleId = `${inputId ?? "date-picker"}-month-${monthIndex}`;
               const weeks = [];
               for (let i = 0; i < month.days.length; i += 7) {
                 weeks.push(month.days.slice(i, i + 7));
               }
               return (
-                <div key={monthLabel} className="date-picker__month">
-                  <div className="date-picker__month-title" id={monthTitleId}>{monthLabel}</div>
+                <div key={monthTitleId} className="date-picker__month">
                   <div className="date-picker__grid" role="grid" aria-labelledby={monthTitleId}>
                     <div className="date-picker__week" role="row">
                       {t("home.weekDays").map((label) => (
@@ -483,7 +475,7 @@ export default function DatePicker({
                       ))}
                     </div>
                     {weeks.map((week, weekIndex) => (
-                      <div key={`${monthLabel}-week-${weekIndex}`} role="row">
+                      <div key={`${monthTitleId}-week-${weekIndex}`} className="date-picker__week-row" role="row">
                         {week.map((day, idx) => {
                           if (!day) {
                             return (

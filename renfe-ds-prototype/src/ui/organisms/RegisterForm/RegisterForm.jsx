@@ -7,6 +7,7 @@ import Dropdown from "../../atoms/Dropdown/Dropdown.jsx";
 import Checkbox from "../../atoms/Checkbox/Checkbox.jsx";
 import Button from "../../atoms/Button/Button.jsx";
 import PasswordField from "../../molecules/PasswordField/PasswordField.jsx";
+import DatePicker from "../../molecules/DatePicker/DatePicker.jsx";
 import Modal from "../../molecules/Modal/Modal.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +18,14 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const LETTERS_REGEX = /^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ\s]+$/;
 const DNI_REGEX = /^\d{8}\s?[A-Za-z]$/;
 const PHONE_REGEX = /^\d{9}$/;
+
+function toIsoDate(date) {
+  if (!date) return "";
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
+}
 
 function isPasswordValid(value) {
   const lengthOk = value.length >= 8 && value.length <= 16;
@@ -164,7 +173,6 @@ export default function RegisterForm() {
   const firstNameStatus = getFieldStatus("firstName", form.firstName);
   const lastName1Status = getFieldStatus("lastName1", form.lastName1);
   const lastName2Status = getFieldStatus("lastName2", form.lastName2);
-  const birthDateStatus = getFieldStatus("birthDate", form.birthDate);
   const postalCodeStatus = getFieldStatus("postalCode", form.postalCode);
   const showTermsError = submitAttempted && !form.acceptTerms;
 
@@ -363,21 +371,23 @@ export default function RegisterForm() {
                   </div>
                   <div className="register__fields register__fields--personal-bottom">
                   <div className={`register__field register__field--birth-date ${form.birthDate ? "is-filled" : ""}`.trim()}>
-                    <InputText
+                    <DatePicker
                       label={t("auth.register.birthDate")}
                       inputId="register-birth-date"
-                      helperText={birthDateStatus.helperText}
-                      hideHelper={false}
-                      state={birthDateStatus.state}
-                      placeholder={t("auth.register.birthDate")}
+                      helperId="register-birth-date-helper"
                       value={form.birthDate}
-                      onChange={handleChange}
-                      inputProps={{
-                        name: "birthDate",
-                        type: "date",
-                        required: true,
-                        onBlur: handleBlur("birthDate"),
+                      onChange={(date) => {
+                        const nextDate = toIsoDate(date);
+                        setForm((prev) => ({
+                          ...prev,
+                          birthDate: nextDate,
+                        }));
+                        setTouched((prev) => ({
+                          ...prev,
+                          birthDate: true,
+                        }));
                       }}
+                      required
                     />
                   </div>
                   <div className="register__field register__field--country is-filled">

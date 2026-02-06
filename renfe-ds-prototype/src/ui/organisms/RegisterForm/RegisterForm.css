@@ -236,3 +236,9 @@
   opacity: 1;
   visibility: visible;
 }
+
+.register__field--birth-date .date-picker .input-textfield__control {
+  height: auto;
+  min-height: var(--spacing-08);
+  padding-block: var(--spacing-02);
+}

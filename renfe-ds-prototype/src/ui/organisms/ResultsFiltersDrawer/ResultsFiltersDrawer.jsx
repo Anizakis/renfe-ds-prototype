@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import Button from "../../atoms/Button/Button.jsx";
+import Icon from "../../Icon/Icon.jsx";
 import "./ResultsFiltersDrawer.css";
 
 function getFocusableElements(container) {
@@ -18,7 +19,6 @@ export default function ResultsFiltersDrawer({
   children,
   triggerRef,
   drawerId,
-  titleId,
 }) {
   const panelRef = useRef(null);
   const closeButtonRef = useRef(null);
@@ -36,6 +36,15 @@ export default function ResultsFiltersDrawer({
       wasOpenRef.current = false;
     }
   }, [open, triggerRef]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = overflow;
+    };
+  }, [open]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Escape") {
@@ -67,21 +76,19 @@ export default function ResultsFiltersDrawer({
         id={drawerId}
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId}
+        aria-label={t("filtersPanel.title")}
         onKeyDown={handleKeyDown}
         ref={panelRef}
       >
         <div className="results-filters-drawer__header">
-          <span className="results-filters-drawer__title" id={titleId}>
-            {t("filtersPanel.title")}
-          </span>
           <Button
             variant="tertiary"
             size="s"
             onClick={onClose}
             ref={closeButtonRef}
+            aria-label={t("common.close")}
           >
-            {t("common.accept")}
+            <Icon name="close" size="s" decorative />
           </Button>
         </div>
         {children}
