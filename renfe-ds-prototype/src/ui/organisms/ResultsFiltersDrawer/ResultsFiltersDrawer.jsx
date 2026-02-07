@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Button from "../../atoms/Button/Button.jsx";
 import Icon from "../../Icon/Icon.jsx";
 import "./ResultsFiltersDrawer.css";
@@ -20,9 +20,35 @@ export default function ResultsFiltersDrawer({
   triggerRef,
   drawerId,
 }) {
+  const closeTimerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(open);
+  const [isClosing, setIsClosing] = useState(false);
   const panelRef = useRef(null);
   const closeButtonRef = useRef(null);
   const wasOpenRef = useRef(false);
+  const CLOSE_ANIMATION_MS = 420;
+
+  useEffect(() => {
+    if (open) {
+      setIsVisible(true);
+      setIsClosing(false);
+      return;
+    }
+    if (!isVisible) return;
+
+    setIsClosing(true);
+    closeTimerRef.current = window.setTimeout(() => {
+      setIsVisible(false);
+      setIsClosing(false);
+    }, CLOSE_ANIMATION_MS);
+
+    return () => {
+      if (closeTimerRef.current) {
+        window.clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+    };
+  }, [open, isVisible]);
 
   useEffect(() => {
     if (open) {
@@ -31,20 +57,20 @@ export default function ResultsFiltersDrawer({
       wasOpenRef.current = true;
       return;
     }
-    if (wasOpenRef.current && triggerRef?.current) {
+    if (!open && !isVisible && wasOpenRef.current && triggerRef?.current) {
       triggerRef.current.focus();
       wasOpenRef.current = false;
     }
-  }, [open, triggerRef]);
+  }, [open, isVisible, triggerRef]);
 
   useEffect(() => {
-    if (!open) return undefined;
+    if (!isVisible) return undefined;
     const { overflow } = document.body.style;
     document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = overflow;
     };
-  }, [open]);
+  }, [isVisible]);
 
   const handleKeyDown = (event) => {
     if (event.key === "Escape") {
@@ -66,10 +92,10 @@ export default function ResultsFiltersDrawer({
     }
   };
 
-  if (!open) return null;
+  if (!isVisible) return null;
 
   return (
-    <div className="results-filters-drawer">
+    <div className={`results-filters-drawer ${isClosing ? "results-filters-drawer--closing" : "results-filters-drawer--open"}`}>
       <div className="results-filters-drawer__backdrop" onClick={onClose} />
       <div
         className="results-filters-drawer__panel"

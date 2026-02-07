@@ -3,7 +3,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 100%;
   padding-inline: var(--spacing-05);
   min-height: var(--spacing-10);
 }
@@ -69,6 +68,7 @@
 .animated-stepper__step.is-complete {
   cursor: pointer;
   border: none;
+  background: none;
 }
 
 .animated-stepper__connector {

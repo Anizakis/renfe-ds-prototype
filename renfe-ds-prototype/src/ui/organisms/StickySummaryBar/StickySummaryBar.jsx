@@ -199,7 +199,7 @@ function StickySummaryBar({
           </Button>
         </>
       )}
-      <div className="sticky-summary__inner">
+      <div className="sticky-summary__inner ds-container">
         <div className="sticky-summary__summary-row">
           <Button
             variant="tertiary"

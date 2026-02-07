@@ -17,21 +17,47 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
   const { theme, toggleTheme } = useTheme();
   const { state } = useTravel();
   const isAuthenticated = Boolean(state?.auth?.isAuthenticated);
+  const closeTimerRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(isOpen);
+  const [isClosing, setIsClosing] = useState(false);
   const panelRef = useRef(null);
   const cookiesButtonRef = useRef(null);
   const [isCookiesOpen, setIsCookiesOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const CLOSE_ANIMATION_MS = 420;
 
-  useFocusTrap(panelRef, isOpen, onClose);
+  useFocusTrap(panelRef, isVisible, onClose);
 
   useEffect(() => {
-    if (!isOpen && triggerRef?.current) {
+    if (isOpen) {
+      setIsVisible(true);
+      setIsClosing(false);
+      return;
+    }
+    if (!isVisible) return;
+
+    setIsClosing(true);
+    closeTimerRef.current = window.setTimeout(() => {
+      setIsVisible(false);
+      setIsClosing(false);
+    }, CLOSE_ANIMATION_MS);
+
+    return () => {
+      if (closeTimerRef.current) {
+        window.clearTimeout(closeTimerRef.current);
+        closeTimerRef.current = null;
+      }
+    };
+  }, [isOpen, isVisible]);
+
+  useEffect(() => {
+    if (!isOpen && !isVisible && triggerRef?.current) {
       triggerRef.current.focus();
     }
-  }, [isOpen, triggerRef]);
+  }, [isOpen, isVisible, triggerRef]);
 
   useEffect(() => {
-    if (!isOpen) return undefined;
+    if (!isVisible) return undefined;
     const { overflow: bodyOverflow } = document.body.style;
     const { overflow: htmlOverflow } = document.documentElement.style;
     document.body.style.overflow = "hidden";
@@ -40,12 +66,17 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
       document.body.style.overflow = bodyOverflow;
       document.documentElement.style.overflow = htmlOverflow;
     };
-  }, [isOpen]);
+  }, [isVisible]);
 
-  if (!isOpen) return null;
+  if (!isVisible) return null;
 
   return createPortal(
-    <div className="drawer" role="dialog" aria-modal="true" aria-label={t("drawer.menuTitle")}>
+    <div
+      className={`drawer ${isClosing ? "drawer--closing" : "drawer--open"}`}
+      role="dialog"
+      aria-modal="true"
+      aria-label={t("drawer.menuTitle")}
+    >
       <div className="drawer__overlay" onClick={onClose} aria-hidden="true" />
       <div className="drawer__panel" ref={panelRef} id="drawer-menu">
 
