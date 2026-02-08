@@ -117,6 +117,8 @@
   border-radius: var(--radius-pill);
   background: transparent;
   font-size: var(--type-text-xs-size);
+  color: var(--color-neutral-900);
+  font-weight: var(--type-weight-regular);
   cursor: pointer;
 }
 
@@ -133,6 +135,7 @@
 .date-picker__cell.is-selected {
   background: var(--color-brand-600);
   color: var(--color-neutral-0);
+  font-weight: var(--type-weight-bold);
 }
 
 .date-picker__cell.is-today {
