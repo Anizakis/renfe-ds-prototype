@@ -14,7 +14,7 @@
 }
 
 .results-sidebar .results-panel {
-  max-height: calc(100dvh - var(--app-header-h, 0px) - var(--sticky-summary-h, 0px) - var(--spacing-08));
+  max-height: calc(97dvh - var(--app-header-h, 0px) - var(--sticky-summary-h, 0px) - var(--spacing-08));
   overflow-y: auto;
   scrollbar-color: var(--color-neutral-300) var(--color-neutral-50);
   scrollbar-width: thin;
