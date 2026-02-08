@@ -71,10 +71,11 @@ export default function DayPickerStrip({
           <button
             type="button"
             className="day-picker__nav"
+            style={{ color: "var(--color-neutral-950)" }}
             onClick={() => (onPrevRange ? onPrevRange() : handleScroll("prev"))}
             aria-label={t("results.prevDays")}
           >
-            <Icon name="chevron_left" size="md" decorative color="var(--color-neutral-0)" />
+            <Icon name="chevron_left" size="md" decorative />
           </button>
 
         <div
@@ -129,10 +130,11 @@ export default function DayPickerStrip({
         <button
           type="button"
           className="day-picker__nav"
+          style={{ color: "var(--color-neutral-950)" }}
           onClick={() => (onNextRange ? onNextRange() : handleScroll("next"))}
           aria-label={t("results.nextDays")}
         >
-          <Icon name="chevron_right" size="md" decorative color="var(--color-neutral-0)" />
+          <Icon name="chevron_right" size="md" decorative />
         </button>
       </div>
   );

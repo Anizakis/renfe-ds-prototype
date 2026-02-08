@@ -57,6 +57,10 @@ export default function TravelersPage() {
   const extrasTotal = selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
   const breakdownItems = getBreakdownItems({ t, baseTotal, farePrice, extrasTotal, passengersTotal });
 
+  let helperMsg = null;
+  if (!canContinue) {
+    helperMsg = t("summary.fillDataToContinue");
+  }
   return (
     <TravelersTemplate
       title={t("travelers.title")}
@@ -75,7 +79,7 @@ export default function TravelersPage() {
         onViewDetails: () => {},
         t,
         priceTriggerRef: null,
-        helper: !canContinue ? t("summary.selectJourneyHelper") : null,
+        helper: helperMsg,
         ariaLive: null,
       }}
     />
