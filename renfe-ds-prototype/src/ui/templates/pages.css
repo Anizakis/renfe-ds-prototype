@@ -1,5 +1,5 @@
 .travelers-stack {
-  padding-bottom: var(--spacing-12);
+  padding-bottom: calc(var(--sticky-summary-h, 0px) + var(--spacing-10));
 }
 
 .fares-stack {

@@ -1,17 +1,18 @@
-import Container from "../ui/atoms/Container/Container.jsx";
-import PageStack from "../ui/atoms/PageStack/PageStack.jsx";
-import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
-import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
-import VisuallyHidden from "../ui/atoms/VisuallyHidden/VisuallyHidden.jsx";
+import { useNavigate } from "react-router-dom";
 import { useI18n } from "../app/i18n.jsx";
 import { useTravel } from "../app/store.jsx";
-import TravelerAccordion from "../ui/organisms/TravelerForm/TravelerAccordion.jsx";
-import { useNavigate } from "react-router-dom";
-import { getSelectedExtras, getSelectedFare, getSelectedJourney, getSelectedReturnJourney, getTotalPrice, getPassengersTotal } from "../app/pricing.js";
+import {
+  getSelectedExtras,
+  getSelectedFare,
+  getSelectedJourney,
+  getSelectedReturnJourney,
+  getTotalPrice,
+  getPassengersTotal,
+} from "../app/pricing.js";
 import { getBreakdownItems } from "../app/breakdown.js";
-import "./pages.css";
+import TravelersTemplate from "../ui/templates/TravelersTemplate.jsx";
 
-export default function Travelers() {
+export default function TravelersPage() {
   const { t } = useI18n();
   const { state } = useTravel();
   const navigate = useNavigate();
@@ -55,31 +56,28 @@ export default function Travelers() {
   const farePrice = selectedFare?.price ?? 0;
   const extrasTotal = selectedExtras.reduce((sum, extra) => sum + extra.price, 0);
   const breakdownItems = getBreakdownItems({ t, baseTotal, farePrice, extrasTotal, passengersTotal });
+
   return (
-    <Container as="section">
-      <PageStack gap="10" align="stretch" textAlign="left" className="travelers-stack">
-        <AnimatedCheckoutStepper currentStep="travelers" />
-        <VisuallyHidden as="h1">{t("travelers.title")}</VisuallyHidden>
-        {passengerList.map((type, i) => (
-          <TravelerAccordion key={i} index={i + 1} type={type} defaultOpen={i === 0} />
-        ))}
-        <StickySummaryBar
-          journey={selectedJourney}
-          returnJourney={state.search?.tripType === "roundTrip" ? selectedReturnJourney : null}
-          total={totals.total}
-          breakdownItems={breakdownItems}
-          canContinue={canContinue}
-          onContinue={() => {
-            if (!canContinue) return;
-            navigate("/extras");
-          }}
-          onViewDetails={() => {}}
-          t={t}
-          priceTriggerRef={null}
-          helper={!canContinue ? t("summary.selectJourneyHelper") : null}
-          ariaLive={null}
-        />
-      </PageStack>
-    </Container>
+    <TravelersTemplate
+      title={t("travelers.title")}
+      stepperProps={{ currentStep: "travelers" }}
+      passengerList={passengerList}
+      summaryBarProps={{
+        journey: selectedJourney,
+        returnJourney: state.search?.tripType === "roundTrip" ? selectedReturnJourney : null,
+        total: totals.total,
+        breakdownItems,
+        canContinue,
+        onContinue: () => {
+          if (!canContinue) return;
+          navigate("/extras");
+        },
+        onViewDetails: () => {},
+        t,
+        priceTriggerRef: null,
+        helper: !canContinue ? t("summary.selectJourneyHelper") : null,
+        ariaLive: null,
+      }}
+    />
   );
 }

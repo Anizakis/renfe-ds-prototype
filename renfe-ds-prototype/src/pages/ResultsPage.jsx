@@ -1,25 +1,19 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DayPickerStrip } from "../ui/molecules";
-import JourneyCard from "../ui/molecules/JourneyCard/JourneyCard.jsx";
-import AnimatedCheckoutStepper from "../ui/organisms/AnimatedCheckoutStepper/AnimatedCheckoutStepper.jsx";
-import SkeletonList from "../ui/molecules/SkeletonList/SkeletonList.jsx";
-import StickySummaryBar from "../ui/organisms/StickySummaryBar/StickySummaryBar.jsx";
-import ResultsSummary from "../ui/molecules/ResultsSummary/ResultsSummary.jsx";
-import ResultsFilters from "../ui/organisms/ResultsFilters/ResultsFilters.jsx";
-import PriceDetailsModal from "../ui/molecules/PriceDetailsModal/PriceDetailsModal.jsx";
 import { useTravel } from "../app/store.jsx";
 import { buildDayRange, generateJourneys } from "../data/mockData.js";
-import { getSelectedExtras, getSelectedJourney, getSelectedReturnJourney, getTotalPrice, getSelectedFare, getPassengersTotal } from "../app/pricing.js";
+import {
+  getSelectedExtras,
+  getSelectedJourney,
+  getSelectedReturnJourney,
+  getTotalPrice,
+  getSelectedFare,
+  getPassengersTotal,
+} from "../app/pricing.js";
 import { useI18n } from "../app/i18n.jsx";
 import { createDefaultFilters } from "../ui/organisms/ResultsFilters/ResultsFilters.jsx";
 import { getBreakdownItems } from "../app/breakdown.js";
-import ResultsTemplate from "../templates/ResultsTemplate.jsx";
-import ResultsHeader from "../ui/organisms/ResultsHeader/ResultsHeader.jsx";
-import ResultsToolbar from "../ui/organisms/ResultsToolbar/ResultsToolbar.jsx";
-import ResultsFiltersDrawer from "../ui/organisms/ResultsFiltersDrawer/ResultsFiltersDrawer.jsx";
-import JourneyList from "../ui/organisms/JourneyList/JourneyList.jsx";
-import ResultsEmpty from "../ui/molecules/ResultsEmpty/ResultsEmpty.jsx";
+import ResultsTemplate from "../ui/templates/ResultsTemplate.jsx";
 import { formatPrice } from "../app/utils.js";
 
 const RANGE_LENGTH = 5;
@@ -107,7 +101,7 @@ function applyFilters(journeyList, filters) {
   });
 }
 
-export default function Results() {
+export default function ResultsPage() {
   const { state, dispatch } = useTravel();
   const { t, language } = useI18n();
   const navigate = useNavigate();
@@ -334,172 +328,131 @@ export default function Results() {
   const filtersDrawerId = "results-filters-drawer";
 
   const isListBusy = loading || isUpdating;
-  const listContent = isListBusy
-    ? (
-      <SkeletonList
-        isBusy={isUpdating}
-        busyLabel={t("filtersPanel.updating")}
-      />
-    )
-    : sortedJourneysForSelectedDate.length === 0
-      ? (
-        <ResultsEmpty
-          title={t("results.emptyTitle")}
-          body={t("results.emptyBody")}
-          actions={[
-            t("results.emptyAction1"),
-            t("results.emptyAction2"),
-            t("results.emptyAction3"),
-          ]}
-        />
-      )
-      : (
-        <JourneyList>
-          {sortedJourneysForSelectedDate.map((journey) => (
-            <JourneyCard
-              key={journey.id}
-              journey={journey}
-              activeFilters={filters}
-              selected={activeLeg === "return"
-                ? state.selectedReturnJourneyId === journey.id
-                : state.selectedJourneyId === journey.id}
-              onSelect={() => {
-                if (activeLeg === "return") {
-                  dispatch({ type: "SET_RETURN_JOURNEY", payload: journey });
-                  dispatch({ type: "SET_SEARCH", payload: { returnDate: journey.date } });
-                } else {
-                  dispatch({ type: "SET_JOURNEY", payload: journey });
-                  dispatch({ type: "SET_SEARCH", payload: { departDate: journey.date } });
-                  if (isRoundTrip) {
-                    setActiveLeg("return");
-                    if (returnDate) {
-                      setSelectedDate(returnDate);
-                    }
-                  }
-                }
-              }}
-              actionLabel={
-                (activeLeg === "return"
-                  ? state.selectedReturnJourneyId === journey.id
-                  : state.selectedJourneyId === journey.id)
-                  ? t("results.selected")
-                  : t("results.select")
-              }
-              priceFromLabel={t("results.priceFrom")}
-            />
-          ))}
-        </JourneyList>
-      );
+
+  const handleSelectJourney = (journey) => {
+    if (activeLeg === "return") {
+      dispatch({ type: "SET_RETURN_JOURNEY", payload: journey });
+      dispatch({ type: "SET_SEARCH", payload: { returnDate: journey.date } });
+      return;
+    }
+    dispatch({ type: "SET_JOURNEY", payload: journey });
+    dispatch({ type: "SET_SEARCH", payload: { departDate: journey.date } });
+    if (isRoundTrip) {
+      setActiveLeg("return");
+      if (returnDate) {
+        setSelectedDate(returnDate);
+      }
+    }
+  };
 
   return (
     <ResultsTemplate
       title={t("results.title")}
-      stepper={<AnimatedCheckoutStepper currentStep="results" />}
-      summary={(
-        <ResultsSummary
-          origin={origin}
-          destination={destination}
-          selectedDate={selectedDate}
-          returnDate={returnDate}
-          tripType={tripType}
-          passengersLabel={passengersLabel}
-          t={t}
-          onModifySearch={() => navigate("/")}
-          formatDate={formatDate}
-        />
-      )}
-      filtersSidebar={(
-        <ResultsFilters
-          value={filters}
-          onChange={setFilters}
-          defaultFilters={buildInitialFilters(state.search)}
-        />
-      )}
-      header={(
-        <ResultsHeader
-          title={t("results.journeys")}
-          isRoundTrip={isRoundTrip}
-          activeLeg={activeLeg}
-          onChangeLeg={setActiveLeg}
-          onOpenFilters={() => setFiltersOpen(true)}
-          t={t}
-          filtersOpen={filtersOpen}
-          filtersButtonRef={filtersButtonRef}
-          filtersDrawerId={filtersDrawerId}
-        />
-      )}
-      toolbar={(
-        <ResultsToolbar
-          showAvailableOnly={showAvailableOnly}
-          setShowAvailableOnly={setShowAvailableOnly}
-          sortKey={sortKey}
-          setSortKey={setSortKey}
-          t={t}
-          appliedChips={appliedChips}
-        />
-      )}
-      dayPicker={(
-        <div className="results-daypicker">
-          <DayPickerStrip
-            days={visibleDays}
-            activeDay={selectedDate}
-            prices={dayPrices}
-            availability={dayAvailability}
-            isLoading={loading}
-            onChange={handleDayChange}
-            onPrevRange={() => handleRangeShift("prev")}
-            onNextRange={() => handleRangeShift("next")}
-          />
-        </div>
-      )}
+      filtersTitle={t("results.filters.title")}
+      stepperProps={{ currentStep: "results" }}
+      summaryProps={{
+        origin,
+        destination,
+        selectedDate,
+        returnDate,
+        tripType,
+        passengersLabel,
+        t,
+        onModifySearch: () => navigate("/"),
+        formatDate,
+      }}
+      filtersProps={{
+        value: filters,
+        onChange: setFilters,
+        defaultFilters: buildInitialFilters(state.search),
+      }}
+      headerProps={{
+        title: t("results.journeys"),
+        isRoundTrip,
+        activeLeg,
+        onChangeLeg: setActiveLeg,
+        onOpenFilters: () => setFiltersOpen(true),
+        t,
+        filtersOpen,
+        filtersButtonRef,
+        filtersDrawerId,
+      }}
+      toolbarProps={{
+        showAvailableOnly,
+        setShowAvailableOnly,
+        sortKey,
+        setSortKey,
+        t,
+        appliedChips,
+      }}
+      dayPickerProps={{
+        days: visibleDays,
+        activeDay: selectedDate,
+        prices: dayPrices,
+        availability: dayAvailability,
+        isLoading: loading,
+        onChange: handleDayChange,
+        onPrevRange: () => handleRangeShift("prev"),
+        onNextRange: () => handleRangeShift("next"),
+      }}
       announcement={announcement}
-      listContent={listContent}
-      filtersDrawer={(
-        <ResultsFiltersDrawer
-          open={filtersOpen}
-          onClose={() => setFiltersOpen(false)}
-          t={t}
-          triggerRef={filtersButtonRef}
-          drawerId={filtersDrawerId}
-        >
-          <ResultsFilters
-            value={filters}
-            onChange={setFilters}
-            defaultFilters={buildInitialFilters(state.search)}
-          />
-        </ResultsFiltersDrawer>
-      )}
-      summaryBar={(
-        <StickySummaryBar
-          journey={selectedJourney}
-          returnJourney={isRoundTrip ? selectedReturnJourney : null}
-          fare={null}
-          extras={[]}
-          total={totalPrice}
-          breakdownItems={breakdownItems}
-          canContinue={canContinue}
-          onContinue={() => {
-            if (!canContinue) return;
-            navigate("/fares");
-          }}
-          onViewDetails={() => setPriceModalOpen(true)}
-          t={t}
-          priceTriggerRef={priceTriggerRef}
-          pendingFare={true}
-          pendingExtras={true}
-          helper={!canContinue ? t("summary.selectJourneyHelper") : null}
-          ariaLive={canContinue ? t("summary.priceUpdated") : t("summary.selectJourneyHelper")}
-        />
-      )}
-      priceModal={(
-        <PriceDetailsModal
-          isOpen={priceModalOpen}
-          onClose={() => setPriceModalOpen(false)}
-          triggerRef={priceTriggerRef}
-          items={breakdownItems}
-          total={formatPrice(totalPrice)}
-        />
-      )}
+      listState={{
+        isListBusy,
+        isUpdating,
+        journeys: sortedJourneysForSelectedDate,
+        activeLeg,
+        selectedJourneyId: state.selectedJourneyId,
+        selectedReturnJourneyId: state.selectedReturnJourneyId,
+        filters,
+        onSelectJourney: handleSelectJourney,
+      }}
+      listLabels={{
+        emptyTitle: t("results.emptyTitle"),
+        emptyBody: t("results.emptyBody"),
+        emptyActions: [
+          t("results.emptyAction1"),
+          t("results.emptyAction2"),
+          t("results.emptyAction3"),
+        ],
+        updatingLabel: t("filtersPanel.updating"),
+        selectedLabel: t("results.selected"),
+        selectLabel: t("results.select"),
+        priceFromLabel: t("results.priceFrom"),
+      }}
+      filtersDrawerProps={{
+        open: filtersOpen,
+        onClose: () => setFiltersOpen(false),
+        t,
+        triggerRef: filtersButtonRef,
+        drawerId: filtersDrawerId,
+      }}
+      summaryBarProps={{
+        journey: selectedJourney,
+        returnJourney: isRoundTrip ? selectedReturnJourney : null,
+        fare: null,
+        extras: [],
+        total: totalPrice,
+        breakdownItems,
+        canContinue,
+        onContinue: () => {
+          if (!canContinue) return;
+          navigate("/fares");
+        },
+        onViewDetails: () => setPriceModalOpen(true),
+        t,
+        priceTriggerRef,
+        pendingFare: true,
+        pendingExtras: true,
+        helper: !canContinue ? t("summary.selectJourneyHelper") : null,
+        ariaLive: canContinue ? t("summary.priceUpdated") : t("summary.selectJourneyHelper"),
+      }}
+      priceModalProps={{
+        isOpen: priceModalOpen,
+        onClose: () => setPriceModalOpen(false),
+        triggerRef: priceTriggerRef,
+        items: breakdownItems,
+        total: formatPrice(totalPrice),
+      }}
     />
   );
 }

@@ -20,6 +20,18 @@
   gap: var(--spacing-04);
 }
 
+.payment-field--expiry,
+.payment-field--cvv {
+  grid-column: span 4;
+}
+
+@media (min-width: 1024px) {
+  .payment-field--expiry,
+  .payment-field--cvv {
+    grid-column: span 6;
+  }
+}
+
 @media (max-width: 1023px) {
   .payment-form {
     grid-column: 1 / -1;

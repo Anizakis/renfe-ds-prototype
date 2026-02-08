@@ -30,16 +30,20 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
 
   useEffect(() => {
     if (isOpen) {
-      setIsVisible(true);
-      setIsClosing(false);
+      queueMicrotask(() => {
+        setIsVisible(true);
+        setIsClosing(false);
+      });
       return;
     }
     if (!isVisible) return;
 
-    setIsClosing(true);
+    queueMicrotask(() => setIsClosing(true));
     closeTimerRef.current = window.setTimeout(() => {
-      setIsVisible(false);
-      setIsClosing(false);
+      queueMicrotask(() => {
+        setIsVisible(false);
+        setIsClosing(false);
+      });
     }, CLOSE_ANIMATION_MS);
 
     return () => {
