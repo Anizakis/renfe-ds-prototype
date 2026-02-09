@@ -67,7 +67,7 @@ export default function TopNav() {
                     window.location.hash = "help";
                   }}
                 >
-                  <Icon name="help" size="md" decorative />
+                  <Icon name="question_mark" size="md" decorative />
                   <span className="topnav__link-text">{t("nav.help")}</span>
                 </button>
               </li>

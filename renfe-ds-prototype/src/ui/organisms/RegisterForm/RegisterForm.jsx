@@ -493,7 +493,7 @@ export default function RegisterForm() {
             {t("auth.register.confirmTitle")}
           </h2>
           <p id="register-confirm-desc">{t("auth.register.confirmBody")}</p>
-          <div className="form-actions">
+          <div className="form-actions" style={{ justifyContent: 'flex-end', display: 'flex' }}>
             <Button
               variant="primary"
               onClick={() => {

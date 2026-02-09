@@ -172,7 +172,7 @@ export default function Login() {
             {t("auth.login.confirmTitle")}
           </h2>
           <p id="login-confirm-desc">{t("auth.login.confirmBody")}</p>
-          <div className="form-actions">
+          <div className="form-actions" style={{ justifyContent: 'flex-end', display: 'flex' }}>
             <Button
               variant="primary"
               onClick={() => {
