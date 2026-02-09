@@ -239,6 +239,7 @@
   padding: var(--spacing-03) var(--spacing-05);
   border: 1px solid var(--color-neutral-200);
   background: var(--color-neutral-25);
+  white-space: nowrap;
 }
 
 .topnav__menu-btn:focus-visible {
