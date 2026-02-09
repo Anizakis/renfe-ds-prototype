@@ -93,9 +93,9 @@ export default function ExtraDetailModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} titleId={titleId} descriptionId={descId}>
       <div className="extra-detail-modal">
-        <Button variant="primary" size="l" className="extra-detail-modal__close-btn" onClick={onClose} aria-label={t("extras.close")}> 
+        <button className="extra-detail-modal__close-btn" onClick={onClose} aria-label={t("extras.close")}>
           <Icon name="close" />
-        </Button>
+        </button>
         <h2 id={titleId} className="extra-detail-modal__title">{t("extras.personalizeTitle")}</h2>
         <div className="extra-detail-modal__subheader">
           <span className="extra-detail-modal__name">{extraName}</span>

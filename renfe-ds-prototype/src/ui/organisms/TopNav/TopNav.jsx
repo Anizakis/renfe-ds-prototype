@@ -3,7 +3,7 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import Container from "../../atoms/Container/Container.jsx";
 import InputText from "../../atoms/InputText/InputText.jsx";
 import Link from "../../atoms/Link/Link.jsx";
-import Button from "../../atoms/Button/Button.jsx";
+import { Button } from "../../atoms/index.js";
 import "./TopNav.css";
 import { useI18n } from "../../../app/i18n.jsx";
 import { useTravel } from "../../../app/store.jsx";
@@ -47,25 +47,29 @@ export default function TopNav() {
           <nav className="topnav__center" aria-label={t("nav.mainLabel")}>
             <ul className="topnav__list">
               <li>
-                <Link
+                <button
+                  type="button"
                   className="topnav__link topnav__link-button"
-                  to="/search"
                   aria-haspopup="dialog"
                   aria-expanded={isSearchOpen ? "true" : "false"}
+                  onClick={() => setIsSearchOpen(true)}
                   ref={searchButtonRef}
                 >
                   <Icon name="search" size="md" decorative />
                   <span className="topnav__link-text">{t("nav.search")}</span>
-                </Link>
+                </button>
               </li>
               <li>
-                <Link
+                <button
+                  type="button"
                   className="topnav__link topnav__link-button"
-                  to="/help"
+                  onClick={() => {
+                    window.location.hash = "help";
+                  }}
                 >
                   <Icon name="help" size="md" decorative />
                   <span className="topnav__link-text">{t("nav.help")}</span>
-                </Link>
+                </button>
               </li>
               <li>
                 <NavLink
@@ -84,7 +88,7 @@ export default function TopNav() {
           <div className="topnav__right">
             <Button
               variant="secondary"
-              size="s"
+              size="m"
               className="topnav__menu-btn"
               aria-label={isMenuOpen ? t("nav.menuClose") : t("nav.menuOpen")}
               aria-expanded={isMenuOpen ? "true" : "false"}

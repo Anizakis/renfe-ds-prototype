@@ -236,15 +236,9 @@
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-02);
-  padding: var(--spacing-02) var(--spacing-05);
-  border-radius: var(--radius-pill);
+  padding: var(--spacing-03) var(--spacing-05);
   border: 1px solid var(--color-neutral-200);
   background: var(--color-neutral-25);
-  color: var(--color-neutral-900);
-  font-family: var(--font-family-primary);
-  font-size: var(--type-text-m-size);
-  line-height: var(--type-text-m-line);
-  cursor: pointer;
 }
 
 .topnav__menu-btn:focus-visible {
