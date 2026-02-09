@@ -11,7 +11,9 @@
 .results-filters-drawer__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(var(--color-neutral-900-rgb), 0.4);
+  -webkit-backdrop-filter: blur(var(--blur-m));
+  backdrop-filter: blur(var(--blur-m));
+  background-color: rgba(var(--color-neutral-900-rgb), 0.4);
 }
 
 .results-filters-drawer__panel {
