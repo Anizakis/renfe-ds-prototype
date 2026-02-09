@@ -14,3 +14,4 @@ export { default as PageStack } from "./PageStack/PageStack.jsx";
 export { default as Stack } from "./Stack/Stack.jsx";
 export { default as VisuallyHidden } from "./VisuallyHidden/VisuallyHidden.jsx";
 export { default as Loading } from "./Loading/Loading.jsx";
+export { default as Icon } from "./Icon/Icon.jsx";

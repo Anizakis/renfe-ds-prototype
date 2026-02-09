@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import Button from "../../atoms/Button/Button.jsx";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import "./ResultsFiltersDrawer.css";
 
 function getFocusableElements(container) {

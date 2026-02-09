@@ -3,11 +3,12 @@ import { useMemo, useRef, useState, useEffect } from "react";
 import Container from "../../atoms/Container/Container.jsx";
 import InputText from "../../atoms/InputText/InputText.jsx";
 import Link from "../../atoms/Link/Link.jsx";
+import Button from "../../atoms/Button/Button.jsx";
 import "./TopNav.css";
 import { useI18n } from "../../../app/i18n.jsx";
 import { useTravel } from "../../../app/store.jsx";
 import DrawerMenu from "../DrawerMenu/DrawerMenu.jsx";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import Modal from "../../molecules/Modal/Modal.jsx";
 
 export default function TopNav() {
@@ -46,29 +47,25 @@ export default function TopNav() {
           <nav className="topnav__center" aria-label={t("nav.mainLabel")}>
             <ul className="topnav__list">
               <li>
-                <button
-                  type="button"
+                <Link
                   className="topnav__link topnav__link-button"
+                  to="/search"
                   aria-haspopup="dialog"
                   aria-expanded={isSearchOpen ? "true" : "false"}
-                  onClick={() => setIsSearchOpen(true)}
                   ref={searchButtonRef}
                 >
                   <Icon name="search" size="md" decorative />
                   <span className="topnav__link-text">{t("nav.search")}</span>
-                </button>
+                </Link>
               </li>
               <li>
-                <button
-                  type="button"
+                <Link
                   className="topnav__link topnav__link-button"
-                  onClick={() => {
-                    window.location.hash = "help";
-                  }}
+                  to="/help"
                 >
                   <Icon name="help" size="md" decorative />
                   <span className="topnav__link-text">{t("nav.help")}</span>
-                </button>
+                </Link>
               </li>
               <li>
                 <NavLink
@@ -85,8 +82,9 @@ export default function TopNav() {
           </nav>
 
           <div className="topnav__right">
-            <button
-              type="button"
+            <Button
+              variant="secondary"
+              size="s"
               className="topnav__menu-btn"
               aria-label={isMenuOpen ? t("nav.menuClose") : t("nav.menuOpen")}
               aria-expanded={isMenuOpen ? "true" : "false"}
@@ -96,7 +94,7 @@ export default function TopNav() {
             >
               <span className="topnav__menu-label">{t("nav.menu")}</span>
               <Icon name={isMenuOpen ? "close" : "menu"} size="md" decorative />
-            </button>
+            </Button>
           </div>
         </div>
       </Container>

@@ -1,4 +1,4 @@
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../Icon/Icon.jsx";
 import "./Alert.css";
 
 export default function Alert({

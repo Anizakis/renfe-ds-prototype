@@ -175,8 +175,6 @@
 .extras-card__per {
   font-size: var(--type-text-xs-size);
   color: var(--color-neutral-500);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
 }
 
 .extras-card__price {

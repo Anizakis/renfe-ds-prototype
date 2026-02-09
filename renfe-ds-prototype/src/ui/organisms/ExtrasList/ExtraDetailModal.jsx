@@ -1,7 +1,7 @@
 import Modal from "../../molecules/Modal/Modal.jsx";
 import Button from "../../atoms/Button/Button.jsx";
 import { Checkbox } from "../../atoms";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import "./ExtraDetailModal.css";
 import { useState } from "react";
 import { useI18n } from "../../../app/i18n.jsx";
@@ -93,17 +93,18 @@ export default function ExtraDetailModal({
   return (
     <Modal isOpen={isOpen} onClose={onClose} titleId={titleId} descriptionId={descId}>
       <div className="extra-detail-modal">
-        <button className="extra-detail-modal__close-btn" onClick={onClose} aria-label={t("extras.close")}>
+        <Button variant="primary" size="l" className="extra-detail-modal__close-btn" onClick={onClose} aria-label={t("extras.close")}> 
           <Icon name="close" />
-        </button>
+        </Button>
         <h2 id={titleId} className="extra-detail-modal__title">{t("extras.personalizeTitle")}</h2>
         <div className="extra-detail-modal__subheader">
           <span className="extra-detail-modal__name">{extraName}</span>
           <span className="extra-detail-modal__price">
             {isRestauracion && (
               <>
+                <span>{formatPrice(price)} </span>
                 <span className="extra-detail-modal__per">{t("extras.perTraveler")}</span>
-                <span>{formatPrice(price)}</span>
+                
               </>
             )}
             {isMascotas && <span>{formatPrice(price)}</span>}

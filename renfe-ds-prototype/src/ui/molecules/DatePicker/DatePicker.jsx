@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { InputText } from "../../atoms";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import "./DatePicker.css";
 

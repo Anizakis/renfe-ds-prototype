@@ -1,5 +1,5 @@
 import { useMemo, useRef } from "react";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import { VisuallyHidden } from "../../atoms";
 import { useI18n } from "../../../app/i18n.jsx";
 import "./DayPickerStrip.css";

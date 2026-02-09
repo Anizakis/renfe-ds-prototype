@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import TravelerForm from "./TravelerForm.jsx";
 import "./TravelerAccordion.css";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 
 export default function TravelerAccordion({ index = 1, type, defaultOpen = false }) {

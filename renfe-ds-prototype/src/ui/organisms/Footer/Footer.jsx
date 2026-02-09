@@ -1,6 +1,6 @@
 import Container from "../../atoms/Container/Container.jsx";
 import Link from "../../atoms/Link/Link.jsx";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import "./Footer.css";
 

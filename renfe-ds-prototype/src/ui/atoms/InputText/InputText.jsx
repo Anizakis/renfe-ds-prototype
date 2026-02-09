@@ -1,4 +1,4 @@
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../Icon/Icon.jsx";
 import { useI18nOptional } from "../../../app/i18n.jsx";
 import "./InputText.css";
 

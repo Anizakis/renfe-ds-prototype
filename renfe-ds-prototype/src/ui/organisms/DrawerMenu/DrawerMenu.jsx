@@ -6,7 +6,7 @@ import Modal from "../../molecules/Modal/Modal.jsx";
 import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
 import useFocusTrap from "../../molecules/Modal/useFocusTrap.js";
 import Button from "../../atoms/Button/Button.jsx";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import { useTheme } from "../../../app/theme.jsx";
 import { useTravel } from "../../../app/store.jsx";

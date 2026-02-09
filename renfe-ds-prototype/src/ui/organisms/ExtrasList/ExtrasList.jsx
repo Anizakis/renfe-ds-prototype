@@ -1,5 +1,6 @@
 import "./ExtrasList.css";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
+import Button from "../../atoms/Button/Button.jsx";
 import { useState } from "react";
 import ExtraDetailModal from "./ExtraDetailModal.jsx";
 import { useTravel } from "../../../app/store.jsx";
@@ -62,10 +63,11 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
                   <span className="extras-card__title">{extraName}</span>
                 </div>
                 <div className="extras-card__meta">
-                  <span className="extras-card__per">{t("extras.perTraveler")}</span>
                   <span className={"extras-card__price" + (extra.price === 0 ? " extras-card__price--free" : "")}>
                     {priceText}
                   </span>
+                  <span className="extras-card__per">{t("extras.perTraveler")}</span>
+
                 </div>
               </div>
               <div className="extras-card__desc" title={extraDescription}>
@@ -85,14 +87,14 @@ export default function ExtrasList({ extras, selectedExtras, onToggle }) {
                     </button>
                   </span>
                 ) : (
-                  <button
-                    type="button"
+                  <Button
+                    variant="tertiary"
+                    size="l"
                     className="extras-card__add-btn"
                     onClick={() => handleAddClick(extra)}
-                    tabIndex={0}
                   >
                     +{t("extras.add")}
-                  </button>
+                  </Button>
                 )}
               </div>
             </div>

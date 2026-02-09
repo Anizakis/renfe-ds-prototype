@@ -620,7 +620,7 @@ const STRINGS = {
       },
       packSuperflex: {
         name: "Pack Superflex",
-        description: "Cambios gratuitos ilimitados + Puente AVE + Reembolso total",
+        description: "Cambios ilimitados + Puente AVE + Reembolso total",
       },
       seat: {
         name: "Selección de asiento",
@@ -644,7 +644,7 @@ const STRINGS = {
         priceLabel: "GRATIS",
       },
       cambiosIlimitados: {
-        name: "Cambios Gratuitos Ilimitados",
+        name: "Cambios Ilimitados",
         description: "Cambia fecha y hora sin límite, pagando solo diferencia de precio",
       },
     },
@@ -1453,7 +1453,7 @@ const STRINGS = {
         priceLabel: "FREE",
       },
       cambiosIlimitados: {
-        name: "Unlimited free changes",
+        name: "Unlimited changes",
         description: "Change date and time without limit, paying only fare difference",
       },
     },

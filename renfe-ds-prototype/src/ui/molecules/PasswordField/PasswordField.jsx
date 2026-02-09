@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useI18n } from "../../../app/i18n";
-import Icon from "../../Icon/Icon";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden";
 import "./PasswordField.css";
 

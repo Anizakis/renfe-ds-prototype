@@ -1,5 +1,5 @@
 import "./SkeletonList.css";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 
 export default function SkeletonList({ isBusy = false, busyLabel = "" }) {
   const items = Array.from({ length: 6 }, (_, index) => index);

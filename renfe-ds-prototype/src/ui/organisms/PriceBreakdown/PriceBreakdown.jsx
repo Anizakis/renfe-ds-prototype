@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
-import Icon from "../../Icon/Icon.jsx";
+import Icon from "../../atoms/Icon/Icon.jsx";
 import "./PriceBreakdown.css";
 import { formatPrice } from "../../../app/utils.js";
 
