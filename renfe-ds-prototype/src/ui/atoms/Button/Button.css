@@ -14,7 +14,7 @@
 
   --btn-secondary-bg: var(--color-neutral-50);
   --btn-secondary-fg: var(--color-neutral-900);
-  --btn-secondary-border: var(--color-neutral-900);
+  --btn-secondary-border: var(--color-neutral-200);
   --btn-secondary-hover-bg: var(--color-neutral-100);
 
   --btn-terciary-bg: var(--color-neutral-25);
