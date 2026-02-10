@@ -6,6 +6,7 @@ import Modal from "../../molecules/Modal/Modal.jsx";
 import VisuallyHidden from "../../atoms/VisuallyHidden/VisuallyHidden.jsx";
 import useFocusTrap from "../../molecules/Modal/useFocusTrap.js";
 import Button from "../../atoms/Button/Button.jsx";
+import Switch from "../../atoms/Switch/Switch.jsx";
 import Icon from "../../atoms/Icon/Icon.jsx";
 import { useI18n } from "../../../app/i18n.jsx";
 import { useTheme } from "../../../app/theme.jsx";
@@ -177,23 +178,22 @@ export default function DrawerMenu({ isOpen, onClose, triggerRef }) {
             <span className="drawer__row-action">{t("common.change")}</span>
           </button>
 
-          <button
-            type="button"
-            className="drawer__row drawer__row--action"
-            onClick={toggleTheme}
-            aria-pressed={theme === "dark" ? "true" : "false"}
-          >
+          <div className="drawer__row drawer__row--static">
             <Icon
               name={theme === "dark" ? "dark_mode" : "light_mode"}
               size="md"
               decorative
             />
-            <span className="drawer__row-text">{t("drawer.darkMode")}</span>
-            <span className="drawer__row-action">{t("common.change")}</span>
-            <VisuallyHidden>
-              {theme === "dark" ? t("drawer.modeOn") : t("drawer.modeOff")}
-            </VisuallyHidden>
-          </button>
+            <label className="drawer__label" htmlFor="drawer-theme-switch">
+              {theme === "dark" ? t("drawer.darkMode") : t("drawer.lightMode")}
+            </label>
+            <Switch
+              id="drawer-theme-switch"
+              checked={theme === "dark"}
+              onChange={toggleTheme}
+              aria-label={theme === "dark" ? t("drawer.darkMode") : t("drawer.lightMode")}
+            />
+          </div>
         </div>
       </div>
 
