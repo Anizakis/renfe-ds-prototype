@@ -14,12 +14,6 @@
   gap: var(--spacing-04);
 }
 
-.results-header__actions {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-03);
-}
-
 .results-header__tabs {
   width: 100%;
 }
@@ -42,16 +36,6 @@
 .results-header__tabs .tabs__panel {
   display: none;
   padding-top: 0;
-}
-
-.results-filters-toggle {
-  display: none;
-}
-
-@media (max-width: 1023px) {
-  .results-filters-toggle {
-    display: inline-flex;
-  }
 }
 
 @media (max-width: 768px) {
