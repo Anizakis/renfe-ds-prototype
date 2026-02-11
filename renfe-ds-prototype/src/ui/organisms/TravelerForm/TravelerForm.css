@@ -1,6 +1,6 @@
 /* Use base-100 for white (adapts to dark mode as black) */
 .traveler-card {
-  background: var(--color-base-25);
+  background: var(--color-neutral-50);
   border: var(--spacing-01) solid var(--color-neutral-200);
   border-radius: var(--radius-04);
   padding: var(--spacing-06) var(--spacing-07);
