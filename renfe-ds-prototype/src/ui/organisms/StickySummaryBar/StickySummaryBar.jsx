@@ -39,11 +39,9 @@ function StickySummaryBar({
   const [detailsMaxHeight, setDetailsMaxHeight] = useState("0px");
   const [isDesktop, setIsDesktop] = useState(false);
   const detailsId = "sticky-summary-details";
-  // Centralize extras logic here
   const { state } = useTravel();
   const selectedExtras = getSelectedExtras(state);
   const pendingExtras = selectedExtras.length === 0;
-  // Centralize fare logic here
   const selectedFare = getSelectedFare(state);
   const pendingFare = !state.selectedFareId;
   const fareName = selectedFare?.nameKey ? t(selectedFare.nameKey) : selectedFare?.name;
